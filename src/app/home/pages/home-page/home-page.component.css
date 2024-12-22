@@ -1,7 +1,7 @@
 /* Estilos generales */
 .home-layout {
   display: flex;
-  flex-direction: row;
+  flex-direction: row; /* Los elementos se alinean en fila */
   height: 100vh;
 }
 
@@ -15,28 +15,23 @@
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
-}
-
-app-product-card {
-  margin-top: 20px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  flex-direction: column; /* Alineamos la paginación arriba de los productos */
 }
 
-app-product-card > .product {
-  width: 300px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 10px;
+app-pagination {
+  margin-bottom: 20px; /* Espacio debajo de la paginación */
+  align-self: center; /* Centra la paginación */
 }
 
-.main-content {
+.products-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 16px; /* Espaciado entre las cartas */
-  padding: 16px;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  ); /* Distribuye las tarjetas de producto */
+  gap: 20px; /* Espaciado entre las tarjetas */
+  margin-top: 20px; /* Espacio entre la paginación y los productos */
 }
 
 /* Media Query para pantallas pequeñas */
@@ -46,15 +41,19 @@ app-product-card > .product {
   }
 
   .sidebar {
-    width: 100%; /* El sidebar ocupará todo el ancho en pantallas pequeñas */
-    order: -1; /* El sidebar aparecerá arriba si se desea */
+    width: 100%; /* El sidebar ocupará todo el ancho */
+    order: -1; /* El sidebar aparecerá arriba */
   }
 
   .main-content {
     padding: 10px; /* Reducimos el padding en pantallas pequeñas */
   }
 
-  app-product-card {
-    display: block; /* Los productos ocuparán toda la fila */
+  .products-list {
+    grid-template-columns: 1fr; /* En pantallas pequeñas, una sola columna para los productos */
+  }
+
+  app-pagination {
+    margin-top: 20px; /* Espacio entre la paginación y los productos */
   }
 }

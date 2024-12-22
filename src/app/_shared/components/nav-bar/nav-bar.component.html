@@ -16,11 +16,14 @@
     <div class="relative w-1/2">
       <input
         type="text"
+        [(ngModel)]="textFilterValue"
+        (keyup.enter)="searchProducts()"
         placeholder="Buscar producto"
         class="w-full p-2.5 rounded-[30px] border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <button
         type="submit"
+        (click)="searchProducts()"
         class="absolute top-1/2 transform -translate-y-1/2 right-0 text-gray-500"
       >
         <span

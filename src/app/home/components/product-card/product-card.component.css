@@ -1,6 +1,6 @@
 /* Estilo global para la carta */
 .card {
-  width: 320px; /* Ancho fijo de la carta */
+  width: 280px; /* Ajustamos el ancho de la carta */
   height: 500px; /* Alto fijo de la carta */
   border-radius: 10px; /* Bordes redondeados */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
