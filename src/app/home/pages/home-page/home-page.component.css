@@ -1,0 +1,53 @@
+/* Estilos generales */
+.home-layout {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #f0f0f0;
+  padding: 10px;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+app-product-card {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+app-product-card > .product {
+  width: 300px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+/* Media Query para pantallas pequeñas */
+@media (max-width: 768px) {
+  .home-layout {
+    flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+  }
+
+  .sidebar {
+    width: 100%; /* El sidebar ocupará todo el ancho en pantallas pequeñas */
+    order: -1; /* El sidebar aparecerá arriba si se desea */
+  }
+
+  .main-content {
+    padding: 10px; /* Reducimos el padding en pantallas pequeñas */
+  }
+
+  app-product-card {
+    display: block; /* Los productos ocuparán toda la fila */
+  }
+}
