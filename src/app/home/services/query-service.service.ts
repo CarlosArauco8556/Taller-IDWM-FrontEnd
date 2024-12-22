@@ -6,10 +6,20 @@ import { QueryParams } from '../interfaces/queryParams';
   providedIn: 'root'
 })
 export class QueryServiceService {
-  private textFilterSubject = new BehaviorSubject<string>(''); 
-  textFilter$ = this.textFilterSubject.asObservable();
+  private filtersSource = new BehaviorSubject<QueryParams>({
+    textFilter: "", productType: "", sortByPrice: "", IsDescending: null, pageNumber: 1, pageSize: 10
+  });
 
-  updateTextFilter(text: string): void {
-    this.textFilterSubject.next(text); 
+  public currentFilters$ = this.filtersSource.asObservable();
+
+  updateFilters(newFilters: Partial<QueryParams>) {
+    const currentFilters = this.filtersSource.value;
+    this.filtersSource.next({ ...currentFilters, ...newFilters });
+  }
+
+  resetFilters() {
+    this.filtersSource.next({
+      textFilter: "", productType: "", sortByPrice: "", IsDescending: null, pageNumber: 1, pageSize: 10
+    });
   }
 }

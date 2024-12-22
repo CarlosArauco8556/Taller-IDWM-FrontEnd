@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { PaginationComponent } from "../../components/pagination/pagination.component";
 import { QueryParams } from '../../interfaces/queryParams';
 import { QueryServiceService } from '../../services/query-service.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -22,21 +23,23 @@ export class HomePageComponent {
   public productsList: Product[] = [];
   private productService: ProductServiceService = inject(ProductServiceService);
   private queryService: QueryServiceService = inject(QueryServiceService);
-  public queryParamsI: QueryParams = {textFilter: "", sortByPrice: undefined, IsDescending: undefined, pageNumber: 1, pageSize: 10};
+  private filterSubscription!: Subscription;
 
   ngOnInit(): void {
-    this.queryService.textFilter$.subscribe((textFilter) => {
-      this.queryParamsI.textFilter = textFilter;
-      this.queryParamsI.pageNumber = 1; 
-      this.getProducts(); 
+    this.filterSubscription = this.queryService.currentFilters$.subscribe((filters) => {
+      this.getProducts(filters);
     });
   }
 
-  getProducts() {
+  ngOnDestroy(): void {
+    this.filterSubscription?.unsubscribe();
+  }
+
+  getProducts(filter: QueryParams): void {
     try
     {
       this.productsList = [];
-      this.productService.getAll(this.queryParamsI).then((products) => {
+      this.productService.getAll(filter).then((products) => {
         console.log(products);
         for (let i = 0; i < products.length; i++) {
           this.productsList.push(products[i]);

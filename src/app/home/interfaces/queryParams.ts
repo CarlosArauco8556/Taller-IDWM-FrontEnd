@@ -2,9 +2,11 @@ export interface QueryParams {
 
     textFilter?: string;
 
-    sortByPrice?: boolean;
+    productType?: string;
 
-    IsDescending?: boolean;
+    sortByPrice: string;
+
+    IsDescending: boolean | null;
 
     pageNumber?: number;
 

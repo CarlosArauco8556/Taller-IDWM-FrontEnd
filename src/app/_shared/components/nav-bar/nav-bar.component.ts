@@ -16,7 +16,7 @@ export class NavBarComponent {
   private queryService: QueryServiceService = inject(QueryServiceService);
 
   searchProducts(): void {
-    this.queryService.updateTextFilter(this.textFilterValue); 
+    this.queryService.updateFilters({ textFilter: this.textFilterValue }); 
   }
 
 }

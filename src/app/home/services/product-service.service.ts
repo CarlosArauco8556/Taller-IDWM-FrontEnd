@@ -25,6 +25,8 @@ export class ProductServiceService {
       if (queryParamsI.IsDescending !== null && queryParamsI.IsDescending !== undefined) {
         queryParams = queryParams.set('IsDescending', queryParamsI.IsDescending.toString());
       }
+
+      if (queryParamsI.productType) queryParams = queryParams.set('productType', queryParamsI.productType);
       if (queryParamsI.pageNumber) queryParams = queryParams.set('pageNumber', queryParamsI.pageNumber.toString());
       if (queryParamsI.pageSize) queryParams = queryParams.set('pageSize', queryParamsI.pageSize.toString());
 
