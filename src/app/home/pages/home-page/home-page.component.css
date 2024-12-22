@@ -32,6 +32,13 @@ app-product-card > .product {
   padding: 10px;
 }
 
+.main-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px; /* Espaciado entre las cartas */
+  padding: 16px;
+}
+
 /* Media Query para pantallas pequeñas */
 @media (max-width: 768px) {
   .home-layout {

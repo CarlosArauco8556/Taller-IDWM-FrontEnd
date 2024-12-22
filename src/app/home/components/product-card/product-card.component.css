@@ -1,12 +1,14 @@
 /* Estilo global para la carta */
 .card {
-  max-width: 320px; /* Tamaño máximo de la carta */
-  width: 100%; /* Asegura que la carta ocupe el 100% de su contenedor */
-  height: auto; /* La altura se ajusta automáticamente al contenido */
+  width: 320px; /* Ancho fijo de la carta */
+  height: 500px; /* Alto fijo de la carta */
   border-radius: 10px; /* Bordes redondeados */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
   background-color: #ffffff; /* Fondo blanco */
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+  display: flex;
+  flex-direction: column; /* Organiza los elementos de arriba hacia abajo */
+  justify-content: space-between; /* Espacio entre los elementos */
 }
 
 .card:hover {
@@ -26,7 +28,11 @@
 
 .card .content {
   padding: 20px; /* Espaciado interior para el contenido */
-  text-align: left; /* Alineación de texto a la izquierda */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Asegura que el título, texto y botón estén distribuidos adecuadamente */
+  flex-grow: 1; /* Asegura que el contenido ocupe todo el espacio disponible */
+  text-align: center; /* Centra todo el contenido de texto */
 }
 
 .card h5 {
@@ -51,6 +57,7 @@
   font-size: 0.875rem; /* Tamaño de fuente más pequeño */
   border-radius: 8px; /* Bordes redondeados para el botón */
   transition: background-color 0.3s ease; /* Transición para el color del botón */
+  margin-top: 20px; /* Espaciado superior para el botón */
 }
 
 .card a.button:hover {
@@ -60,7 +67,8 @@
 /* Media query para dispositivos móviles */
 @media (max-width: 768px) {
   .card {
-    max-width: 100%; /* Asegura que la carta ocupe el 100% en pantallas más pequeñas */
+    width: 100%; /* Asegura que la carta ocupe el 100% en pantallas más pequeñas */
+    height: auto; /* Ajusta la altura en pantallas pequeñas */
   }
 
   .card h5 {
