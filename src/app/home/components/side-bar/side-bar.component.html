@@ -1,0 +1,53 @@
+<aside
+  id="default-sidebar"
+  class="fixed top-0 left-0 z-40 w-64 h-screen py-6 shadow-lg bg-gray-100 dark:bg-gray-900"
+  aria-label="Sidebar"
+>
+  <div class="h-full px-4 py-4 overflow-y-auto">
+    <form class="space-y-6 py-20">
+      <!-- Tipo de producto -->
+      <div>
+        <label
+          for="productType"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Tipo de producto
+        </label>
+        <div class="relative">
+          <select
+            id="productType"
+            class="block w-full p-3 pr-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            (change)="onFilterChange($event, 'productType')"
+          >
+            <option value="">...</option>
+            <option value="Poleras">Poleras</option>
+            <option value="Gorros">Gorros</option>
+            <option value="Juguetería">Juguetería</option>
+            <option value="Alimentación">Alimentación</option>
+            <option value="Libros">Libros</option>
+          </select>
+        </div>
+      </div>
+      <!-- Ordenar por precio -->
+      <div>
+        <label
+          for="sortByPrice"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Ordenar por precio
+        </label>
+        <div class="relative">
+          <select
+            id="sortByPrice"
+            class="block w-full p-3 pr-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            (change)="onFilterChange($event, 'sortByPrice')"
+          >
+            <option value="false">...</option>
+            <option value=false>Ascendente</option>
+            <option value=true>Descendente</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+</aside>
