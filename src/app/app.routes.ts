@@ -7,19 +7,14 @@ export const routes: Routes = [
         loadComponent: () => import('./users/pages/change-password-page/change-password-page.component').then(m => m.ChangePasswordPageComponent)
     },
     {
-        path: 'change-state',
+        path: 'management-users',
         pathMatch: 'full',
-        loadComponent: () => import('./users/pages/change-state-page/change-state-page.component').then(m => m.ChangeStatePageComponent)
+        loadComponent: () => import('./users/pages/management-users-page/management-users-page.component').then(m => m.ManagementUsersPageComponent)
     },
     {
         path: 'edit-profile',
         pathMatch: 'full',
         loadComponent: () => import('./users/pages/edit-profile-page/edit-profile-page.component').then(m => m.EditProfilePageComponent)
-    },
-    {
-        path: 'get-users',
-        pathMatch: 'full',
-        loadComponent: () => import('./users/pages/get-users-page/get-users-page.component').then(m => m.GetUsersPageComponent)
     },
     {
         path: 'home',

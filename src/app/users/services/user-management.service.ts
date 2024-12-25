@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { IGetUsers } from '../interfaces/igetUsers';
+import { IGetUsers } from '../interfaces/IGetUsers';
 import { IQueryParams } from '../interfaces/IQueryParams';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class UserManagementService {
 
   async getUsers(IQueryParams: IQueryParams): Promise<IGetUsers[]> {
     try {
-      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNhcmxvczUxMzJmY0BnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiY2FybG9zNTEzMmZjQGdtYWlsLmNvbSIsIm5hbWVpZCI6ImMyMDVkY2QxLTE5NmEtNGNiMi1hMjZhLTBmMDFmZTM5OWFhYyIsImp0aSI6Ijc4NzBmNWFjLTRlYzMtNGVlNy04NmExLTc5M2JhN2ZiYjQ0MyIsInJvbGUiOiJVc2VyIiwibmJmIjoxNzM0NzExODgzLCJleHAiOjE3MzQ3OTgyODMsImlhdCI6MTczNDcxMTg4MywiaXNzIjoiaGh0cHM6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6ImhodHBzOi8vbG9jYWxob3N0OjUwMCJ9.lwwNdptdI6X1sgBRNqjvr2SDK3TsVxWAaxB3v45Daw_tqzaLfg4C-h-qvOhSvMSNgwGIO3IyC8ZmmZexIRFG9g';
+      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjA3ZTIyNzU0LWNhMjItNDQ5My1iMmZhLTM3ODZjNDRjNWE4MiIsImp0aSI6ImU2MDQ5YzUwLThkMTQtNGQ4Mi04MWNjLTIyMDIwYjg4MDFiOSIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNDk2ODE0MSwiZXhwIjoxNzM1MDU0NTQxLCJpYXQiOjE3MzQ5NjgxNDEsImlzcyI6ImhodHBzOi8vbG9jYWxob3N0OjUwMDAiLCJhdWQiOiJoaHRwczovL2xvY2FsaG9zdDo1MDAifQ.MQr5GjJS_1CyVi5EGEa0ItT1XiXTho-kzbsNINS00-dZggZUKeRsI902XKEeN4VDDjQRuhyZ0l6qLt8PsF2_SQ';
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       let params = new HttpParams()
       if (IQueryParams.name) params = params.set('name', IQueryParams.name);
@@ -34,15 +34,20 @@ export class UserManagementService {
 
   async changeState(email: string): Promise<IGetUsers> {
     try {
-      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNhcmxvczUxMzJmY0BnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiY2FybG9zNTEzMmZjQGdtYWlsLmNvbSIsIm5hbWVpZCI6ImMyMDVkY2QxLTE5NmEtNGNiMi1hMjZhLTBmMDFmZTM5OWFhYyIsImp0aSI6Ijc4NzBmNWFjLTRlYzMtNGVlNy04NmExLTc5M2JhN2ZiYjQ0MyIsInJvbGUiOiJVc2VyIiwibmJmIjoxNzM0NzExODgzLCJleHAiOjE3MzQ3OTgyODMsImlhdCI6MTczNDcxMTg4MywiaXNzIjoiaGh0cHM6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6ImhodHBzOi8vbG9jYWxob3N0OjUwMCJ9.lwwNdptdI6X1sgBRNqjvr2SDK3TsVxWAaxB3v45Daw_tqzaLfg4C-h-qvOhSvMSNgwGIO3IyC8ZmmZexIRFG9g';
+      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjA3ZTIyNzU0LWNhMjItNDQ5My1iMmZhLTM3ODZjNDRjNWE4MiIsImp0aSI6ImU2MDQ5YzUwLThkMTQtNGQ4Mi04MWNjLTIyMDIwYjg4MDFiOSIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNDk2ODE0MSwiZXhwIjoxNzM1MDU0NTQxLCJpYXQiOjE3MzQ5NjgxNDEsImlzcyI6ImhodHBzOi8vbG9jYWxob3N0OjUwMDAiLCJhdWQiOiJoaHRwczovL2xvY2FsaG9zdDo1MDAifQ.MQr5GjJS_1CyVi5EGEa0ItT1XiXTho-kzbsNINS00-dZggZUKeRsI902XKEeN4VDDjQRuhyZ0l6qLt8PsF2_SQ';
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       const response = await firstValueFrom(this.http.post<IGetUsers>(`${this.baseUrl}/ChangeStateUser/${email}`, { headers: headers }))
       return Promise.resolve(response);
     } catch (error) {
-      console.log("Error in changeState service", error);
-      let e = error as HttpErrorResponse;
-      this.errors.push(e.message);
-      return Promise.reject(e)
+      console.log("Error in changeState service.", error);
+
+      if(error instanceof HttpErrorResponse)
+      {
+        const errorMessage = 
+          typeof error.error === 'string' ? error.error : error.message;
+        this.errors.push(errorMessage);
+      }
+      return Promise.reject(error);
     }
   }
 }
