@@ -28,4 +28,10 @@ export class CartProductComponent {
       error: (error) => console.error('Error updating quantity:', error)
     });
   }
+
+  protected removeItem = (cartItem: CartItem): void => {
+    this.cartService.removeProductFromCart(cartItem.id).subscribe({
+      error: (error) => console.error('Error removing item:', error)
+    });
+  }
 }

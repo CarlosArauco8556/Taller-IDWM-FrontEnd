@@ -59,6 +59,16 @@ export class CartServiceService {
     );
   }
 
+  removeProductFromCart(productId: number): Observable<string> {
+    return this.http.delete(
+      `${this.baseUrl}/RemoveFromCart/${productId}`,
+      this.textHttpOptions
+    ).pipe(
+      tap(() => this.refreshCart()),
+      catchError(this.handleError)
+    );
+  }
+
   private refreshCart(): void {
     this.getCart().subscribe();
   }
