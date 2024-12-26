@@ -5,6 +5,7 @@ import { CartServiceService } from '../../services/cart-service.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Cart } from '../../interfaces/cart';
 import { CartItem } from '../../interfaces/cartItem';
+import { UpdateItem } from '../../interfaces/updateItem';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -20,21 +21,23 @@ export class ShoppingCartComponent {
   public productsList: CartItem[] = [];
   private cartService: CartServiceService = inject(CartServiceService);
 
+  public updateItem!: UpdateItem;
+
   ngOnInit(): void {
     this.getCartProducts();
   }
 
   getCartProducts(): void {
-    this.cartService.getCart().then((cart) => {
+    this.cartService.getCart().subscribe((cart) => {
       console.log(cart);
       this.cart = cart;
       for (let i = 0; i < cart.cartItems.length; i++) {
         console.log(cart.cartItems[i]);
         this.productsList.push(cart.cartItems[i]);
       }
-        
-    }).catch((error) => {
+    }, (error) => {
       console.log(error);
     });
   }
+
 }

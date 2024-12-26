@@ -13,6 +13,8 @@ import { RouterModule } from '@angular/router';
 export class NavBarComponent {
 
   public textFilterValue: string = '';
+  public cartisHovered = false;
+  public profileisHovered = false;
 
   private queryService: QueryServiceService = inject(QueryServiceService);
 

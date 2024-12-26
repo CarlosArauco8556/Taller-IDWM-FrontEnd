@@ -1,7 +1,9 @@
-import { Component, Input } from '@angular/core';
-import { Cart } from '../../interfaces/cart';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CartItem } from '../../interfaces/cartItem';
 import { CommonModule } from '@angular/common';
+import { UpdateItem } from '../../interfaces/updateItem';
+import { Observable } from 'rxjs';
+import { CartServiceService } from '../../services/cart-service.service';
 
 @Component({
   selector: 'app-cart-product',
@@ -11,5 +13,19 @@ import { CommonModule } from '@angular/common';
   styleUrl: './cart-product.component.css'
 })
 export class CartProductComponent {
-  @Input() products!: CartItem[];
+  private cartService = inject(CartServiceService);
+  protected cart$ = this.cartService.cart$;
+
+  constructor() {
+    this.cartService.getCart().subscribe();
+  }
+
+  protected updateQuantity = (cartItem: CartItem, isIncrease: boolean): void => {
+    this.cartService.updateProductQuantity(
+      cartItem.id,
+      isIncrease
+    ).subscribe({
+      error: (error) => console.error('Error updating quantity:', error)
+    });
+  }
 }

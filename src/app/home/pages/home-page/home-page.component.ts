@@ -69,10 +69,13 @@ export class HomePageComponent {
   }
 
   addProductToCart(productId: number): void {
-    this.cartService.addProductToCart(productId, 1).then((cart) => {
-      console.log(cart);
-    }).catch((error) => {
-      console.log(error);
+    this.cartService.addProductToCart(productId, 1).subscribe({
+      next: (cart) => {
+        console.log(cart);
+      },
+      error: (error) => {
+        console.log(error);
+      }
     });
   }
 }

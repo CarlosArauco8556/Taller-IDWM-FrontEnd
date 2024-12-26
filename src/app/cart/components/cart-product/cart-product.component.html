@@ -1,10 +1,11 @@
 <div class="space-y-4">
-  <div class="bg-white p-4 rounded-lg shadow-sm"
-  *ngFor="let cartItem of products">
+  <div
+    class="bg-white p-4 rounded-lg shadow-sm"
+    *ngFor="let cartItem of (cart$ | async)?.cartItems"
+  >
     <div class="flex items-center gap-4">
       <!-- Imagen del producto -->
       <div class="w-32 h-32 flex-shrink-0">
-        <!-- Aumenté el tamaño de w-20 h-20 a w-32 h-32 -->
         <img
           src="https://res.cloudinary.com/dd0ljsgtp/image/upload/v1728516121/cld-sample-4.jpg"
           alt="producto"
@@ -15,16 +16,27 @@
       <!-- Información del producto -->
       <div class="flex flex-grow items-center justify-between">
         <div>
-          <h3 class="text-sm text-gray-600 font-medium">{{cartItem.name}}</h3>
-          <p class="text-sm text-gray-500">{{cartItem.productType.name}}</p>
+          <h3 class="text-sm text-gray-600 font-medium">{{ cartItem.name }}</h3>
+          <p class="text-sm text-gray-500">{{ cartItem.productType.name }}</p>
         </div>
         <div class="flex items-center gap-4">
           <div class="flex items-center border rounded-lg">
-            <button class="px-3 py-1 hover:bg-gray-100">-</button>
-            <span class="w-8 text-center">{{cartItem.quantity}}</span>
-            <button class="px-3 py-1 hover:bg-gray-100">+</button>
+            <button
+              class="px-3 py-1 hover:bg-gray-100"
+              (click)="updateQuantity(cartItem, false)"
+              [disabled]="cartItem.quantity <= 1"
+            >
+              -
+            </button>
+            <span class="w-8 text-center">{{ cartItem.quantity }}</span>
+            <button
+              class="px-3 py-1 hover:bg-gray-100"
+              (click)="updateQuantity(cartItem, true)"
+            >
+              +
+            </button>
           </div>
-          <span class="font-medium">${{cartItem.totalPrice}}</span>
+          <span class="font-medium">${{ cartItem.totalPrice }}</span>
         </div>
       </div>
     </div>

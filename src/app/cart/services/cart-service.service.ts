@@ -1,16 +1,19 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Cart } from '../interfaces/cart';
-import { firstValueFrom } from 'rxjs';
+import { Cart, CartItem } from '../interfaces/cart';
+import { BehaviorSubject, Observable, catchError, map, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartServiceService {
-
   private baseUrl = 'http://localhost:5012/api/ShoppingCart';
   private http: HttpClient = inject(HttpClient);
   private errors: string[] = [];
+
+  // BehaviorSubject para mantener el estado del carrito
+  private cartSubject = new BehaviorSubject<Cart | null>(null);
+  cart$ = this.cartSubject.asObservable();
 
   private httpOptions = {
     withCredentials: true,
@@ -19,44 +22,50 @@ export class CartServiceService {
     }
   };
 
-  // Opciones específicas para respuestas de texto
   private textHttpOptions = {
     ...this.httpOptions,
-    responseType: 'text' as 'text'  // Esto es crucial para manejar respuestas de texto
+    responseType: 'text' as 'text'
   };
 
-  async getCart(): Promise<Cart> {
-    try {
-      const response = await firstValueFrom(
-        this.http.get<Cart>(
-          `${this.baseUrl}/ProductsInCart`, 
-          this.httpOptions
-        )
-      );
-      return response;
-    } catch (error) {
-      console.log('Error en getCart', error);
-      let e = error as HttpErrorResponse;
-      this.errors.push(e.message);
-      return Promise.reject(error);
-    }
+  getCart(): Observable<Cart> {
+    return this.http.get<Cart>(
+      `${this.baseUrl}/ProductsInCart`, 
+      this.httpOptions
+    ).pipe(
+      tap(cart => this.cartSubject.next(cart)),
+      catchError(this.handleError)
+    );
   }
 
-  async addProductToCart(productId: number, quantity: number): Promise<string> {
-    try {
-      const response = await firstValueFrom(
-        this.http.post(
-          `${this.baseUrl}/AddTocart/${productId}/${quantity}`,
-          null,
-          this.textHttpOptions  // Usamos las opciones para texto
-        )
-      );
-      return response;
-    } catch (error) {
-      console.log('Error en addProductToCart', error);
-      let e = error as HttpErrorResponse;
-      this.errors.push(e.message);
-      return Promise.reject(error);
-    }
+  addProductToCart(productId: number, quantity: number): Observable<string> {
+    return this.http.post(
+      `${this.baseUrl}/AddTocart/${productId}/${quantity}`,
+      null,
+      this.textHttpOptions
+    ).pipe(
+      tap(() => this.refreshCart()),
+      catchError(this.handleError)
+    );
+  }
+
+  updateProductQuantity(productId: number, isIncrement: boolean): Observable<string> {
+    return this.http.put(
+      `${this.baseUrl}/UpdateCart/${productId}/${1}?isIncrement=${isIncrement}`,
+      null,
+      this.textHttpOptions
+    ).pipe(
+      tap(() => this.refreshCart()),
+      catchError(this.handleError)
+    );
+  }
+
+  private refreshCart(): void {
+    this.getCart().subscribe();
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('An error occurred:', error);
+    this.errors.push(error.message);
+    return throwError(() => new Error('Something went wrong; please try again later.'));
   }
 }
