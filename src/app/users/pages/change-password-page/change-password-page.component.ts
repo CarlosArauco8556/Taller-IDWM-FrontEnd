@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { AccountService } from '../../services/account.service';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { IChangePassword } from '../../interfaces/IChangePassword';
+import { ToastService } from '../../../_shared/services/toast.service';
 
 @Component({
   selector: 'app-change-password-page',
@@ -15,6 +16,7 @@ import { IChangePassword } from '../../interfaces/IChangePassword';
 })
 export class ChangePasswordPageComponent {
   accountService: AccountService = inject(AccountService);
+  toastService: ToastService = inject(ToastService);
   forms: FormGroup = new FormGroup({});
   iChangePassword: IChangePassword = {currentPassword: '', newPassword: '', confirmPassword: ''};
   errors: string[] = [];
@@ -32,10 +34,18 @@ export class ChangePasswordPageComponent {
       newPassword: ['', [Validators.required, Validators.minLength(8), 
       Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9]+$')]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8), 
-      Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9]+$')]]
+      Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9]+$'), this.passwordMatchValidator()]]
     });
   }
-  protected loading = false;
+
+  private passwordMatchValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const newPassword = this.forms.get('newPassword')?.value;
+      const confirmPassword = control.value;
+  
+      return newPassword === confirmPassword ? null : { passwordMismatch: true };
+    };
+  }
 
   protected getFieldError(fieldName: keyof IChangePassword): string {
     const control = this.forms.get(fieldName);
@@ -47,6 +57,7 @@ export class ChangePasswordPageComponent {
       minlength: `Mínimo ${control.errors['minlength']?.requiredLength} caracteres`,
       maxlength: `Máximo ${control.errors['maxlength']?.requiredLength} caracteres`,
       pattern: 'Solo se permiten letras y números',
+      passwordMismatch: 'No coincide con la contraseña nueva',
     };
 
     const firstError = Object.keys(control.errors)[0];
@@ -55,7 +66,10 @@ export class ChangePasswordPageComponent {
 
   async changePassword(){
     this.errors = [];
-    if(this.forms.invalid)return;
+    if(this.forms.invalid){
+      this.toastService.error('Por favor, revisa los campos del formulario');
+      return;
+    }
 
     try{
       this.iChangePassword.currentPassword = this.forms.value.currentPassword;
@@ -64,15 +78,17 @@ export class ChangePasswordPageComponent {
 
       const changePassword = await this.accountService.changePassword(this.iChangePassword);
       if(changePassword){
-        // TO DO: Add message confirmation
+        this.toastService.success('Contraseña cambiada con éxito');
         this.forms.reset();
       } else {
-        // TO DO: Add messag error
         this.errors = this.accountService.errors;
+        const lastError = this.errors[this.errors.length - 1]
+        this.toastService.error(lastError || 'Ocurrió un error desconocido');
       }
     }catch(error: any){
-      // TO DO: Add messag error
-      this.errors.push(error.error)
+      const errorMessage = error.error || 'Ocurrió un error inesperado';
+      this.errors.push(errorMessage)
+      this.toastService.error(errorMessage);
       console.log('Error in changePassword page', error.error);
     }
   }
