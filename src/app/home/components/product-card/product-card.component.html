@@ -1,4 +1,12 @@
-<div class="card">
+<div class="card relative">
+
+  <div *ngIf="showMessage" 
+       class="notification absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10 rounded-lg">
+    <div class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg">
+      ¡Producto agregado al carrito!
+    </div>
+  </div>
+
   <img
     class="rounded-t-lg"
     src="https://res.cloudinary.com/dd0ljsgtp/image/upload/v1728516121/cld-sample-4.jpg"
