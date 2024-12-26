@@ -9,7 +9,7 @@ import { PaginationComponent } from "../../components/pagination/pagination.comp
 import { QueryParams } from '../../interfaces/queryParams';
 import { QueryServiceService } from '../../services/query-service.service';
 import { Subscription } from 'rxjs';
-import { CartServiceService } from '../../services/cart-service.service';
+import { CartServiceService } from '../../../cart/services/cart-service.service';
 
 @Component({
   selector: 'app-home-page',
@@ -50,12 +50,6 @@ export class HomePageComponent {
     {
       console.log('No se ha seleccionado un producto');
     }
-
-    this.cartService.getCart().then((cart) => {
-      console.log(cart);
-    }).catch((error) => {
-      console.log(error);
-    });
   }
 
   getProducts(filter: QueryParams): void {

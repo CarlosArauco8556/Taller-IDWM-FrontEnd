@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { CartProductComponent } from "../../components/cart-product/cart-product.component";
 import { CartInfoComponent } from "../../components/cart-info/cart-info.component";
-import { CartServiceService } from '../../../home/services/cart-service.service';
+import { CartServiceService } from '../../services/cart-service.service';
 import { HttpClientModule } from '@angular/common/http';
-import { Cart } from '../../../home/interfaces/cart';
+import { Cart } from '../../interfaces/cart';
 import { CartItem } from '../../interfaces/cartItem';
 import { CommonModule } from '@angular/common';
 

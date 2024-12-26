@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Cart } from '../../../home/interfaces/cart';
+import { Cart } from '../../interfaces/cart';
 import { CartItem } from '../../interfaces/cartItem';
 import { CommonModule } from '@angular/common';
 
