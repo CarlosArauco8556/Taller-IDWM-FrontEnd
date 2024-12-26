@@ -1,7 +1,7 @@
-import { IGender } from "./Igender";
+import { IGender } from "./IGender";
 
 export interface IEditProfile{
     name: string;
     dateOfBirth: Date | null;
-    gender: IGender;
+    gender: IGender | null;
 }

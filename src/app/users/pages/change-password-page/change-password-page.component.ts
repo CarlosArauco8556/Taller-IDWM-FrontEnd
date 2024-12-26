@@ -5,11 +5,12 @@ import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModu
 import { HttpClientModule } from '@angular/common/http';
 import { IChangePassword } from '../../interfaces/IChangePassword';
 import { ToastService } from '../../../_shared/services/toast.service';
+import { ToggleButtonComponent } from '../../components/toggle-button/toggle-button.component';
 
 @Component({
   selector: 'app-change-password-page',
   standalone: true,
-  imports: [HttpClientModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [HttpClientModule, CommonModule, FormsModule, ReactiveFormsModule, ToggleButtonComponent],
   providers: [AccountService],
   templateUrl: './change-password-page.component.html',
   styleUrl: './change-password-page.component.css'

@@ -1,4 +1,4 @@
-import { IGender } from "./Igender";
+import { IGender } from "./IGender";
 
 export interface IGetUsers {
     userName:    string;
