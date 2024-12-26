@@ -1,0 +1,6 @@
+/* Estilos generales */
+.cart-layout {
+  display: flex;
+  flex-direction: row; /* Los elementos se alinean en fila */
+  height: 100vh;
+}
