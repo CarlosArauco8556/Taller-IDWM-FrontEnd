@@ -1,10 +1,11 @@
-export interface Product {
+export interface CartItem {
     id:          number;
     name:        string;
     price:       number;
-    stock:       number;
     imageUrl:    string;
     productType: ProductType;
+    quantity:    number;
+    totalPrice:  number;
 }
 
 export interface ProductType {

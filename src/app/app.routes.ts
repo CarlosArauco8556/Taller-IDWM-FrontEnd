@@ -16,10 +16,19 @@ export const routes: Routes = [
         pathMatch: 'full',
         loadComponent: () => import('./users/pages/edit-profile-page/edit-profile-page.component').then(m => m.EditProfilePageComponent)
     },
+    {    
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./home/pages/home-page/home-page.component').then(m => m.HomePageComponent),
+    },
     {
         path: 'home',
         pathMatch: 'full',
         loadComponent: () => import('./home/pages/home-page/home-page.component').then(m => m.HomePageComponent)
+    },
+    {
+        path: 'cart',
+        loadComponent: () => import('./cart/pages/shopping-cart/shopping-cart.component').then(m => m.ShoppingCartComponent)
     },
     {
         path: '**',
