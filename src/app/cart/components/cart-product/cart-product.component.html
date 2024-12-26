@@ -1,5 +1,6 @@
 <div class="space-y-4">
-  <div class="bg-white p-4 rounded-lg shadow-sm">
+  <div class="bg-white p-4 rounded-lg shadow-sm"
+  *ngFor="let cartItem of products">
     <div class="flex items-center gap-4">
       <!-- Imagen del producto -->
       <div class="w-32 h-32 flex-shrink-0">
@@ -14,45 +15,16 @@
       <!-- Información del producto -->
       <div class="flex flex-grow items-center justify-between">
         <div>
-          <h3 class="text-sm text-gray-600 font-medium">PC Game WIN Large</h3>
-          <p class="text-sm text-gray-500">Pc Game</p>
+          <h3 class="text-sm text-gray-600 font-medium">{{cartItem.name}}</h3>
+          <p class="text-sm text-gray-500">{{cartItem.productType.name}}</p>
         </div>
         <div class="flex items-center gap-4">
           <div class="flex items-center border rounded-lg">
             <button class="px-3 py-1 hover:bg-gray-100">-</button>
-            <span class="w-8 text-center">9</span>
+            <span class="w-8 text-center">{{cartItem.quantity}}</span>
             <button class="px-3 py-1 hover:bg-gray-100">+</button>
           </div>
-          <span class="font-medium">$100.000</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="bg-white p-4 rounded-lg shadow-sm">
-    <div class="flex items-center gap-4">
-      <!-- Imagen del producto -->
-      <div class="w-32 h-32 flex-shrink-0">
-        <img
-          src="https://res.cloudinary.com/dd0ljsgtp/image/upload/v1728516121/cld-sample-5.jpg"
-          alt="producto"
-          class="w-full h-full object-cover rounded-lg"
-        />
-      </div>
-
-      <!-- Información del producto -->
-      <div class="flex flex-grow items-center justify-between">
-        <div>
-          <h3 class="text-sm text-gray-600 font-medium">Xbox Series X</h3>
-          <p class="text-sm text-gray-500">Consola</p>
-        </div>
-        <div class="flex items-center gap-4">
-          <div class="flex items-center border rounded-lg">
-            <button class="px-3 py-1 hover:bg-gray-100">-</button>
-            <span class="w-8 text-center">1</span>
-            <button class="px-3 py-1 hover:bg-gray-100">+</button>
-          </div>
-          <span class="font-medium">$499.999</span>
+          <span class="font-medium">${{cartItem.totalPrice}}</span>
         </div>
       </div>
     </div>

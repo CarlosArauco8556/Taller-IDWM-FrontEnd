@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Cart } from '../../../home/interfaces/cart';
 
 @Component({
   selector: 'app-cart-info',
@@ -8,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './cart-info.component.css'
 })
 export class CartInfoComponent {
-
+  @Input() cart!: Cart;
 }

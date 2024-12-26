@@ -2,7 +2,7 @@
   <div class="flex gap-4">
     <!-- Sección de productos del carrito -->
     <div class="w-2/3 bg-white shadow-md rounded-lg p-6">
-      <app-cart-product></app-cart-product>
+      <app-cart-product [products]="productsList"></app-cart-product>
     </div>
 
     <!-- Sección de información del carrito -->
@@ -10,7 +10,7 @@
       <!-- Eliminado el alto automático -->
       <div class="bg-white shadow-md rounded-lg overflow-hidden h-fit">
         <!-- Añadido h-fit -->
-        <app-cart-info></app-cart-info>
+        <app-cart-info [cart]="cart"></app-cart-info>
       </div>
     </div>
   </div>
