@@ -50,9 +50,15 @@
     </div>
 
     <!-- Iconos -->
-    <div class="flex items-center space-x-6"> <!-- Cambié space-x-4 a space-x-6 para mayor separación -->
+    <div class="flex items-center space-x-6">
+      <!-- Cambié space-x-4 a space-x-6 para mayor separación -->
       <!-- Carrito -->
-      <a href="#" class="relative text-gray-600 hover:text-gray-800">
+      <a
+        [routerLink]="['/cart']"
+        routerLinkActive="home"
+        (mouseenter)="cartisHovered = true"
+        (mouseleave)="cartisHovered = false"
+      >
         <svg
           class="w-10 h-10 text-gray-800 dark:text-white"
           aria-hidden="true"
@@ -63,7 +69,7 @@
           viewBox="0 0 24 24"
         >
           <path
-            stroke="#76A9FA"
+            [attr.stroke]="cartisHovered ? '#4F46E5' : '#76A9FA'"
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
@@ -73,7 +79,11 @@
       </a>
 
       <!-- Perfil -->
-      <a href="#" class="text-gray-600 hover:text-gray-800">
+      <a
+        href="#"
+        (mouseenter)="profileisHovered = true"
+        (mouseleave)="profileisHovered = false"
+      >
         <svg
           class="w-10 h-10 text-gray-800 dark:text-white"
           aria-hidden="true"
@@ -84,7 +94,7 @@
           viewBox="0 0 24 24"
         >
           <path
-            stroke="#76A9FA"
+            [attr.stroke]="profileisHovered ? '#4F46E5' : '#76A9FA'"
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
