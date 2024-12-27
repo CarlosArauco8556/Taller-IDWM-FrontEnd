@@ -1,9 +1,11 @@
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-management-users-page',
+  selector: 'management-users-page',
   standalone: true,
-  imports: [],
+  imports: [HttpClientModule, CommonModule],
   templateUrl: './management-users-page.component.html',
   styleUrl: './management-users-page.component.css'
 })

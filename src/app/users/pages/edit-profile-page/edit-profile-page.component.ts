@@ -6,11 +6,12 @@ import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModu
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ToggleButtonComponent } from '../../components/toggle-button/toggle-button.component';
+import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
 
 @Component({
   selector: 'app-edit-profile-page',
   standalone: true,
-  imports: [HttpClientModule, CommonModule, FormsModule, ReactiveFormsModule, ToggleButtonComponent],
+  imports: [HttpClientModule, CommonModule, FormsModule, ReactiveFormsModule, ToggleButtonComponent, NavBarComponent],
   providers: [AccountService],
   templateUrl: './edit-profile-page.component.html',
   styleUrl: './edit-profile-page.component.css'

@@ -6,11 +6,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { IChangePassword } from '../../interfaces/IChangePassword';
 import { ToastService } from '../../../_shared/services/toast.service';
 import { ToggleButtonComponent } from '../../components/toggle-button/toggle-button.component';
+import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
 
 @Component({
   selector: 'app-change-password-page',
   standalone: true,
-  imports: [HttpClientModule, CommonModule, FormsModule, ReactiveFormsModule, ToggleButtonComponent],
+  imports: [HttpClientModule, CommonModule, FormsModule, ReactiveFormsModule, ToggleButtonComponent, NavBarComponent],
   providers: [AccountService],
   templateUrl: './change-password-page.component.html',
   styleUrl: './change-password-page.component.css'

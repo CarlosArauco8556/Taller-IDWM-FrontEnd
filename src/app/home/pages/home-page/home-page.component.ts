@@ -10,11 +10,12 @@ import { QueryParams } from '../../interfaces/queryParams';
 import { QueryServiceService } from '../../services/query-service.service';
 import { Subscription } from 'rxjs';
 import { CartServiceService } from '../../../cart/services/cart-service.service';
+import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [SideBarComponent, ProductCardComponent, HttpClientModule, CommonModule, PaginationComponent],
+  imports: [SideBarComponent, ProductCardComponent, HttpClientModule, CommonModule, PaginationComponent, NavBarComponent],
   providers: [ProductServiceService, CartServiceService],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
