@@ -4,7 +4,7 @@ import { ToastService } from '../../../_shared/services/toast.service';
 import { IEditProfile } from '../../interfaces/IEditProfile';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { ToggleButtonComponent } from '../../components/toggle-button/toggle-button.component';
 import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
 
@@ -93,10 +93,14 @@ export class EditProfilePageComponent {
         this.toastService.error(lastError || 'Ocurrio un error desconocido');
       }
     }catch(error: any){
-      const errorMessage = error.error || 'Ocurrió un error inesperado';
-      this.errors.push(errorMessage);
-      this.toastService.error(errorMessage);
-      console.log('Error in editProfile page', errorMessage);
+      if(error instanceof HttpErrorResponse)
+      {
+        const errorMessage = 
+          typeof error.error === 'string' ? error.error : error.error.message || error.statusText || 'Ocurrió un error inesperado';
+        this.errors.push(errorMessage);
+        this.toastService.error(errorMessage || 'Ocurrió un error inesperado');
+      }
+      console.log('Error in changePassword page', error.error);
     }
   }
 }

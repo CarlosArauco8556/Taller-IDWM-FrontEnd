@@ -52,9 +52,9 @@ export class ToastComponent {
       case 'error':
         return `${baseClass} fas fa-times`;
       case 'warning':
-        return `${baseClass} fas fa-exclamation`;
+        return `${baseClass} translate-x-1 fas fa-exclamation`;
       case 'info':
-        return `${baseClass} fas fa-info`;
+        return `${baseClass} translate-x-1 fas fa-info`;
       default:
         return baseClass;
     }

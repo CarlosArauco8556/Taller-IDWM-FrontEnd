@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { AccountService } from '../../services/account.service';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { IChangePassword } from '../../interfaces/IChangePassword';
 import { ToastService } from '../../../_shared/services/toast.service';
 import { ToggleButtonComponent } from '../../components/toggle-button/toggle-button.component';
@@ -88,9 +88,13 @@ export class ChangePasswordPageComponent {
         this.toastService.error(lastError || 'Ocurrió un error desconocido');
       }
     }catch(error: any){
-      const errorMessage = error.error || 'Ocurrió un error inesperado';
-      this.errors.push(errorMessage)
-      this.toastService.error(errorMessage);
+      if(error instanceof HttpErrorResponse)
+      {
+        const errorMessage = 
+          typeof error.error === 'string' ? error.error : error.error.message || error.statusText || 'Ocurrió un error inesperado';
+        this.errors.push(errorMessage);
+        this.toastService.error(errorMessage || 'Ocurrió un error inesperado');
+      }
       console.log('Error in changePassword page', error.error);
     }
   }

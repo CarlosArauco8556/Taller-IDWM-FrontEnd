@@ -5,7 +5,7 @@ export interface IGetUsers {
     rut:         string;
     name:        string;
     dateOfBirth: Date | null;
-    gender:      IGender;
+    gender:      IGender | null;
     email:       string;
-    isActive:    number;
+    isActive:    number | null;
 }
