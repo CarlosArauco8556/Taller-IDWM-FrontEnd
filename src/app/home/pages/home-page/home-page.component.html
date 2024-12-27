@@ -7,7 +7,7 @@
     <!-- Paginación arriba de los productos -->
     <div class="products-list">
       <div *ngFor="let product of productsList">
-        <app-product-card [product]="product"></app-product-card>
+        <app-product-card [product]="product" (productForCart)="reciveIdProductForCart($event)"></app-product-card>
         <!-- El Card de producto -->
       </div>
     </div>
