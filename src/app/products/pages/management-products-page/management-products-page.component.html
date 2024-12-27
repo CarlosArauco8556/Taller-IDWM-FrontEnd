@@ -1,0 +1,28 @@
+<div class="home-layout">
+    <!-- Sidebar dentro del Home -->
+    <div class="main-content">
+      
+      <!-- Contenedor para la paginación y el botón -->
+      <div class="pagination-container">
+        <!-- Paginación centrada -->
+        <app-pagination></app-pagination>
+        
+        <!-- Botón para agregar producto a la derecha -->
+        <app-add-button
+          (addProductEvent)="addProduct()"
+          class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-5 focus:ring-green-300 font-medium rounded-full text-sm px-0 py-0 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        >
+          Agregar Producto
+        </app-add-button>
+      </div>
+  
+      <!-- Paginación arriba de los productos -->
+      <div class="products-list">
+        <div *ngFor="let product of productsList">
+          <app-product-card [product]="product"></app-product-card>
+          <!-- El Card de producto -->
+        </div>
+      </div>
+    </div>
+  </div>
+  

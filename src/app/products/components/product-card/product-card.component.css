@@ -1,0 +1,84 @@
+/* Estilo global para la carta */
+.card {
+    width: 280px; /* Ajustamos el ancho de la carta */
+    height: 500px; /* Alto fijo de la carta */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    background-color: #ffffff; /* Fondo blanco */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+    display: flex;
+    flex-direction: column; /* Organiza los elementos de arriba hacia abajo */
+    justify-content: space-between; /* Espacio entre los elementos */
+  }
+  
+  .card:hover {
+    transform: translateY(
+      -5px
+    ); /* Desplazamiento hacia arriba al pasar el ratón */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más intensa al pasar el ratón */
+  }
+  
+  .card img {
+    width: 100%; /* La imagen ocupa todo el ancho de la carta */
+    height: 200px; /* Controla la altura de la imagen */
+    object-fit: cover; /* Asegura que la imagen mantenga su proporción, cubriendo el área de la carta */
+    object-position: center;  /* Centra la imagen si se recorta */
+    border-radius: 0.375rem; /* Bordes redondeados para la imagen */
+    border-top-left-radius: 10px; /* Opcional: bordes redondeados en la parte superior de la imagen */
+    border-top-right-radius: 10px;
+  }
+  
+  .card .content {
+    padding: 20px; /* Espaciado interior para el contenido */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Asegura que el título, texto y botón estén distribuidos adecuadamente */
+    flex-grow: 1; /* Asegura que el contenido ocupe todo el espacio disponible */
+    text-align: center; /* Centra todo el contenido de texto */
+  }
+  
+  .card h5 {
+    font-size: 1.25rem; /* Título más pequeño pero destacado */
+    font-weight: bold;
+    color: #333333; /* Color oscuro para el título */
+    margin-bottom: 10px;
+  }
+  
+  .card p {
+    font-size: 1rem; /* Tamaño de texto legible */
+    color: #777777; /* Color gris para el texto */
+    margin-bottom: 15px;
+  }
+  
+  .card a.button {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #1e3a8a; /* Color de fondo del botón */
+    color: #ffffff; /* Color blanco para el texto */
+    font-size: 0.875rem; /* Tamaño de fuente más pequeño */
+    border-radius: 8px; /* Bordes redondeados para el botón */
+    transition: background-color 0.3s ease; /* Transición para el color del botón */
+    margin-top: 20px; /* Espaciado superior para el botón */
+  }
+  
+  .card a.button:hover {
+    background-color: #2563eb; /* Color de fondo más claro al pasar el ratón */
+  }
+  
+  /* Media query para dispositivos móviles */
+  @media (max-width: 768px) {
+    .card {
+      width: 100%; /* Asegura que la carta ocupe el 100% en pantallas más pequeñas */
+      height: auto; /* Ajusta la altura en pantallas pequeñas */
+    }
+  
+    .card h5 {
+      font-size: 1.1rem; /* Reduce el tamaño del título en pantallas pequeñas */
+    }
+  
+    .card p {
+      font-size: 0.875rem; /* Ajusta el tamaño del texto en pantallas pequeñas */
+    }
+  }
+  

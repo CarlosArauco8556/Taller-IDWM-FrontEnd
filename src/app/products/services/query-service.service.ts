@@ -4,14 +4,15 @@ import {IQueryParams} from '../interfaces/IQueryParams';
 @Injectable({
   providedIn: 'root'
 })
-export class QueryServiceService {
+export class QueryProductService {
 
   private filtersSource = new BehaviorSubject<IQueryParams>({
     textFilter: "", pageNumber: 1, pageSize: 10
   });
 
   public currentFilters$ = this.filtersSource.asObservable();
-
+  
+  
   updateFilters(newFilters: Partial<IQueryParams>) {
     const currentFilters = this.filtersSource.value;
     this.filtersSource.next({ ...currentFilters, ...newFilters });

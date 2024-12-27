@@ -14,9 +14,11 @@ export class ProductManagementService {
   private errors: string[] = [];
   private http: HttpClient = inject(HttpClient);
 
+  
+
   async getProducts(IQueryParams: IQueryParams): Promise<IProduct[]> {
     try{
-      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjZhOWZkODY1LWIzYjQtNGQ3Yy1iODY4LTM3MTgwZDBiMTBlNyIsImp0aSI6ImIyMDEwMzM5LWUyOGYtNDhlMy1iMDllLTU3ZWY2MjVlMWY2ZiIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTI0MTU1OCwiZXhwIjoxNzM1MzI3OTU4LCJpYXQiOjE3MzUyNDE1NTgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwIn0.Nb-k78wO65VVj9ATw_tSaBqxQtlnVfqWAOtskmqXCo_xZ6sFPbZT6bnu7ZrmNGckZfEpLRHEPlmIcU1zpgvu3Q';
+      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjZhOWZkODY1LWIzYjQtNGQ3Yy1iODY4LTM3MTgwZDBiMTBlNyIsImp0aSI6Ijg0NjkwNTBjLTMyMmMtNDJkZC05MDNjLTNmYTc4YjRkNzU5ZSIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTMyODk2MywiZXhwIjoxNzM1NDE1MzYzLCJpYXQiOjE3MzUzMjg5NjMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwIn0.ipUb5FNrHbb_nYm66uTRbHO8mXD0NO5wWpC7Wppyzznozjr2Xo6QWgUfYXeN71Djw8qrYF2IVxOYVEV5UQA8gQ';
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       let params = new HttpParams()
       if(IQueryParams.textFilter) params = params.set('textFilter', IQueryParams.textFilter);
@@ -34,12 +36,12 @@ export class ProductManagementService {
     }
   }
 
-  async postProduct(IProductEdit: IProductEdit): Promise<IProductEdit[]> {
+  async postProduct(formData: FormData): Promise<IProductEdit[]> {
     try{
-      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjZhOWZkODY1LWIzYjQtNGQ3Yy1iODY4LTM3MTgwZDBiMTBlNyIsImp0aSI6ImIyMDEwMzM5LWUyOGYtNDhlMy1iMDllLTU3ZWY2MjVlMWY2ZiIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTI0MTU1OCwiZXhwIjoxNzM1MzI3OTU4LCJpYXQiOjE3MzUyNDE1NTgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwIn0.Nb-k78wO65VVj9ATw_tSaBqxQtlnVfqWAOtskmqXCo_xZ6sFPbZT6bnu7ZrmNGckZfEpLRHEPlmIcU1zpgvu3Q';
+      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjZhOWZkODY1LWIzYjQtNGQ3Yy1iODY4LTM3MTgwZDBiMTBlNyIsImp0aSI6Ijg0NjkwNTBjLTMyMmMtNDJkZC05MDNjLTNmYTc4YjRkNzU5ZSIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTMyODk2MywiZXhwIjoxNzM1NDE1MzYzLCJpYXQiOjE3MzUzMjg5NjMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwIn0.ipUb5FNrHbb_nYm66uTRbHO8mXD0NO5wWpC7Wppyzznozjr2Xo6QWgUfYXeN71Djw8qrYF2IVxOYVEV5UQA8gQ';
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-      const response = await firstValueFrom( this.http.post<IProductEdit[]>(`${this.baseUrl}/ProductManagement`, IProductEdit, {headers: headers}))
+      const response = await firstValueFrom( this.http.post<IProductEdit[]>(`${this.baseUrl}/ProductManagement`, formData, {headers: headers}))
       return Promise.resolve(response);
     } catch (error) {
       console.log('Error en postProduct', error);
@@ -49,13 +51,13 @@ export class ProductManagementService {
     }
   }
 
-  async putProduct(id: number): Promise<IProductEdit[]> {
+  async putProduct(id: number, formData: FormData): Promise<IProductEdit> {
     try{
-      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjZhOWZkODY1LWIzYjQtNGQ3Yy1iODY4LTM3MTgwZDBiMTBlNyIsImp0aSI6ImIyMDEwMzM5LWUyOGYtNDhlMy1iMDllLTU3ZWY2MjVlMWY2ZiIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTI0MTU1OCwiZXhwIjoxNzM1MzI3OTU4LCJpYXQiOjE3MzUyNDE1NTgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwIn0.Nb-k78wO65VVj9ATw_tSaBqxQtlnVfqWAOtskmqXCo_xZ6sFPbZT6bnu7ZrmNGckZfEpLRHEPlmIcU1zpgvu3Q';
+      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjZhOWZkODY1LWIzYjQtNGQ3Yy1iODY4LTM3MTgwZDBiMTBlNyIsImp0aSI6Ijg0NjkwNTBjLTMyMmMtNDJkZC05MDNjLTNmYTc4YjRkNzU5ZSIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTMyODk2MywiZXhwIjoxNzM1NDE1MzYzLCJpYXQiOjE3MzUzMjg5NjMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwIn0.ipUb5FNrHbb_nYm66uTRbHO8mXD0NO5wWpC7Wppyzznozjr2Xo6QWgUfYXeN71Djw8qrYF2IVxOYVEV5UQA8gQ';
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-      const response = await firstValueFrom( this.http.put<IProductEdit[]>(`${this.baseUrl}/ProductManagement/${id}`,{}, {headers: headers}))
-      return Promise.resolve(response);
+      const response = await firstValueFrom( this.http.put<IProductEdit>(`${this.baseUrl}/ProductManagement/${id}`, formData, {headers: headers}))
+      return response;
     } catch (error) {
       console.log('Error en putProduct', error);
       let e = error as HttpErrorResponse;
@@ -66,7 +68,7 @@ export class ProductManagementService {
 
   async deleteProduct(id: number): Promise<void> {
     try {
-      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjZhOWZkODY1LWIzYjQtNGQ3Yy1iODY4LTM3MTgwZDBiMTBlNyIsImp0aSI6ImIyMDEwMzM5LWUyOGYtNDhlMy1iMDllLTU3ZWY2MjVlMWY2ZiIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTI0MTU1OCwiZXhwIjoxNzM1MzI3OTU4LCJpYXQiOjE3MzUyNDE1NTgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwIn0.Nb-k78wO65VVj9ATw_tSaBqxQtlnVfqWAOtskmqXCo_xZ6sFPbZT6bnu7ZrmNGckZfEpLRHEPlmIcU1zpgvu3Q';
+      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjZhOWZkODY1LWIzYjQtNGQ3Yy1iODY4LTM3MTgwZDBiMTBlNyIsImp0aSI6Ijg0NjkwNTBjLTMyMmMtNDJkZC05MDNjLTNmYTc4YjRkNzU5ZSIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTMyODk2MywiZXhwIjoxNzM1NDE1MzYzLCJpYXQiOjE3MzUzMjg5NjMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwIn0.ipUb5FNrHbb_nYm66uTRbHO8mXD0NO5wWpC7Wppyzznozjr2Xo6QWgUfYXeN71Djw8qrYF2IVxOYVEV5UQA8gQ';
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
       await firstValueFrom(this.http.delete<void>(`${this.baseUrl}/ProductManagement/${id}`, { headers: headers }));
@@ -76,5 +78,8 @@ export class ProductManagementService {
       this.errors.push(e.message);
       return Promise.reject(error);
     }
+  }
+  getErrors(): string[] {
+    return this.errors;
   }
 }

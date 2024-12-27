@@ -1,0 +1,85 @@
+<div class="px-20">
+
+    <!-- Título de la página -->
+    <p class="text-2xl text-center text-black font-extrabold">Crear Producto</p>
+  
+    <!-- Formulario para editar un producto -->
+    <form [formGroup]="forms" (ngSubmit)="addProduct()"
+      class="max-w-md mx-auto p-10 mb-14 rounded-lg shadow">
+  
+      <!-- Nombre del producto -->
+      <div class="mt-6 mb-4">
+        <label class="block text-sm font-medium text-gray-900 mb-1">Nombre del Producto</label>
+        <input type="text" class="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 mb-1"
+          [class.border-red-500]="forms.get('name')?.invalid && forms.get('name')?.touched"
+          placeholder="Ejemplo: Laptop XYZ" formControlName="name" required />
+  
+        <div *ngIf="forms.get('name')?.invalid && forms.get('name')?.touched">
+          <p class="text-red-500 text-sm font-normal">{{getFieldError('name')}}</p>
+        </div>
+      </div>
+  
+      <!-- Precio del producto -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-900 mb-1">Precio</label>
+        <input type="number" class="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 mb-1"
+          [class.border-red-500]="forms.get('price')?.invalid && forms.get('price')?.touched"
+          placeholder="Ejemplo: 199.99" formControlName="price" required />
+  
+        <div *ngIf="forms.get('price')?.invalid && forms.get('price')?.touched">
+          <p class="text-red-500 text-sm font-normal">{{getFieldError('price')}}</p>
+        </div>
+      </div>
+  
+      <!-- Stock del producto -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-900 mb-1">Stock</label>
+        <input type="number" class="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 mb-1"
+          [class.border-red-500]="forms.get('stock')?.invalid && forms.get('stock')?.touched"
+          placeholder="Ejemplo: 100" formControlName="stock" required />
+  
+        <div *ngIf="forms.get('stock')?.invalid && forms.get('stock')?.touched">
+          <p class="text-red-500 text-sm font-normal">{{getFieldError('stock')}}</p>
+        </div>
+      </div>
+  
+      <!-- Imagen del producto -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-900 mb-1">Imagen del Producto</label>
+        <input type="file" (change)="onImageSelected($event)"
+          class="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 mb-1"
+          [class.border-red-500]="forms.get('imageUrl')?.invalid && forms.get('imageUrl')?.touched" required />
+        
+        <div *ngIf="forms.get('imageUrl')?.invalid && forms.get('imageUrl')?.touched">
+          <p class="text-red-500 text-sm font-normal">{{getFieldError('imageUrl')}}</p>
+        </div>
+      </div>
+  
+      <!-- Tipo de producto -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-900 mb-1">Tipo de Producto</label>
+        <select class="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 mb-1"
+          [class.border-red-500]="forms.get('productTypeId')?.invalid && forms.get('productTypeId')?.touched"
+          formControlName="productTypeId" required>
+          <option value="">Seleccione un tipo de producto</option>
+          <option value="1">Poleras</option>
+          <option value="2">Gorros</option>
+          <option value="3">Juguetería</option>
+          <option value="4">Alimentación</option>
+          <option value="5">Libros</option>
+        </select>
+  
+        <div *ngIf="forms.get('productTypeId')?.invalid && forms.get('productTypeId')?.touched">
+          <p class="text-red-500 text-sm font-normal">{{getFieldError('productTypeId')}}</p>
+        </div>
+      </div>
+  
+      <!-- Botón de edición -->
+      <button type="submit"  [ngClass]="{'cursor-not-allowed opacity-50': forms.invalid}"
+        class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-base w-full sm:w-full py-2.5 text-center mt-4">
+        Crear Producto
+      </button>
+    </form>
+  
+  </div>
+  
