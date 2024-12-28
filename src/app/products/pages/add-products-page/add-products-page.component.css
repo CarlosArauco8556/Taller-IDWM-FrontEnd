@@ -1,20 +1,26 @@
 .px-20 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    gap: 1rem; 
-    position: relative;
-  }
-  
-  users-toggle-button {
-    flex-shrink: 0;
-    align-self: center;
-    transform: translateY(-150px);
-  }
-  
-  form {
-    flex-grow: 1; 
-    max-width: 450px; 
-    transform: translateX(-100px); 
-  }
+  display: flex;
+  flex-direction: column; /* Los elementos están uno debajo del otro */
+  align-items: center; /* Centra los elementos horizontalmente */
+  justify-content: center; /* Centra los elementos verticalmente */
+  height: 100vh; /* Se asegura de que ocupe toda la altura de la pantalla */
+  gap: 1rem;
+  position: relative;
+}
+
+.users-toggle-button {
+  flex-shrink: 0;
+  align-self: center;
+  transform: translateY(-150px);
+}
+
+form {
+  flex-grow: 0;
+  max-width: 450px; /* Ancho máximo para el formulario */
+  transform: translateX(0); /* Elimina el desplazamiento horizontal */
+}
+
+/* Ajusta el margen superior del título para moverlo más cerca */
+.flex.justify-center.mb-6 {
+  margin-top: 1.5rem; /* Baja el título un poco más */
+}

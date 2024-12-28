@@ -3,7 +3,7 @@ import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { ProductManagementService } from '../../services/product-management.service';
 import { IProductEdit } from '../../interfaces/IProductEdit';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -22,7 +22,6 @@ export class EditProductsPageComponent {
   error: boolean = false;
   forms: FormGroup = new FormGroup({});
   productId!: number;
-  selectedImage: File | null = null;
   imagePreview: string | null = null;
 
   constructor(private FormBuilder: FormBuilder, private route: ActivatedRoute) { }
@@ -48,34 +47,77 @@ export class EditProductsPageComponent {
       productTypeId: ['', [Validators.required, Validators.min(1), Validators.max(5),Validators.pattern(/^\d+$/)]]
     });
   }
-  validateImage(control: any) {
-    const file = control.value;
-    
-    if (file) {
-      // Verifica si el archivo es de un tipo válido
-      const validFormats = ['image/png', 'image/jpeg', 'image/jpg'];
-      const maxSize = 10 * 1024 * 1024;  // 10MB
+  selectedImage: File | null = null;
+  validateImage(control: AbstractControl): ValidationErrors | null {
+    if (control.value instanceof File) {
+      const file = control.value as File;
+      
+      
+      const validMimeTypes = ['image/png', 'image/jpeg'];
+      const maxSize = 10 * 1024 * 1024; 
   
-      if (!validFormats.includes(file.type)) {
-        return { invalidImageFormat: true };
+      const errors: ValidationErrors = {};
+      
+      
+      if (!validMimeTypes.includes(file.type)) {
+        errors['invalidImageFormat'] = true;
+      }
+  
+      
+      const fileName = file.name.toLowerCase();
+      const validExtensions = ['.png', '.jpg', '.jpeg'];
+      const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
+      
+      if (!hasValidExtension) {
+        errors['invalidImageFormat'] = true;
       }
   
       if (file.size > maxSize) {
-        return { imageTooLarge: true };
+        errors['imageTooLarge'] = true;
       }
-    }
   
-    // Si no hay archivo, retorna null, lo que indica que el campo está limpio (validador no tiene errores)
+      return Object.keys(errors).length > 0 ? errors : null;
+    }
+    
     return null;
   }
+  
   onImageSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
+      const fileName = file.name.toLowerCase();
+      const validExtensions = ['.png', '.jpg', '.jpeg'];
+      const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
+  
+      if (!hasValidExtension) {
+        this.forms.get('imageUrl')?.setErrors({ invalidImageFormat: true });
+        this.forms.get('imageUrl')?.markAsTouched();
+        return;
+      }
+  
       this.selectedImage = file;
-      this.forms.get('imageUrl')?.setValue(file);  // Actualiza el valor del campo en el formulario
-      this.forms.get('imageUrl')?.updateValueAndValidity(); // Esto asegura que el validador se ejecute
+      this.forms.get('imageUrl')?.setValue(file);
+      this.forms.get('imageUrl')?.markAsTouched();
+      this.forms.get('imageUrl')?.updateValueAndValidity();
+  
+      
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagePreview = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
   }
+
+
+removeImage() {
+  this.selectedImage = null;
+  this.imagePreview = null;
+  this.forms.get('imageUrl')?.setValue(null);
+  this.forms.get('imageUrl')?.markAsTouched();
+  this.forms.get('imageUrl')?.updateValueAndValidity();
+}
+
 
   protected getFieldError(fieldName: keyof IProductEdit): string {
     const control = this.forms.get(fieldName);
@@ -120,16 +162,16 @@ export class EditProductsPageComponent {
 
     if (this.forms.invalid) return;
   
-    // Crea un FormData para enviar los datos del producto y la imagen (si existe)
+    
     const formData = new FormData();
     formData.append('name', this.forms.value.name);
     formData.append('price', this.forms.value.price.toString());
     formData.append('stock', this.forms.value.stock.toString());
     formData.append('productTypeId', this.forms.value.productTypeId.toString());
   
-    // Si hay una imagen seleccionada, la agregamos al FormData
+   
     if (this.selectedImage) {
-      formData.append('image', this.selectedImage, this.selectedImage.name);  // Asegúrate de usar 'image' como el nombre del campo
+      formData.append('image', this.selectedImage, this.selectedImage.name); 
     }
   
     try {
