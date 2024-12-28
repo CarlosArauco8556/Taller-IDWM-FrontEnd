@@ -7,11 +7,12 @@ import { Cart } from '../../interfaces/cart';
 import { CartItem } from '../../interfaces/cartItem';
 import { UpdateItem } from '../../interfaces/updateItem';
 import { CommonModule } from '@angular/common';
+import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
 
 @Component({
   selector: 'app-shopping-cart',
   standalone: true,
-  imports: [CartProductComponent, CartInfoComponent, CommonModule, HttpClientModule],
+  imports: [CartProductComponent, CartInfoComponent, CommonModule, HttpClientModule, NavBarComponent],
   providers: [CartServiceService],
   templateUrl: './shopping-cart.component.html',
   styleUrl: './shopping-cart.component.css'
