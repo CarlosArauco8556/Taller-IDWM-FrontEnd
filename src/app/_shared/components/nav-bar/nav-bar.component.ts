@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { LogInComponent } from "../../../auth/components/log-in/log-in.component";
 
 @Component({
   selector: 'app-nav-bar',
@@ -20,6 +21,8 @@ export class NavBarComponent {
   private queryService: QueryServiceService = inject(QueryServiceService);
   menuOpen = false;
 
+  @Output() logInFormIsOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor(private router: Router) {}
 
   searchProducts(): void {
@@ -29,5 +32,9 @@ export class NavBarComponent {
 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+  }
+
+  openLogInForm(): void {
+    this.logInFormIsOpen.emit(true);
   }
 }
