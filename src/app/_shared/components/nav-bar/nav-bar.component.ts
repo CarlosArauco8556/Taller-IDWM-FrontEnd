@@ -22,6 +22,7 @@ export class NavBarComponent {
   menuOpen = false;
 
   @Output() logInFormIsOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() signUpFormIsOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private router: Router) {}
 
@@ -36,5 +37,9 @@ export class NavBarComponent {
 
   openLogInForm(): void {
     this.logInFormIsOpen.emit(true);
+  }
+
+  openSignUpForm(): void {
+    this.signUpFormIsOpen.emit(true);
   }
 }

@@ -1,4 +1,4 @@
-<app-nav-bar class="navbar" (logInFormIsOpen)="reciveLogInFormIsOpen($event)"></app-nav-bar>
+<app-nav-bar class="navbar" (logInFormIsOpen)="reciveLogInFormIsOpen($event)" (signUpFormIsOpen)="reciveSignUpFormIsOpen($event)"></app-nav-bar>
 
 <div class="home-layout">
   <app-side-bar class="sidebar"></app-side-bar>
@@ -16,6 +16,10 @@
 
     <div *ngIf="logInFormIsOpen" class="log-in-form">
       <app-log-in (logInFormIsOpen)="reciveLogInFormIsOpen($event)"></app-log-in>
+    </div>
+
+    <div *ngIf="signUpFormIsOpen" class="log-in-form">
+      <app-sign-up (signUpFormIsOpen)="reciveSignUpFormIsOpen($event)"></app-sign-up>
     </div>
   </div>
 </div>

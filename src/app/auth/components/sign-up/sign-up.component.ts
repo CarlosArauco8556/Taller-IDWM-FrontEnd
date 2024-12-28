@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-sign-up',
@@ -9,4 +9,11 @@ import { Component } from '@angular/core';
 })
 export class SignUpComponent {
 
+  @Output() signUpFormIsOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  constructor() {}
+
+  closeSignUpForm(): void {
+    this.signUpFormIsOpen.emit(false);
+  }
 }
