@@ -1,5 +1,5 @@
 export interface IQueryParams {
-    isDescescendingDate: boolean | null;
+    isDescendingDate: boolean | null;
     userName:string;
     page: number;
     pageSize: number;
