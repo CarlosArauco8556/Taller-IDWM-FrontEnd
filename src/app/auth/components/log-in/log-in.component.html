@@ -45,6 +45,11 @@
           placeholder="nombre@ejemplo.com"
           required
         />
+        <div>
+          <p *ngIf="EmailErrors" class="text-red-500 text-sm">
+            {{ EmailErrors }}
+          </p>
+        </div>
       </div>
       <div class="mb-6">
         <label
@@ -60,6 +65,11 @@
           placeholder="•••••••••"
           required
         />
+        <div>
+          <p *ngIf="PasswordErrors" class="text-red-500 text-sm">
+            {{ PasswordErrors }}
+          </p>
+        </div>
       </div>
 
       <button

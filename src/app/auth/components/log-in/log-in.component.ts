@@ -4,6 +4,8 @@ import { AuthServiceService } from '../../services/auth-service.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { LocalStorageServiceService } from '../../../_shared/services/local-storage-service.service';
+import { Router } from '@angular/router';
+import { ToastService } from '../../../_shared/services/toast.service';
 
 @Component({
   selector: 'app-log-in',
@@ -17,11 +19,13 @@ export class LogInComponent implements OnInit {
 
   private authService: AuthServiceService = inject(AuthServiceService);
   private localStorageService: LocalStorageServiceService = inject(LocalStorageServiceService);
+  private toastService: ToastService = inject(ToastService);
   forms!: FormGroup;
+  public confirmMessage: string = '';
   
   @Output() logInFormIsOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private router: Router) {}
 
   ngOnInit() {
     this.createForm();
@@ -52,19 +56,55 @@ export class LogInComponent implements OnInit {
           this.localStorageService.setVairbel('user', response.email);
           console.log('usuario:', this.localStorageService.getVairbel('user'));
           console.log(response);
+          this.confirmMessage = 'Usuario logueado correctamente.';
           this.closeLogInForm();
+          this.toastService.success('Usuario logueado correctamente.');
+          this.router.navigate(['/home-admin']);
+
         } else {
           console.log('Error al loguear el usuario', this.authService.errors);
+          this.toastService.error('Error al loguear el usuario.');
         }
       } else {
         console.log('Error al loguear el usuario', this.authService.errors);
+        this.toastService.error('Error al loguear el usuario.');
       }
     } catch (error) {
       console.log('Error al loguear el usuario', this.authService.errors);
+      this.toastService.error('Error al loguear el usuario.');
     }
   }
 
   closeLogInForm(): void {
     this.logInFormIsOpen.emit(false);
+  }
+
+  get EmailErrors() {
+    const email = this.forms.get('email');
+    if (email?.invalid && email?.touched) {
+      if (email.hasError('required')) {
+        return 'El correo es obligatorio.';
+      }
+      if (email.hasError('email')) {
+        return 'El correo debe ser válido.';
+      }
+    }
+    return null;
+  }
+  
+  get PasswordErrors() {
+    const password = this.forms.get('password');
+    if (password?.invalid && password?.touched) {
+      if (password.hasError('required')) {
+        return 'La contraseña es obligatoria.';
+      }
+      if (password.hasError('minlength')) {
+        return 'La contraseña debe tener al menos 8 caracteres.';
+      }
+      if (password.hasError('maxlength')) {
+        return 'La contraseña no debe exceder 20 caracteres.';
+      }
+    }
+    return null;
   }
 }
