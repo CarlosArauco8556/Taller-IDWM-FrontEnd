@@ -27,7 +27,7 @@
       <span class="sr-only">Cerrar</span>
     </button>
 
-    <form class="p-6">
+    <form class="p-6" [formGroup]="forms" (ngSubmit)="onSubmit()">
       <!-- Grid para RUT y Nombre -->
       <div class="grid grid-cols-2 gap-4 mb-4">
         <div>
@@ -40,9 +40,15 @@
             type="text"
             id="rut"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            formControlName="rut"
             placeholder="12.345.678-9"
             required
           />
+          <div>
+            <p *ngIf="RutErrors" class="text-red-500 text-sm">
+              {{ RutErrors }}
+            </p>
+          </div>
         </div>
 
         <div>
@@ -55,9 +61,15 @@
             type="text"
             id="name"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            formControlName="name"
             placeholder="Juan Pérez"
             required
           />
+          <div>
+            <p *ngIf="NameErrors" class="text-red-500 text-sm">
+              {{ NameErrors }}
+            </p>
+          </div>
         </div>
       </div>
 
@@ -72,9 +84,15 @@
           <input
             type="date"
             id="birthdate"
+            formControlName="birthdate"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             required
           />
+          <div>
+            <p *ngIf="BirthdateErrors" class="text-red-500 text-sm">
+              {{ BirthdateErrors }}
+            </p>
+          </div>
         </div>
 
         <div>
@@ -85,15 +103,21 @@
           >
           <select
             id="gender"
+            formControlName="gender"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             required
           >
             <option value="" disabled selected>Selecciona una opción</option>
-            <option value="M">Masculino</option>
-            <option value="F">Femenino</option>
-            <option value="O">Otro</option>
-            <option value="N">Prefiero no decirlo</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+            <option value="Otro">Otro</option>
+            <option value="Prefiero no decirlo">Prefiero no decirlo</option>
           </select>
+          <div>
+            <p *ngIf="GenderErrors" class="text-red-500 text-sm">
+              {{ GenderErrors }}
+            </p>
+          </div>
         </div>
       </div>
 
@@ -107,10 +131,16 @@
         <input
           type="email"
           id="email"
+          formControlName="email"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="nombre@ejemplo.com"
           required
         />
+        <div>
+          <p *ngIf="EmailErrors" class="text-red-500 text-sm">
+            {{ EmailErrors }}
+          </p>
+        </div>
       </div>
 
       <!-- Grid para contraseñas -->
@@ -124,10 +154,16 @@
           <input
             type="password"
             id="password"
+            formControlName="password"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="•••••••••"
             required
           />
+          <div>
+            <p *ngIf="PasswordErrors" class="text-red-500 text-sm">
+              {{ PasswordErrors }}
+            </p>
+          </div>
         </div>
 
         <div>
@@ -138,11 +174,20 @@
           >
           <input
             type="password"
-            id="confirm_password"
+            id="confirmPassword"
+            formControlName="confirmPassword"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="•••••••••"
             required
           />
+          <div>
+            <p *ngIf="ConfirmPasswordErrors" class="text-red-500 text-sm">
+              {{ ConfirmPasswordErrors }}
+            </p>
+            <p *ngIf="PasswordMatchError" class="text-red-500 text-sm">
+              {{ PasswordMatchError }}
+            </p>
+          </div>
         </div>
       </div>
 
