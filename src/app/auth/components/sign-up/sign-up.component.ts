@@ -32,7 +32,7 @@ export class SignUpComponent implements OnInit {
 
   createForm() {
     this.forms = this.formBuilder.group({
-      rut: ['', Validators.compose([Validators.required, Validators.minLength(9), Validators.maxLength(9)])],
+      rut: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(10)])],
       name: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20)])],
       birthdate: ['', Validators.compose([Validators.required])],
       gender: ['', Validators.compose([Validators.required])],
