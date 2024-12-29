@@ -11,11 +11,13 @@ import { QueryServiceService } from '../../services/query-service.service';
 import { Subscription } from 'rxjs';
 import { CartServiceService } from '../../../cart/services/cart-service.service';
 import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
+import { LogInComponent } from "../../../auth/components/log-in/log-in.component";
+import { SignUpComponent } from "../../../auth/components/sign-up/sign-up.component";
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [SideBarComponent, ProductCardComponent, HttpClientModule, CommonModule, PaginationComponent, NavBarComponent],
+  imports: [SideBarComponent, ProductCardComponent, HttpClientModule, CommonModule, PaginationComponent, NavBarComponent, LogInComponent, SignUpComponent],
   providers: [ProductServiceService, CartServiceService],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
@@ -29,6 +31,8 @@ export class HomePageComponent {
   private filterSubscription!: Subscription;
 
   public product!: Product;
+  public logInFormIsOpen = false;
+  public signUpFormIsOpen = false;
 
   ngOnInit(): void {
     this.filterSubscription = this.queryService.currentFilters$.subscribe((filters) => {
@@ -38,6 +42,14 @@ export class HomePageComponent {
 
   ngOnDestroy(): void {
     this.filterSubscription?.unsubscribe();
+  }
+
+  reciveLogInFormIsOpen(logInFormIsOpen: boolean): void {
+    this.logInFormIsOpen = logInFormIsOpen;
+  }
+
+  reciveSignUpFormIsOpen(signUpFormIsOpen: boolean): void {
+    this.signUpFormIsOpen = signUpFormIsOpen;
   }
 
   reciveIdProductForCart(product: Product): void {
