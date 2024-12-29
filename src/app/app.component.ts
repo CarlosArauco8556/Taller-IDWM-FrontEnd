@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { NavBarComponent } from "./_shared/components/nav-bar/nav-bar.component";
 import { ToastComponent } from './_shared/components/toast/toast.component';
+import { LOCALE_ID } from '@angular/core';
 
 @Component({
   selector: 'app-root',
