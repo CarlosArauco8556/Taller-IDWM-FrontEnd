@@ -4,22 +4,23 @@ import { IQueryParams } from '../interfaces/IQueryParams';
 import { IProduct } from '../interfaces/IProduct';
 import { firstValueFrom } from 'rxjs';
 import { IProductEdit } from '../interfaces/IProductEdit';
+import { LocalStorageServiceService } from '../../_shared/services/local-storage-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductManagementService {
-
+  public localStorageServiceService: LocalStorageServiceService = inject(LocalStorageServiceService);
   private baseUrl = 'http://localhost:5012/api';
   public errors: string[] = [];
   private http: HttpClient = inject(HttpClient);
+  token = this.localStorageServiceService.getVairbel('token');
 
   
 
   async getProducts(IQueryParams: IQueryParams): Promise<IProduct[]> {
     try{
-      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjZhOWZkODY1LWIzYjQtNGQ3Yy1iODY4LTM3MTgwZDBiMTBlNyIsImp0aSI6IjRmMzU0OTQ5LTgxMjMtNDM4ZS04YzBmLThjYTI4ZDJiN2I4NiIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTYwMzU5OCwiZXhwIjoxNzM1Njg5OTk4LCJpYXQiOjE3MzU2MDM1OTgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwIn0.p9UTG78MFxRZ-OUTxTjBjOewwvjYr-65ynNKFsplMXOy5R_ZXOVJcnjHMLpiJ2epqv8hS5V9tzp7zkBMkHZ3zA';
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
       let params = new HttpParams()
       if(IQueryParams.textFilter) params = params.set('textFilter', IQueryParams.textFilter);
       if(IQueryParams.pageNumber) params = params.set('pageNumber', IQueryParams.pageNumber.toString());
@@ -59,8 +60,7 @@ export class ProductManagementService {
 
   async postProduct(formData: FormData): Promise<IProductEdit[]> {
     try{
-      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjZhOWZkODY1LWIzYjQtNGQ3Yy1iODY4LTM3MTgwZDBiMTBlNyIsImp0aSI6IjRmMzU0OTQ5LTgxMjMtNDM4ZS04YzBmLThjYTI4ZDJiN2I4NiIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTYwMzU5OCwiZXhwIjoxNzM1Njg5OTk4LCJpYXQiOjE3MzU2MDM1OTgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwIn0.p9UTG78MFxRZ-OUTxTjBjOewwvjYr-65ynNKFsplMXOy5R_ZXOVJcnjHMLpiJ2epqv8hS5V9tzp7zkBMkHZ3zA';
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
 
       const response = await firstValueFrom( this.http.post<IProductEdit[]>(`${this.baseUrl}/ProductManagement`, formData, {headers: headers}))
       return response;
@@ -77,8 +77,7 @@ export class ProductManagementService {
 
   async putProduct(id: number, formData: FormData): Promise<IProductEdit> {
     try{
-      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjZhOWZkODY1LWIzYjQtNGQ3Yy1iODY4LTM3MTgwZDBiMTBlNyIsImp0aSI6IjRmMzU0OTQ5LTgxMjMtNDM4ZS04YzBmLThjYTI4ZDJiN2I4NiIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTYwMzU5OCwiZXhwIjoxNzM1Njg5OTk4LCJpYXQiOjE3MzU2MDM1OTgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwIn0.p9UTG78MFxRZ-OUTxTjBjOewwvjYr-65ynNKFsplMXOy5R_ZXOVJcnjHMLpiJ2epqv8hS5V9tzp7zkBMkHZ3zA';
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
 
       const response = await firstValueFrom( this.http.put<IProductEdit>(`${this.baseUrl}/ProductManagement/${id}`, formData, {headers: headers}))
       return response;
@@ -95,8 +94,7 @@ export class ProductManagementService {
 
   async deleteProduct(id: number): Promise<void> {
     try {
-      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjZhOWZkODY1LWIzYjQtNGQ3Yy1iODY4LTM3MTgwZDBiMTBlNyIsImp0aSI6IjRmMzU0OTQ5LTgxMjMtNDM4ZS04YzBmLThjYTI4ZDJiN2I4NiIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTYwMzU5OCwiZXhwIjoxNzM1Njg5OTk4LCJpYXQiOjE3MzU2MDM1OTgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwIn0.p9UTG78MFxRZ-OUTxTjBjOewwvjYr-65ynNKFsplMXOy5R_ZXOVJcnjHMLpiJ2epqv8hS5V9tzp7zkBMkHZ3zA';
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
 
       await firstValueFrom(this.http.delete<void>(`${this.baseUrl}/ProductManagement/${id}`, { headers: headers }));
     } catch (error) {
