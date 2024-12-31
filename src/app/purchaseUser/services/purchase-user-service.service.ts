@@ -3,6 +3,7 @@ import { LocalStorageServiceService } from '../../_shared/services/local-storage
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { INewPurchase } from '../interfaces/INewPurchase';
 import { firstValueFrom } from 'rxjs';
+import { IGetPurchases } from '../interfaces/IGetPurchases';
 
 @Injectable({
   providedIn: 'root'
@@ -37,10 +38,10 @@ export class PurchaseUserServiceService {
     }
   }
 
-  async getPurchaseUser(purchaseId: number): Promise<INewPurchase[]> {
+  async getPurchaseUser(purchaseId: number): Promise<IGetPurchases[]> {
     try{
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-      const response = await firstValueFrom(this.http.get<INewPurchase[]>(`${this.baseUrl}/Purchase/GetPurchaseRecipt/${purchaseId}`, {headers: headers}));
+      const response = await firstValueFrom(this.http.get<IGetPurchases[]>(`${this.baseUrl}/Purchase/GetPurchaseRecipt/${purchaseId}`, {headers: headers}));
       return response;
     } catch (error) {
       if(error instanceof HttpErrorResponse)
