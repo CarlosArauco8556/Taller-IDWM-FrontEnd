@@ -10,18 +10,37 @@ import { firstValueFrom } from 'rxjs';
 export class PurchaseUserServiceService {
 
   localStorageServiceService: LocalStorageServiceService = new LocalStorageServiceService();
-  baseUrl = 'http://localhost:5012/api/Purchase';
+  baseUrl = 'http://localhost:5012/api';
   private http = inject(HttpClient);
   public errors: string[] = [];
   token = this.localStorageServiceService.getVairbel('token');
 
 
-  async postPurchaseUser(formData: FormData): Promise<INewPurchase[]> {
+  async postPurchaseUser(formData: any): Promise<INewPurchase[]> {
+    try {
+      const headers = new HttpHeaders()
+        .set('Authorization', `Bearer ${this.token}`)
+        .set('Content-Type', 'application/json');  
+  
+      
+      const response = await firstValueFrom(
+        this.http.post<INewPurchase[]>(`${this.baseUrl}/Purchase/NewPurchase`, formData, { headers })
+      );
+      return response;
+    } catch (error) {
+      if (error instanceof HttpErrorResponse) {
+        const errorMessage =
+          typeof error.error === 'string' ? error.error : error.message;
+        this.errors.push(errorMessage);
+      }
+      return Promise.reject(error);
+    }
+  }
 
+  async getPurchaseUser(purchaseId: number): Promise<INewPurchase[]> {
     try{
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-
-      const response = await firstValueFrom( this.http.post<INewPurchase[]>(`${this.baseUrl}/NewPurchase`, formData, {headers: headers}))
+      const response = await firstValueFrom(this.http.get<INewPurchase[]>(`${this.baseUrl}/Purchase/GetPurchaseRecipt/${purchaseId}`, {headers: headers}));
       return response;
     } catch (error) {
       if(error instanceof HttpErrorResponse)
@@ -34,20 +53,8 @@ export class PurchaseUserServiceService {
     }
   }
 
-  async getPurchaseUser(purchaseId: number): Promise<INewPurchase[]> {
-    try{
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-      const response = await firstValueFrom(this.http.get<INewPurchase[]>(`${this.baseUrl}/GetPurchaseRecipt/${purchaseId}`, {headers: headers}));
-      return response;
-    } catch (error) {
-      if(error instanceof HttpErrorResponse)
-        {
-          const errorMessage = 
-            typeof error.error === 'string' ? error.error : error.message;
-          this.errors.push(errorMessage);
-        }
-        return Promise.reject(error);
-    }
+  getErrors(): string[] {
+    return this.errors;
   }
 
 
