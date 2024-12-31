@@ -1,8 +1,8 @@
 <div class="card max-w-sm rounded overflow-hidden shadow-lg">
     <img
-        class="rounded-t-lg"
-        [src]="product.imageUrl"  
-        alt="{{ product.name }}"
+    class="rounded-t-lg"
+    [src]="product.imageUrl ? product.imageUrl : 'https://res.cloudinary.com/dd0ljsgtp/image/upload/v1728516121/cld-sample-4.jpg'"
+    [alt]="product.name"
     />
   
     <div class="content p-4 text-center">
