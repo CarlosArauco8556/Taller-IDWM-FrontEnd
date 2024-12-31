@@ -31,13 +31,10 @@
                 <div *ngIf="isProductOpen">
                     <ul id="dropdown-example" class="py-2 space-y-2">
                         <li>
-                            <button (click)="loadComponent('')" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Listar y eliminar productos</button>
+                            <button (click)="loadComponent('management-products')" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Listar, actualizar y eliminar productos</button>
                         </li>
                         <li>
-                            <button (click)="loadComponent('')" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Crear Producto</button>
-                        </li>
-                        <li>
-                            <button (click)="loadComponent('')" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Actualizar producto</button>
+                            <button (click)="loadComponent('add-products')" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Crear Producto</button>
                         </li>
                     </ul>
                 </div>
@@ -97,4 +94,10 @@
  <div id="custom-container" class="p-4 sm:ml-64">
    <management-users-page *ngIf="currentComponent === 'management-users'"></management-users-page>
  </div>
+ <div id="custom-container" class="p-4 sm:ml-64">
+    <app-management-products-page *ngIf="currentComponent === 'management-products'"></app-management-products-page>
+  </div>
+  <div id="custom-container" class="p-4 sm:ml-64">
+    <app-add-products-page *ngIf="currentComponent === 'add-products'"></app-add-products-page>
+  </div>
  

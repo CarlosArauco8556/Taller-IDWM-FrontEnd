@@ -1,123 +1,70 @@
 /* Estilos generales */
-.home-layout {
-    display: flex;
-    flex-direction: row; /* Los elementos se alinean en fila */
-    height: 100vh;
-  }
-  
-  .main-content {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column; /* Alineamos la paginación arriba de los productos */
-  }
-  
-  /* Contenedor para la paginación y el botón */
-  .pagination-container {
-    display: flex;
-    justify-content: space-between; /* Se usa space-between para separar la paginación y el botón */
-    align-items: center; /* Centra verticalmente los elementos dentro del contenedor */
-    width: 100%; /* Hace que el contenedor ocupe todo el ancho */
-    margin-bottom: 20px; /* Espacio debajo de la paginación */
-  }
-  
-  /* Estilo para la paginación */
-  app-pagination {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;  /* Centra el contenido de la paginación */
-  }
-  
-  /* Asegura que el botón de agregar se mantenga en la derecha */
-  .add-button {
-    margin-left: 20px; /* Un poco de espacio entre la paginación y el botón */
-  }
-  
-  /* Estilo para los productos */
-  .products-list {
-    display: grid;
-    grid-template-columns: repeat(
-      auto-fill,
-      minmax(250px, 1fr)
-    ); /* Distribuye las tarjetas de producto */
-    gap: 20px; /* Espaciado entre las tarjetas */
-    margin-top: 20px; /* Espacio entre la paginación y los productos */
-    padding-bottom: 20px; /* Asegura que haya espacio en la parte inferior */
-  }
-  
-  .card {
-    /* Asegúrate de que la tarjeta no esté muy ancha en pantallas grandes */
-    max-width: 100%;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-  }
-  
-  .card img {
-    width: 100%; /* La imagen debe ajustarse al contenedor */
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-  
-  /* Estilo para los botones */
-  button {
-    width: 100%; /* Asegura que el botón ocupe todo el ancho disponible */
-    padding: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    opacity: 0.9;
-  }
-  
-  /* Botón editar */
-  button.bg-blue-600 {
-    background-color: #3b82f6; /* Azul */
-    color: white;
-  }
-  
-  button.bg-blue-600:hover {
-    background-color: #2563eb;
-  }
-  
-  /* Botón eliminar */
-  button.bg-red-600 {
-    background-color: #ef4444; /* Rojo */
-    color: white;
-  }
-  
-  button.bg-red-600:hover {
-    background-color: #dc2626;
-  }
-  
-  /* Media Query para pantallas pequeñas */
-  @media (max-width: 768px) {
-    .home-layout {
-      flex-direction: column; /* Cambia a columna en pantallas pequeñas */
-    }
-  
-    .main-content {
-      padding: 10px; /* Reducimos el padding en pantallas pequeñas */
-    }
-  
-    .products-list {
-      grid-template-columns: 1fr; /* En pantallas pequeñas, una sola columna para los productos */
-      gap: 10px; /* Reducimos el espacio entre productos */
-    }
-  
-    .card {
-      width: 100%; /* Asegura que la tarjeta ocupe el ancho completo disponible */
-    }
-  
-    app-pagination {
-      margin-top: 20px; /* Espacio entre la paginación y los productos */
-      margin-bottom: 20px; /* Asegura un margen inferior adecuado */
-    }
-  
-    .add-button {
-      margin-top: 20px; /* Espacio en pantallas pequeñas entre el botón y la paginación */
-    }
-  }
-  
+
+
+/* Estilos para la barra de búsqueda */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+input[type="text"]::placeholder {
+  color: #a3a3a3;
+}
+input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4);
+}
+
+button svg:hover {
+  color: #2563eb;
+}
+
+a svg:hover {
+  color: #2563eb;
+}
+a.relative {
+  position: relative;
+}
+
+
+
+
+/* Resto de los estilos existentes */
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Estilo para la paginación */
+app-pagination {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.add-button {
+  margin-left: 20px;
+}
+
+.products-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Mantén el resto de tus estilos de tarjetas y botones igual */
+
+

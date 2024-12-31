@@ -110,13 +110,13 @@ export class EditProductsPageComponent {
   }
 
 
-removeImage() {
-  this.selectedImage = null;
-  this.imagePreview = null;
-  this.forms.get('imageUrl')?.setValue(null);
-  this.forms.get('imageUrl')?.markAsTouched();
-  this.forms.get('imageUrl')?.updateValueAndValidity();
-}
+  removeImage() {
+    this.selectedImage = null;
+    this.imagePreview = null;
+    this.forms.get('imageUrl')?.setValue(null);
+    this.forms.get('imageUrl')?.markAsTouched();
+    this.forms.get('imageUrl')?.updateValueAndValidity();
+  }
 
 
   protected getFieldError(fieldName: keyof IProductEdit): string {
@@ -161,20 +161,31 @@ removeImage() {
 
 
     if (this.forms.invalid) return;
+
+    try {
+      // Validar producto duplicado
+      const isDuplicate = await this.productManagementService.validateProductNameAndType(
+        this.forms.value.name,
+        parseInt(this.forms.value.productTypeId)
+      );
+
+      if (isDuplicate) {
+        this.error = true;
+        this.errors.push('Ya existe un producto con el mismo nombre y tipo de producto');
+        return;
+      }
   
     
-    const formData = new FormData();
-    formData.append('name', this.forms.value.name);
-    formData.append('price', this.forms.value.price.toString());
-    formData.append('stock', this.forms.value.stock.toString());
-    formData.append('productTypeId', this.forms.value.productTypeId.toString());
+      const formData = new FormData();
+      formData.append('name', this.forms.value.name);
+      formData.append('price', this.forms.value.price.toString());
+      formData.append('stock', this.forms.value.stock.toString());
+      formData.append('productTypeId', this.forms.value.productTypeId.toString());
   
    
-    if (this.selectedImage) {
-      formData.append('image', this.selectedImage, this.selectedImage.name); 
-    }
-  
-    try {
+      if (this.selectedImage) {
+        formData.append('image', this.selectedImage, this.selectedImage.name); 
+      }
       const response = await this.productManagementService.putProduct(productId, formData);
       if (response) {
         this.error = false;

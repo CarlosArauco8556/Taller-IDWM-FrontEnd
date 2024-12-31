@@ -17,6 +17,9 @@
 form {
   flex-grow: 0;
   max-width: 450px; /* Ancho máximo para el formulario */
+  max-height: 750px;  /* o el tamaño que prefieras */
+  overflow-y: auto;
+  background-color: #E7E6E6;
   transform: translateX(0); /* Elimina el desplazamiento horizontal */
 }
 

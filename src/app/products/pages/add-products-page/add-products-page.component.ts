@@ -158,18 +158,29 @@ export class AddProductsPageComponent {
       if (this.forms.invalid) return;
     
       
-      const formData = new FormData();
-      formData.append('name', this.forms.value.name);
-      formData.append('price', this.forms.value.price.toString());
-      formData.append('stock', this.forms.value.stock.toString());
-      formData.append('productTypeId', this.forms.value.productTypeId.toString());
-    
-      
-      if (this.selectedImage) {
-        formData.append('image', this.selectedImage, this.selectedImage.name); 
-      }
-    
       try {
+        // Validar producto duplicado
+        const isDuplicate = await this.productManagementService.validateProductNameAndType(
+          this.forms.value.name,
+          parseInt(this.forms.value.productTypeId)
+        );
+  
+        if (isDuplicate) {
+          this.error = true;
+          this.errors.push('Ya existe un producto con el mismo nombre y tipo de producto');
+          return;
+        }
+  
+        const formData = new FormData();
+        formData.append('name', this.forms.value.name);
+        formData.append('price', this.forms.value.price.toString());
+        formData.append('stock', this.forms.value.stock.toString());
+        formData.append('productTypeId', this.forms.value.productTypeId.toString());
+  
+        if (this.selectedImage) {
+          formData.append('image', this.selectedImage, this.selectedImage.name); 
+        }
+  
         const response = await this.productManagementService.postProduct(formData);
         if (response) {
           this.error = false;
@@ -193,7 +204,7 @@ export class AddProductsPageComponent {
             this.errors.push(errores[key]);
           }
         } 
-      }finally{
+      } finally {
         console.log('Petición Finalizada');
         this.forms.reset();
       }

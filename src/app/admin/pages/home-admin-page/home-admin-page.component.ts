@@ -2,11 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ManagementUsersPageComponent } from '../../../users/pages/management-users-page/management-users-page.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ManagementProductsPageComponent } from '../../../products/pages/management-products-page/management-products-page.component';
+import { EditProductsPageComponent } from '../../../products/pages/edit-products-page/edit-products-page.component';
+import { AddProductsPageComponent } from '../../../products/pages/add-products-page/add-products-page.component';
 
 @Component({
   selector: 'app-home-admin-page',
   standalone: true,
-  imports: [HttpClientModule, CommonModule, ManagementUsersPageComponent],
+  imports: [HttpClientModule, CommonModule, ManagementUsersPageComponent, ManagementProductsPageComponent, EditProductsPageComponent, AddProductsPageComponent],
   templateUrl: './home-admin-page.component.html',
   styleUrl: './home-admin-page.component.css'
 })

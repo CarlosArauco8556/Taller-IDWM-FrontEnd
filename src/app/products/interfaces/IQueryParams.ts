@@ -1,9 +1,9 @@
 export interface IQueryParams {
 
-    textFilter?: string;
+    textFilter: string;
 
-    pageNumber?: number;
+    pageNumber: number;
 
-    pageSize?: number;
+    pageSize: number;
 
 }
