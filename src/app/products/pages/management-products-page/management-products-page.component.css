@@ -1,0 +1,70 @@
+/* Estilos generales */
+
+
+/* Estilos para la barra de búsqueda */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+input[type="text"]::placeholder {
+  color: #a3a3a3;
+}
+input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4);
+}
+
+button svg:hover {
+  color: #2563eb;
+}
+
+a svg:hover {
+  color: #2563eb;
+}
+a.relative {
+  position: relative;
+}
+
+
+
+
+/* Resto de los estilos existentes */
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Estilo para la paginación */
+app-pagination {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.add-button {
+  margin-left: 20px;
+}
+
+.products-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Mantén el resto de tus estilos de tarjetas y botones igual */
+
+

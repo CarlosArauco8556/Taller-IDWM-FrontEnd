@@ -38,6 +38,21 @@ export const routes: Routes = [
         data: { roles: ['ADMIN'] }
     },
     {
+        path: 'add-products',
+        pathMatch: 'full',
+        loadComponent: () => import('./products/pages/add-products-page/add-products-page.component').then(m => m.AddProductsPageComponent),
+    },
+    {
+        path: 'edit-product/:id',
+        pathMatch: 'full',
+        loadComponent: () => import('./products/pages/edit-products-page/edit-products-page.component').then(m => m.EditProductsPageComponent),
+    },
+    {
+        path: 'management-products',
+        pathMatch: 'full',
+        loadComponent: () => import('./products/pages/management-products-page/management-products-page.component').then(m => m.ManagementProductsPageComponent),
+    },
+    {    
         path: '',
         pathMatch: 'full',
         loadComponent: () => import('./home/pages/home-page/home-page.component')
