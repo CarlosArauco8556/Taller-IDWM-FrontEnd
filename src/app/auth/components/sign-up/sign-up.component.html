@@ -1,0 +1,209 @@
+<div
+  class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+>
+  <div
+    class="relative w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow mx-4"
+  >
+    <!-- Botón de cierre -->
+    <button
+      type="button"
+      (click)="closeSignUpForm()"
+      class="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+    >
+      <svg
+        class="w-3 h-3"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 14 14"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+        />
+      </svg>
+      <span class="sr-only">Cerrar</span>
+    </button>
+
+    <form class="p-6" [formGroup]="forms" (ngSubmit)="onSubmit()">
+      <!-- Grid para RUT y Nombre -->
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label
+            for="rut"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >RUT</label
+          >
+          <input
+            type="text"
+            id="rut"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            formControlName="rut"
+            placeholder="12.345.678-9"
+            required
+          />
+          <div>
+            <p *ngIf="RutErrors" class="text-red-500 text-sm">
+              {{ RutErrors }}
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="name"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Nombre completo</label
+          >
+          <input
+            type="text"
+            id="name"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            formControlName="name"
+            placeholder="Juan Pérez"
+            required
+          />
+          <div>
+            <p *ngIf="NameErrors" class="text-red-500 text-sm">
+              {{ NameErrors }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid para Fecha de nacimiento y Género -->
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label
+            for="birthdate"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Fecha de nacimiento</label
+          >
+          <input
+            type="date"
+            id="birthdate"
+            formControlName="birthdate"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required
+          />
+          <div>
+            <p *ngIf="BirthdateErrors" class="text-red-500 text-sm">
+              {{ BirthdateErrors }}
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="gender"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Género</label
+          >
+          <select
+            id="gender"
+            formControlName="gender"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required
+          >
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+            <option value="Otro">Otro</option>
+            <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+          </select>
+          <div>
+            <p *ngIf="GenderErrors" class="text-red-500 text-sm">
+              {{ GenderErrors }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email que ocupa todo el ancho -->
+      <div class="mb-4">
+        <label
+          for="email"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Email</label
+        >
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="nombre@ejemplo.com"
+          required
+        />
+        <div>
+          <p *ngIf="EmailErrors" class="text-red-500 text-sm">
+            {{ EmailErrors }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Grid para contraseñas -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div>
+          <label
+            for="password"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Contraseña</label
+          >
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="•••••••••"
+            required
+          />
+          <div>
+            <p *ngIf="PasswordErrors" class="text-red-500 text-sm">
+              {{ PasswordErrors }}
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="confirm_password"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Confirmar contraseña</label
+          >
+          <input
+            type="password"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="•••••••••"
+            required
+          />
+          <div>
+            <p *ngIf="ConfirmPasswordErrors" class="text-red-500 text-sm">
+              {{ ConfirmPasswordErrors }}
+            </p>
+            <p *ngIf="PasswordMatchError" class="text-red-500 text-sm">
+              {{ PasswordMatchError }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full mb-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >
+        Registrarse
+      </button>
+
+      <p class="text-sm text-center text-gray-600 dark:text-gray-400">
+        ¿Ya tienes cuenta?
+        <a href="#" class="text-blue-600 hover:underline dark:text-blue-500"
+          >Iniciar sesión</a
+        >
+      </p>
+    </form>
+  </div>
+</div>

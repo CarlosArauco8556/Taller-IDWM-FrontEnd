@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, input, OnInit } from '@angular/core';
 import { UserManagementService } from '../../services/user-management.service';
 import { IGetUsers } from '../../interfaces/IGetUsers';
@@ -49,15 +49,21 @@ export class ManagementUsersPageComponent implements OnInit {
           this.toastService.warning('No se encontraron usuarios', 2000);
         }
       }else{
+        this.users = [];
         this.errors = this.userManagementService.errors;
         const lastError = this.errors[this.errors.length - 1];
         this.toastService.error(lastError || 'Error al obtener los usuarios');
       }
     }catch(error: any){
-      const errorMessage = error.error || 'Error al obtener los usuarios';
-      this.errors.push(errorMessage);
-      this.toastService.error(errorMessage);
-      console.log('Error in get users page', errorMessage);
+      this.users = [];
+      if(error instanceof HttpErrorResponse)
+      {
+        const errorMessage = 
+          typeof error.error === 'string' ? error.error : error.error.message || error.statusText || 'Error al obtener usuarios';
+        this.errors.push(errorMessage);
+        this.toastService.error(errorMessage || 'Error al obtener usuarios');
+      }
+      console.log('Error in get users page', error.error);
     }
 
   }

@@ -3,19 +3,21 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { IGetUsers } from '../interfaces/IGetUsers';
 import { IQueryParams } from '../interfaces/IQueryParams';
+import { LocalStorageServiceService } from '../../_shared/services/local-storage-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserManagementService {
+  localStorageServiceService: LocalStorageServiceService = inject(LocalStorageServiceService);
   baseUrl: string = "http://localhost:5012/api/UserManagement";
   private http = inject(HttpClient);
   public errors: string[] = [];
+  token = this.localStorageServiceService.getVairbel('token');
 
   async getUsers(IQueryParams: IQueryParams): Promise<IGetUsers[]> {
     try {
-      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjA3ZTIyNzU0LWNhMjItNDQ5My1iMmZhLTM3ODZjNDRjNWE4MiIsImp0aSI6ImFkYzU3ZjNmLTkwNjktNGEzNS1hM2ZkLWUwNTY1OTgzZTUxNiIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTMxNjc5OCwiZXhwIjoxNzM1NDAzMTk4LCJpYXQiOjE3MzUzMTY3OTgsImlzcyI6ImhodHBzOi8vbG9jYWxob3N0OjUwMDAiLCJhdWQiOiJoaHRwczovL2xvY2FsaG9zdDo1MDAifQ.y0e0cVSS0PF2FL87IgMDJ2sqZ-sDszAOzQ3IC2TxKcVYishGB0kRIsnW5bLCMSjycYrqoqONmvVlo2XRVR_BYA';
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
       let params = new HttpParams()
       if (IQueryParams.name) params = params.set('name', IQueryParams.name);
       if (IQueryParams.page) params = params.set('page', IQueryParams.page.toString());
@@ -34,8 +36,7 @@ export class UserManagementService {
 
   async changeState(email: string): Promise<IGetUsers> {
     try {
-      const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlkd20uY2wiLCJnaXZlbl9uYW1lIjoiYWRtaW5AaWR3bS5jbCIsIm5hbWVpZCI6IjA3ZTIyNzU0LWNhMjItNDQ5My1iMmZhLTM3ODZjNDRjNWE4MiIsImp0aSI6ImFkYzU3ZjNmLTkwNjktNGEzNS1hM2ZkLWUwNTY1OTgzZTUxNiIsInJvbGUiOiJBZG1pbiIsIm5iZiI6MTczNTMxNjc5OCwiZXhwIjoxNzM1NDAzMTk4LCJpYXQiOjE3MzUzMTY3OTgsImlzcyI6ImhodHBzOi8vbG9jYWxob3N0OjUwMDAiLCJhdWQiOiJoaHRwczovL2xvY2FsaG9zdDo1MDAifQ.y0e0cVSS0PF2FL87IgMDJ2sqZ-sDszAOzQ3IC2TxKcVYishGB0kRIsnW5bLCMSjycYrqoqONmvVlo2XRVR_BYA';
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
       const response = await firstValueFrom(this.http.post<IGetUsers>(`${this.baseUrl}/ChangeStateUser/${email}`, {}, { headers: headers }))
       return Promise.resolve(response);
     } catch (error) {
