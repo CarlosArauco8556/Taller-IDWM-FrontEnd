@@ -52,6 +52,11 @@ export const routes: Routes = [
         pathMatch: 'full',
         loadComponent: () => import('./products/pages/management-products-page/management-products-page.component').then(m => m.ManagementProductsPageComponent),
     },
+    {
+        path: 'create-purchase',
+        pathMatch: 'full',
+        loadComponent: () => import('./purchaseUser/pages/create-purchase/create-purchase.component').then(m => m.CreatePurchaseComponent),
+    },
     {    
         path: '',
         pathMatch: 'full',
