@@ -1,15 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PurchaseUserServiceService } from '../../services/purchase-user-service.service';
 import { INewPurchase } from '../../interfaces/INewPurchase';
+import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
+import { ToastService } from '../../../_shared/services/toast.service';
 
 
 @Component({
   selector: 'app-create-purchase',
   standalone: true,
-  imports: [HttpClientModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [HttpClientModule, CommonModule, FormsModule, ReactiveFormsModule, NavBarComponent],
   providers: [PurchaseUserServiceService],
   templateUrl: './create-purchase.component.html',
   styleUrl: './create-purchase.component.css'
@@ -17,15 +19,16 @@ import { INewPurchase } from '../../interfaces/INewPurchase';
 export class CreatePurchaseComponent {
 
   private purchaseUserServiceService: PurchaseUserServiceService = inject(PurchaseUserServiceService);
+  toastService: ToastService = inject(ToastService);
   inewPurchase: INewPurchase = { country: '', city: '', commune: '', street: '' };
-  error: boolean = false;
-  mensajeCreado = "";
+  IdPurchase: number = 0;
+  fileUrl: string | null = null;
   errors: string[] = [];
   forms: FormGroup = new FormGroup({});
   
   constructor(private FormBuilder:FormBuilder) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.createForm();
   }
 
@@ -54,46 +57,47 @@ export class CreatePurchaseComponent {
 
   async createPurchase() {
     this.errors = [];
-    this.error = false;
   
-    if (this.forms.invalid) return;
+    if (this.forms.invalid){
+      this.toastService.error('Por favor, revisa los campos del formulario');
+      return;
+    }
   
     try {
-      const formData = {
-        country: this.forms.get('country')?.value,
-        city: this.forms.get('city')?.value,
-        commune: this.forms.get('commune')?.value,
-        street: this.forms.get('street')?.value
-      };
-  
+      this.inewPurchase.country = this.forms.get('country')?.value,
+      this.inewPurchase.city = this.forms.get('city')?.value,
+      this.inewPurchase.commune = this.forms.get('commune')?.value,
+      this.inewPurchase.street = this.forms.get('street')?.value;
       
-      const response = await this.purchaseUserServiceService.postPurchaseUser(formData);
-  
+      const response = await this.purchaseUserServiceService.postPurchaseUser(this.inewPurchase);
       if (response) {
-        this.error = false;
-        this.errors = [];
-        console.log('Producto Comprado con éxito');
-        console.log('Producto Comprado:', response);
-        this.mensajeCreado = "Producto Comprado con éxito";
+        this.toastService.success('Compra realizada con éxito');
+        this.forms.reset();
+        console.log('Compra realizada con éxito');
+        this.IdPurchase = response;
+        const blob = await this.purchaseUserServiceService.getPurchaseUser(this.IdPurchase);
+        if(blob){
+          const url = window.URL.createObjectURL(blob);
+          this.fileUrl = url;
+        }else{
+          this.toastService.error('Error al obtener el recibo de compra');
+          console.log('Error al obtener el recibo de compra');
+        }
       } else {
-        this.error = true;
         this.errors = this.purchaseUserServiceService.getErrors();
-        console.log("Error al Comprar el producto", this.errors);
+        const lastError = this.errors[this.errors.length - 1];
+        this.toastService.error(lastError || 'Ocurrio un error desconocido');
+        console.log("Error al realizar la compra", this.errors);
       }
     } catch (error: any) {
-      const errores = error;
-      this.error = true;
-      this.errors = [];
-      console.error('Error en createPurchase', errores);
-  
-      for (const key in errores) {
-        if (errores.hasOwnProperty(key)) {
-          this.errors.push(errores[key]);
-        }
+      if(error instanceof HttpErrorResponse)
+      {
+        const errorMessage = 
+          typeof error.error === 'string' ? error.error : error.error.message || error.statusText || 'Ocurrió un error inesperado';
+        this.errors.push(errorMessage);
+        this.toastService.error(errorMessage || 'Ocurrió un error inesperado');
       }
-    } finally {
-      console.log('Petición Finalizada');
-      this.forms.reset();
+      console.log('Error in createPurchase page', error.error);
     }
   }
 
@@ -109,7 +113,4 @@ export class CreatePurchaseComponent {
     get streetInvalid(){
       return this.forms.get('street')?.invalid && this.forms.get('street')?.touched;
     }
-
-
-
 }

@@ -17,17 +17,12 @@ export class PurchaseUserServiceService {
   token = this.localStorageServiceService.getVairbel('token');
 
 
-  async postPurchaseUser(formData: any): Promise<INewPurchase[]> {
+  async postPurchaseUser(newPurchase: INewPurchase): Promise<number> {
     try {
-      const headers = new HttpHeaders()
-        .set('Authorization', `Bearer ${this.token}`)
-        .set('Content-Type', 'application/json');  
-  
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`)
       
-      const response = await firstValueFrom(
-        this.http.post<INewPurchase[]>(`${this.baseUrl}/Purchase/NewPurchase`, formData, { headers })
-      );
-      return response;
+      const response = await firstValueFrom(this.http.post<number>(`${this.baseUrl}/Purchase/NewPurchase`, newPurchase, { headers : headers }));
+      return Promise.resolve(response);
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         const errorMessage =
@@ -38,12 +33,14 @@ export class PurchaseUserServiceService {
     }
   }
 
-  async getPurchaseUser(purchaseId: number): Promise<IGetPurchases[]> {
+  async getPurchaseUser(purchaseId: number): Promise<Blob> {
     try{
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-      const response = await firstValueFrom(this.http.get<IGetPurchases[]>(`${this.baseUrl}/Purchase/GetPurchaseRecipt/${purchaseId}`, {headers: headers}));
-      return response;
+      const response = await firstValueFrom(this.http.get(`${this.baseUrl}/Purchase/GetPurchaseRecipt/${purchaseId}`, 
+        {headers: headers, responseType: 'blob'}));
+      return Promise.resolve(response);
     } catch (error) {
+      console.log("Error en getPurchaseUser", error);
       if(error instanceof HttpErrorResponse)
         {
           const errorMessage = 
