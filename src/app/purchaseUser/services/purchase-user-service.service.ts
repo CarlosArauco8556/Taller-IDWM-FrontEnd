@@ -3,7 +3,6 @@ import { LocalStorageServiceService } from '../../_shared/services/local-storage
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { INewPurchase } from '../interfaces/INewPurchase';
 import { firstValueFrom } from 'rxjs';
-import { IGetPurchases } from '../interfaces/IGetPurchases';
 
 @Injectable({
   providedIn: 'root'
