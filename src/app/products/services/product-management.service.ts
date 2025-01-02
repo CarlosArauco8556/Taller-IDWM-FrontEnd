@@ -42,7 +42,15 @@ export class ProductManagementService {
   async postProduct(iProductAdd: IProductEdit): Promise<IProduct> {
     try{
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-      const response = await firstValueFrom( this.http.post<IProduct>(`${this.baseUrl}/ProductManagement`, iProductAdd, {headers: headers}))
+
+      const formData = new FormData();
+      formData.append('Name', iProductAdd.name);
+      formData.append('Price', iProductAdd.price.toString());
+      formData.append('Stock', iProductAdd.stock.toString());
+      formData.append('ProductTypeId', iProductAdd.productTypeId.toString());
+      if(iProductAdd.image) formData.append('Image', iProductAdd.image, iProductAdd.image.name);
+
+      const response = await firstValueFrom( this.http.post<IProduct>(`${this.baseUrl}/ProductManagement`, formData, {headers: headers}))
       return Promise.resolve(response);
     } catch (error) {
       console.log('Error en postProduct service', error);
@@ -59,7 +67,15 @@ export class ProductManagementService {
   async putProduct(id: number, iProductEdit: IProductEdit): Promise<IProduct> {
     try{
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-      const response = await firstValueFrom( this.http.put<IProduct>(`${this.baseUrl}/ProductManagement/${id}`, iProductEdit, {headers: headers}))
+
+      const formData = new FormData();
+      formData.append('Name', iProductEdit.name);
+      formData.append('Price', iProductEdit.price.toString());
+      formData.append('Stock', iProductEdit.stock.toString());
+      formData.append('ProductTypeId', iProductEdit.productTypeId.toString());
+      if(iProductEdit.image) formData.append('Image', iProductEdit.image, iProductEdit.image.name);
+
+      const response = await firstValueFrom( this.http.put<IProduct>(`${this.baseUrl}/ProductManagement/${id}`, formData, {headers: headers}))
       return Promise.resolve(response);
     } catch (error) {
       console.log('Error en putProduct service', error);

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthServiceService } from '../../services/auth-service.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { LocalStorageServiceService } from '../../../_shared/services/local-storage-service.service';
 import { Router } from '@angular/router';
@@ -45,6 +45,10 @@ export class LogInComponent implements OnInit {
     }
 
     try {
+      if (this.forms.invalid){
+        this.toastService.error('Por favor, complete los campos correctamente.');
+        return;
+      }
       
       const logInDto = this.forms.value;
       const response = await this.authService.login(logInDto);
@@ -63,15 +67,22 @@ export class LogInComponent implements OnInit {
 
         } else {
           console.log('Error al loguear el usuario', this.authService.errors);
-          this.toastService.error('Error al loguear el usuario.');
+          const lastError = this.authService.errors[this.authService.errors.length - 1];
+          this.toastService.error(lastError || 'Error al loguear el usuario.');
         }
       } else {
         console.log('Error al loguear el usuario', this.authService.errors);
-        this.toastService.error('Error al loguear el usuario.');
+        const lastError = this.authService.errors[this.authService.errors.length - 1];
+        this.toastService.error(lastError || 'Error al loguear el usuario.');
       }
     } catch (error) {
       console.log('Error al loguear el usuario', this.authService.errors);
-      this.toastService.error('Error al loguear el usuario.');
+      if(error instanceof HttpErrorResponse)
+        {
+          const errorMessage = 
+            typeof error.error === 'string' ? error.error : error.error.message
+          this.toastService.error(errorMessage || 'Error al loguear el usuario');
+        }
     }
   }
 

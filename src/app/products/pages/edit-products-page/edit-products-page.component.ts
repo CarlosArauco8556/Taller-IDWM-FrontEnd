@@ -3,8 +3,9 @@ import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { ProductManagementService } from '../../services/product-management.service';
 import { IProductEdit } from '../../interfaces/IProductEdit';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ToastService } from '../../../_shared/services/toast.service';
 
 @Component({
   selector: 'app-edit-products-page',
@@ -17,57 +18,49 @@ import { ActivatedRoute } from '@angular/router';
 export class EditProductsPageComponent {
 
   private productManagementService: ProductManagementService = inject(ProductManagementService);
-  ieditProduct: IProductEdit = {name : '', price: 0, stock: 0, imageUrl: '', productTypeId: 0};
+  toastService: ToastService = inject(ToastService);
+  ieditProduct: IProductEdit = {name : '', price: 0, stock: 0, image: null, productTypeId: 0};
   errors: string[] = [];
-  error: boolean = false;
   forms: FormGroup = new FormGroup({});
   productId!: number;
+  selectedImage: File | null = null;
   imagePreview: string | null = null;
 
   constructor(private FormBuilder: FormBuilder, private route: ActivatedRoute) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.productId = +this.route.snapshot.params['id'];
     this.createForm();
   }
 
-  nameError = false;
-  priceError = false;
-  stockError = false;
-  productTypeIdError = false;
-  imageError = false;
-  mensajeCreado = "";
-
   createForm(){
     this.forms = this.FormBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(64),  Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]+$')]],
-      price: ['', [Validators.required, Validators.min(0), Validators.max(99999999), Validators.pattern(/^\d+$/)]],
-      stock: ['', [Validators.required, Validators.min(0), Validators.max(99999),Validators.pattern(/^\d+$/) ]],
-      imageUrl: ['', [Validators.required, this.validateImage]],
-      productTypeId: ['', [Validators.required, Validators.min(1), Validators.max(5),Validators.pattern(/^\d+$/)]]
+      name: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(64), 
+        Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]+$')]],
+      price: ['', [Validators.required, Validators.min(0), Validators.max(99999999), this.positiveIntegerValidator()]],
+      stock: ['', [Validators.required, Validators.min(0), Validators.max(99999),this.positiveIntegerValidator() ]],
+      image: ['', [Validators.required, this.validateImage()]],
+      productTypeId: ['', [Validators.required, Validators.min(1), Validators.max(5),this.positiveIntegerValidator()]]
     });
   }
-  selectedImage: File | null = null;
-  validateImage(control: AbstractControl): ValidationErrors | null {
-    if (control.value instanceof File) {
+
+  private validateImage(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value || !(control.value instanceof File)) return null;
+  
       const file = control.value as File;
-      
-      
       const validMimeTypes = ['image/png', 'image/jpeg'];
-      const maxSize = 10 * 1024 * 1024; 
+      const validExtensions = ['.png', '.jpg', '.jpeg'];
+      const maxSize = 10 * 1024 * 1024;
   
       const errors: ValidationErrors = {};
-      
-      
+  
       if (!validMimeTypes.includes(file.type)) {
         errors['invalidImageFormat'] = true;
       }
   
-      
       const fileName = file.name.toLowerCase();
-      const validExtensions = ['.png', '.jpg', '.jpeg'];
       const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
-      
       if (!hasValidExtension) {
         errors['invalidImageFormat'] = true;
       }
@@ -77,11 +70,43 @@ export class EditProductsPageComponent {
       }
   
       return Object.keys(errors).length > 0 ? errors : null;
-    }
-    
-    return null;
+    };
   }
+
+  private positiveIntegerValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return null;
   
+      const value = Number(control.value);
+      if (!Number.isInteger(value) || value <= 0) {
+        return { positiveInteger: true };
+      }
+  
+      return null;
+    };
+  }
+
+  protected getFieldError(fieldName: keyof IProductEdit): string {
+    const control = this.forms.get(fieldName);
+
+    if (!control || !control.errors || !control.touched) return '';
+
+    const errors = {
+      required: 'Este campo es requerido',
+      minlength: `Mínimo ${control.errors['minlength']?.requiredLength} caracteres`,
+      maxlength: `Máximo ${control.errors['maxlength']?.requiredLength} caracteres`,
+      min: `El valor mínimo es ${control.errors['min']?.min}`,
+      max: `El valor máximo es ${control.errors['max']?.max}`,
+      pattern: 'Solo se permiten letras y espacios',
+      positiveInteger: 'Debe ser un número entero positivo ', 
+      invalidImageFormat: 'Solo se permiten archivos .png, .jpeg y .jpg.',
+      imageTooLarge: 'La imagen no debe pesar más de 10MB'
+    };
+
+    const firstError = Object.keys(control.errors)[0];
+    return errors[firstError as keyof typeof errors] || 'Campo inválido';
+  }
+
   onImageSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -90,15 +115,15 @@ export class EditProductsPageComponent {
       const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
   
       if (!hasValidExtension) {
-        this.forms.get('imageUrl')?.setErrors({ invalidImageFormat: true });
-        this.forms.get('imageUrl')?.markAsTouched();
+        this.forms.get('image')?.setErrors({ invalidImageFormat: true });
+        this.forms.get('image')?.markAsTouched();
         return;
       }
   
       this.selectedImage = file;
-      this.forms.get('imageUrl')?.setValue(file);
-      this.forms.get('imageUrl')?.markAsTouched();
-      this.forms.get('imageUrl')?.updateValueAndValidity();
+      this.forms.get('image')?.setValue(file);
+      this.forms.get('image')?.markAsTouched();
+      this.forms.get('image')?.updateValueAndValidity();
   
       
       const reader = new FileReader();
@@ -113,124 +138,47 @@ export class EditProductsPageComponent {
   removeImage() {
     this.selectedImage = null;
     this.imagePreview = null;
-    this.forms.get('imageUrl')?.setValue(null);
-    this.forms.get('imageUrl')?.markAsTouched();
-    this.forms.get('imageUrl')?.updateValueAndValidity();
-  }
-
-
-  protected getFieldError(fieldName: keyof IProductEdit): string {
-    const control = this.forms.get(fieldName);
-
-    if (!control || !control.errors || !control.touched) return '';
-
-    const errors = {
-      required: 'Este campo es requerido',
-      minlength: `Mínimo ${control.errors['minlength']?.requiredLength} caracteres`,
-      maxlength: `Máximo ${control.errors['maxlength']?.requiredLength} caracteres`,
-      pattern: 'Solo se permiten letras y espacios',
-      invalidName: 'El nombre debe contener solo letras y espacios',
-      invalidPrice: 'El precio debe ser un número positivo superior a 0$ y menor a 99999999$',
-      invalidStock: 'El stock debe ser un número positivo superior a 0 y menor a 99999',
-      invalidProductTypeId: 'El tipo de producto debe ser un número positivo entre 1 y 5',
-      invalidImage: 'Formato de imagen inválido, solo se permiten archivos .png, .jpeg y .jpg de hasta 10MB',
-    };
-
-    const firstError = Object.keys(control.errors)[0];
-    return errors[firstError as keyof typeof errors] || 'Campo inválido';
+    this.forms.get('image')?.setValue(null);
+    this.forms.get('image')?.markAsTouched();
+    this.forms.get('image')?.updateValueAndValidity();
   }
 
   async editProduct(productId: number) {
     this.errors = [];
-    this.error = false;
-    if (this.forms.controls['name'].errors !== null) {
-      this.nameError = true;
-    }
-    if (this.forms.controls['price'].errors !== null) {
-      this.priceError = true;
-    }
-    if (this.forms.controls['stock'].errors !== null) {
-      this.stockError = true;
-    }
-    if (this.forms.controls['productTypeId'].errors !== null) {
-      this.productTypeIdError = true;
-    }
-    if (this.forms.controls['imageUrl'].errors !== null) {
-      this.imageError = true;
+    if (this.forms.invalid) {
+      this.toastService.error('Por favor, revisa los campos del formulario');
+      return;
     }
 
-
-    if (this.forms.invalid) return;
-
-    try {
-      // Validar producto duplicado
-      const isDuplicate = await this.productManagementService.validateProductNameAndType(
-        this.forms.value.name,
-        parseInt(this.forms.value.productTypeId)
-      );
-
-      if (isDuplicate) {
-        this.error = true;
-        this.errors.push('Ya existe un producto con el mismo nombre y tipo de producto');
-        return;
-      }
-  
-    
-      const formData = new FormData();
-      formData.append('name', this.forms.value.name);
-      formData.append('price', this.forms.value.price.toString());
-      formData.append('stock', this.forms.value.stock.toString());
-      formData.append('productTypeId', this.forms.value.productTypeId.toString());
-  
+    try {  
+      this.ieditProduct.name = this.forms.value.name;
+      this.ieditProduct.price = this.forms.value.price;
+      this.ieditProduct.stock = this.forms.value.stock;
+      this.ieditProduct.productTypeId = this.forms.value.productTypeId;
    
       if (this.selectedImage) {
-        formData.append('image', this.selectedImage, this.selectedImage.name); 
+        this.ieditProduct.image = this.selectedImage;
       }
-      const response = await this.productManagementService.putProduct(productId, formData);
+      const response = await this.productManagementService.putProduct(productId, this.ieditProduct);
       if (response) {
-        this.error = false;
-        this.errors = [];
-        console.log('Producto actualizado con éxito');
         console.log('Producto Actualizado:', response);
-        this.mensajeCreado = "Producto Actualizado con éxito";
-      } else {
-        this.error = true;
+        this.toastService.success('Producto actualizado correctamente');
+        this.forms.reset();
+      }else {
         this.errors = this.productManagementService.getErrors();
         console.log("Error al actualizar el producto",this.errors);
+        const lastError = this.errors[this.errors.length - 1];
+        this.toastService.error(lastError || 'Ocurrio un error desconocido');
       }
-    } catch (error:any) {
-      const errores = error;
-      this.error = true;
-      this.errors = [];
-      console.error('Error en editProduct', errores);
-
-      for(const key in errores){
-        if (errores.hasOwnProperty(key)) {
-          this.errors.push(errores[key]);
+    }catch (error:any) {
+      if(error instanceof HttpErrorResponse)
+        {
+          const errorMessage = 
+            typeof error.error === 'string' ? error.error : error.error.message || error.statusText || 'Ocurrió un error inesperado';
+          this.errors.push(errorMessage);
+          this.toastService.error(errorMessage || 'Ocurrió un error inesperado');
         }
-      } 
-    }finally{
-      console.log('Petición Finalizada');
-      this.forms.reset();
+        console.log('Error en editProduct page', error);
     }
   }
-
-  get nameInvalid() {
-    return this.forms.get('name')?.invalid && this.forms.get('name')?.touched;
-  }
-  get priceInvalid() {
-    return this.forms.get('price')?.invalid && this.forms.get('price')?.touched;
-  }
-  get stockInvalid() {
-    return this.forms.get('stock')?.invalid && this.forms.get('stock')?.touched;
-  }
-  get imageUrlInvalid() {
-    return this.forms.get('imageUrl')?.invalid && this.forms.get('imageUrl')?.touched;
-  }
-  get productTypeIdInvalid() {
-    return this.forms.get('productTypeId')?.invalid && this.forms.get('productTypeId')?.touched;
-  }
-  
-  
-
 }

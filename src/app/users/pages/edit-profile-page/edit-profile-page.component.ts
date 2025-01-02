@@ -64,7 +64,6 @@ export class EditProfilePageComponent {
       maxlength: `Máximo ${control.errors['maxlength']?.requiredLength} caracteres`,
       pattern: 'Solo se permiten letras y espacios',
       futureDate: 'La fecha de nacimiento no puede ser mayor a la fecha actual',
-      validGender: 'El género debe ser Masculino, Femenino, Prefiero no decirlo u Otro'
     };
 
     const firstError = Object.keys(control.errors)[0];
