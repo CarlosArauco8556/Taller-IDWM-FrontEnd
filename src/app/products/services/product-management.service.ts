@@ -22,48 +22,12 @@ export class ProductManagementService {
     try{
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
       let params = new HttpParams()
-      if(IQueryParams.textFilter) params = params.set('textFilter', IQueryParams.textFilter);
-      if(IQueryParams.pageNumber) params = params.set('pageNumber', IQueryParams.pageNumber.toString());
-      if(IQueryParams.pageSize) params = params.set('pageSize', IQueryParams.pageSize.toString());
+        if(IQueryParams.textFilter) params = params.set('textFilter', IQueryParams.textFilter);
+        if(IQueryParams.pageNumber) params = params.set('pageNumber', IQueryParams.pageNumber.toString());
+        if(IQueryParams.pageSize) params = params.set('pageSize', IQueryParams.pageSize.toString());
 
       const response = await firstValueFrom( this.http.get<IProduct[]>(`${this.baseUrl}/ProductManagement`, {params: params, headers: headers }))
       return Promise.resolve(response);
-      
-    } catch (error) {
-      console.log('Error en getProducts service', error);
-      let e = error as HttpErrorResponse;
-      this.errors.push(e.message);
-      return Promise.reject(e);
-    }
-  }
-  async validateProductNameAndType(name: string, productTypeId: number): Promise<boolean> {
-    try {
-      const queryParams: IQueryParams = {
-        textFilter: '',
-        pageNumber: 1,
-        pageSize: 1000
-      };
-
-      const products = await this.getProducts(queryParams);
-      
-      return products.some(product => 
-        product.name.toLowerCase() === name.toLowerCase() && 
-        product.productType.id === productTypeId
-      );
-    } catch (error) {
-      console.error('Error validating product:', error);
-      throw error;
-    }
-  }
-  
-  
-
-  async postProduct(formData: FormData): Promise<IProductEdit[]> {
-    try{
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-
-      const response = await firstValueFrom( this.http.post<IProductEdit[]>(`${this.baseUrl}/ProductManagement`, formData, {headers: headers}))
-      return response;
     } catch (error) {
       if(error instanceof HttpErrorResponse)
         {
@@ -72,38 +36,60 @@ export class ProductManagementService {
           this.errors.push(errorMessage);
         }
         return Promise.reject(error);
-      }
+    }
   }
 
-  async putProduct(id: number, formData: FormData): Promise<IProductEdit> {
+  async postProduct(iProductAdd: IProductEdit): Promise<IProduct> {
     try{
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-
-      const response = await firstValueFrom( this.http.put<IProductEdit>(`${this.baseUrl}/ProductManagement/${id}`, formData, {headers: headers}))
-      return response;
+      const response = await firstValueFrom( this.http.post<IProduct>(`${this.baseUrl}/ProductManagement`, iProductAdd, {headers: headers}))
+      return Promise.resolve(response);
     } catch (error) {
+      console.log('Error en postProduct service', error);
       if(error instanceof HttpErrorResponse)
-        {
-          const errorMessage = 
-            typeof error.error === 'string' ? error.error : error.message;
-          this.errors.push(errorMessage);
-        }
-        return Promise.reject(error);
+      {
+        const errorMessage = 
+          typeof error.error === 'string' ? error.error : error.message;
+        this.errors.push(errorMessage);
       }
-  }
-
-  async deleteProduct(id: number): Promise<void> {
-    try {
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-
-      await firstValueFrom(this.http.delete<void>(`${this.baseUrl}/ProductManagement/${id}`, { headers: headers }));
-    } catch (error) {
-      console.log('Error en deleteProduct', error);
-      let e = error as HttpErrorResponse;
-      this.errors.push(e.message);
       return Promise.reject(error);
     }
   }
+
+  async putProduct(id: number, iProductEdit: IProductEdit): Promise<IProduct> {
+    try{
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
+      const response = await firstValueFrom( this.http.put<IProduct>(`${this.baseUrl}/ProductManagement/${id}`, iProductEdit, {headers: headers}))
+      return Promise.resolve(response);
+    } catch (error) {
+      console.log('Error en putProduct service', error);
+      if(error instanceof HttpErrorResponse)
+      {
+        const errorMessage = 
+          typeof error.error === 'string' ? error.error : error.message;
+        this.errors.push(errorMessage);
+      }
+      return Promise.reject(error);
+    }
+  }
+
+  async deleteProduct(id: number): Promise<IProduct> {
+    try {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
+      const response = await firstValueFrom(this.http.delete<IProduct>(`${this.baseUrl}/ProductManagement/${id}`, { headers: headers }));
+      return Promise.resolve(response);
+    } catch (error) {
+      console.log('Error en deleteProduct service', error);
+      if(error instanceof HttpErrorResponse)
+      {
+        const errorMessage = 
+          typeof error.error === 'string' ? error.error : error.message;
+        this.errors.push(errorMessage);
+      }
+      return Promise.reject(error);
+    }
+  }
+
   getErrors(): string[] {
     return this.errors;
   }

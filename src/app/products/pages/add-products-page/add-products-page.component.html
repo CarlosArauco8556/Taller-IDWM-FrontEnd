@@ -104,7 +104,7 @@
           La imagen no debe superar los 10 MB.
         </p>
       </div>
-      <div *ngIf="error && errors.length > 0" class="max-w-md mx-auto mb-4">
+      <div *ngIf="errors.length > 0" class="max-w-md mx-auto mb-4">
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
           <span class="block sm:inline" *ngFor="let error of errors">{{ error }}</span>
         </div>

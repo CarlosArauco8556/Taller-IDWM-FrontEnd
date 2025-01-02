@@ -5,6 +5,7 @@ import { IProductEdit } from '../../interfaces/IProductEdit';
 import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { ToastService } from '../../../_shared/services/toast.service';
 
 @Component({
   selector: 'app-add-products-page',
@@ -17,8 +18,8 @@ import { ActivatedRoute } from '@angular/router';
 export class AddProductsPageComponent {
   private productManagementService: ProductManagementService = inject(ProductManagementService);
     ieditProduct: IProductEdit = {name : '', price: 0, stock: 0, imageUrl: '', productTypeId: 0};
+    toastService: ToastService = inject(ToastService);
     errors: string[] = [];
-    error: boolean = false;
     forms: FormGroup = new FormGroup({});
     productId!: number;
     imagePreview: string | null = null;
@@ -139,22 +140,21 @@ export class AddProductsPageComponent {
   
     async addProduct() {
       this.errors = [];
-      this.error = false;
-    if (this.forms.controls['name'].errors !== null) {
-      this.nameError = true;
-    }
-    if (this.forms.controls['price'].errors !== null) {
-      this.priceError = true;
-    }
-    if (this.forms.controls['stock'].errors !== null) {
-      this.stockError = true;
-    }
-    if (this.forms.controls['productTypeId'].errors !== null) {
-      this.productTypeIdError = true;
-    }
-    if (this.forms.controls['imageUrl'].errors !== null) {
-      this.imageError = true;
-    }
+      if (this.forms.controls['name'].errors !== null) {
+        this.nameError = true;
+      }
+      if (this.forms.controls['price'].errors !== null) {
+        this.priceError = true;
+      }
+      if (this.forms.controls['stock'].errors !== null) {
+        this.stockError = true;
+      }
+      if (this.forms.controls['productTypeId'].errors !== null) {
+        this.productTypeIdError = true;
+      }
+      if (this.forms.controls['imageUrl'].errors !== null) {
+        this.imageError = true;
+      }
       if (this.forms.invalid) return;
     
       
@@ -166,7 +166,6 @@ export class AddProductsPageComponent {
         );
   
         if (isDuplicate) {
-          this.error = true;
           this.errors.push('Ya existe un producto con el mismo nombre y tipo de producto');
           return;
         }
@@ -183,30 +182,23 @@ export class AddProductsPageComponent {
   
         const response = await this.productManagementService.postProduct(formData);
         if (response) {
-          this.error = false;
-          this.errors = [];
+          this.forms.reset();
           console.log('Producto creado con éxito');
           console.log('Producto Creado:', response);
           this.mensajeCreado = "Producto Creado con éxito";
         } else {
-          this.error = true;
           this.errors = this.productManagementService.getErrors();
           console.log("Error al crear el producto",this.errors);
         }
-      } catch (error:any) {
-        const errores = error;
-        this.error = true;
-        this.errors = [];
-        console.error('Error en addProduct', errores);
-  
-        for(const key in errores){
-          if (errores.hasOwnProperty(key)) {
-            this.errors.push(errores[key]);
+      } catch (error: any) {
+        if(error instanceof HttpErrorResponse)
+          {
+            const errorMessage = 
+              typeof error.error === 'string' ? error.error : error.error.message || error.statusText || 'Ocurrió un error inesperado';
+            this.errors.push(errorMessage);
+            this.toastService.error(errorMessage || 'Ocurrió un error inesperado');
           }
-        } 
-      } finally {
-        console.log('Petición Finalizada');
-        this.forms.reset();
+          console.log('Error en addProduct page', error);
       }
     }
   
