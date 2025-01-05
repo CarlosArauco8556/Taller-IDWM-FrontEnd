@@ -13,7 +13,7 @@ export class PurchaseService {
   baseUrl =  'http://localhost:5012/api/SaleDisplay/SaleDisplay';
   private http = inject(HttpClient);
   public errors: string[] = [];
-  token = this.localStorageServiceService.getVairbel('token');
+  token = this.localStorageServiceService.getVariable('token');
 
   async getPurchases(iQueryParams: IQueryParams): Promise<IGetPurchases[]>{
     try {

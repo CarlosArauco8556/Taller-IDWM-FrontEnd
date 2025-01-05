@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-cart-info',
   standalone: true,
-  imports: [CommonModule, CreatePurchaseComponent],
+  imports: [CommonModule],
   templateUrl: './cart-info.component.html',
   styleUrl: './cart-info.component.css'
 })

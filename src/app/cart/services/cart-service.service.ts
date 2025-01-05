@@ -35,19 +35,19 @@ export class CartServiceService {
       const currentTime = Math.floor(Date.now() / 1000);
       
       if (payload.exp && currentTime > payload.exp) {
-        this.localStorageService.removeVairbel('token');
+        this.localStorageService.removeVariable('token');
         return false;
       }
       
       return true;
     } catch {
-      this.localStorageService.removeVairbel('token');
+      this.localStorageService.removeVariable('token');
       return false;
     }
   }
 
   private getValidToken(): string | null {
-    const token = this.localStorageService.getVairbel('token');
+    const token = this.localStorageService.getVariable('token');
     if (token && this.isTokenValid(token)) {
       return token;
     }

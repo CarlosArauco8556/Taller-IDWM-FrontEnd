@@ -13,7 +13,7 @@ export class PurchaseUserServiceService {
   baseUrl = 'http://localhost:5012/api';
   private http = inject(HttpClient);
   public errors: string[] = [];
-  token = this.localStorageServiceService.getVairbel('token');
+  token = this.localStorageServiceService.getVariable('token');
 
 
   async postPurchaseUser(newPurchase: INewPurchase): Promise<number> {

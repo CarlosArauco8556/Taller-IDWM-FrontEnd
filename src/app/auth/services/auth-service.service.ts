@@ -11,7 +11,7 @@ import { LocalStorageServiceService } from '../../_shared/services/local-storage
 })
 export class AuthServiceService {
   public localStorageServiceService: LocalStorageServiceService = inject(LocalStorageServiceService);
-  public token: string = this.localStorageServiceService.getVairbel('token') ||'';
+  public token: string = this.localStorageServiceService.getVariable('token') ||'';
   private baseUrl = 'http://localhost:5012/api/Auth';
   private httpclient: HttpClient = inject(HttpClient);
   public errors: string[] = [];
@@ -64,7 +64,7 @@ export class AuthServiceService {
   }
 
   private clearAuthData(): void {
-    this.localStorageServiceService.removeVairbel('token');
+    this.localStorageServiceService.removeVariable('token');
     this.token = '';
     this.errors = [];
   }

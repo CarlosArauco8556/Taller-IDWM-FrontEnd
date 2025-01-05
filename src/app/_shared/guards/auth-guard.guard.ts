@@ -7,7 +7,7 @@ export const authGuardGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const localStorageService = inject(LocalStorageServiceService);
   
-  const token = localStorageService.getVairbel('token');
+  const token = localStorageService.getVariable('token');
   
   // Si no hay token, redirigir a home
   if (!token) {
@@ -20,7 +20,7 @@ export const authGuardGuard: CanActivateFn = (route, state) => {
   // Verificar validez del token y limpiarlo si ha expirado
   if (!payload || !isTokenValid(payload)) {
     console.warn('Token inválido o expirado - Limpiando localStorage');
-    localStorageService.removeVairbel('token');
+    localStorageService.removeVariable('token');
     router.navigate(['/home']);
     return false;
   }

@@ -13,7 +13,7 @@ export class UserManagementService {
   baseUrl: string = "http://localhost:5012/api/UserManagement";
   private http = inject(HttpClient);
   public errors: string[] = [];
-  token = this.localStorageServiceService.getVairbel('token');
+  token = this.localStorageServiceService.getVariable('token');
 
   async getUsers(IQueryParams: IQueryParams): Promise<IGetUsers[]> {
     try {
