@@ -30,6 +30,9 @@ export class ProductManagementService {
   /// Cliente http
   /// </summary>
   private http: HttpClient = inject(HttpClient);
+  /// <summary>
+  /// Token de autorización
+  /// </summary>
   token = this.localStorageServiceService.getVariable('token');
 
   
