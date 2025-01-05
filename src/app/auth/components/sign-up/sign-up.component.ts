@@ -3,8 +3,9 @@ import { AuthServiceService } from '../../services/auth-service.service';
 import { LocalStorageServiceService } from '../../../_shared/services/local-storage-service.service';
 import { ToastService } from '../../../_shared/services/toast.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { SignUp } from '../../interfaces/SignUp';
 
 @Component({
   selector: 'app-sign-up',
@@ -19,6 +20,7 @@ export class SignUpComponent implements OnInit {
   private authService: AuthServiceService = inject(AuthServiceService);
   private localStorageService: LocalStorageServiceService = inject(LocalStorageServiceService);
   private toastService: ToastService = inject(ToastService);
+  iSignUp: SignUp = { rut: '', name: '', dateOfBirth: null, gender: '', email: '', password: '', confirmPassword: ''};
   forms!: FormGroup;
   public confirmMessage: string = '';
 
@@ -32,13 +34,15 @@ export class SignUpComponent implements OnInit {
 
   createForm() {
     this.forms = this.formBuilder.group({
-      rut: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(10)])],
-      name: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20)])],
-      birthdate: ['', Validators.compose([Validators.required])],
+      rut: ['', Validators.compose([Validators.required, Validators.pattern('^(?=.*[.])(?=.*[-]).*$')])],
+      name: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(255)])],
+      dateOfBirth: ['', Validators.compose([Validators.required])],
       gender: ['', Validators.compose([Validators.required])],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      password: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(20)])],
-      confirmPassword: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(20)])]
+      password: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(20), 
+        Validators.pattern('^[a-zA-Z0-9]+$')])],
+      confirmPassword: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(20),
+        Validators.pattern('^[a-zA-Z0-9]+$')])]
     });
   }
 
@@ -53,8 +57,19 @@ export class SignUpComponent implements OnInit {
     }
 
     try {
-      const signUpDto = this.forms.value;
-      const response = await this.authService.signUp(signUpDto);
+      if (this.forms.invalid){
+        this.toastService.error('Por favor, complete los campos correctamente.');
+        return;
+      }
+      this.iSignUp.rut = this.forms.value.rut;
+      this.iSignUp.name = this.forms.value.name;
+      this.iSignUp.dateOfBirth = this.forms.value.dateOfBirth;
+      this.iSignUp.gender = this.forms.value.gender;
+      this.iSignUp.email = this.forms.value.email;
+      this.iSignUp.password = this.forms.value.password;
+      this.iSignUp.confirmPassword = this.forms.value.confirmPassword;
+
+      const response = await this.authService.signUp(this.iSignUp);
 
       if (response) {
         if (response.token) {
@@ -68,15 +83,23 @@ export class SignUpComponent implements OnInit {
           this.toastService.success('Usuario registrado correctamente.');
         } else {
           console.log('Error al registrar el usuario', this.authService.errors);
-          this.toastService.error('Error al registrar el usuario.');
+          const lastError = this.authService.errors[this.authService.errors.length - 1];
+          this.toastService.error(lastError || 'Error al registrar el usuario.');
         } 
       } else {
         console.log('Error al registrar el usuario', this.authService.errors);
-        this.toastService.error('Error al registrar el usuario.');
+        const lastError = this.authService.errors[this.authService.errors.length - 1];
+        this.toastService.error(lastError || 'Error al registrar el usuario.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log('Error al registrar el usuario', this.authService.errors);
-      this.toastService.error('Error al registrar el usuario.');
+      if(error instanceof HttpErrorResponse)
+        {
+          const errorMessage = 
+            typeof error.error === 'string' ? error.error : error.error.message || error.error.errors.Name || 
+              error.error.errors.Password || error.statusText;
+          this.toastService.error(errorMessage || 'Error al registrar el usuario');
+        }
     }
   }
 
@@ -86,8 +109,8 @@ export class SignUpComponent implements OnInit {
       if (rut.hasError('required')) {
         return 'El rut es obligatorio.';
       }
-      if (rut.hasError('minlength') || rut.hasError('maxlength')) {
-        return 'El rut debe tener 9 caracteres.';
+      if (rut.hasError('pattern')) {
+        return 'El rut debe contener puntos y guion.';
       }
     }
     return null;
@@ -100,14 +123,14 @@ export class SignUpComponent implements OnInit {
         return 'El nombre es obligatorio.';
       }
       if (name.hasError('minlength') || name.hasError('maxlength')) {
-        return 'El nombre debe tener entre 3 y 20 caracteres.';
+        return 'El nombre debe tener entre 8 y 255 caracteres.';
       }
     }
     return null;
   }
 
   get BirthdateErrors() {
-    const birthdate = this.forms.get('birthdate');
+    const birthdate = this.forms.get('dateOfBirth');
     if (birthdate?.invalid && birthdate?.touched) {
       if (birthdate.hasError('required')) {
         return 'La fecha de nacimiento es obligatoria.';
@@ -151,6 +174,9 @@ export class SignUpComponent implements OnInit {
       if (password.hasError('maxlength')) {
         return 'La contraseña no debe exceder 20 caracteres.';
       }
+      if (password.hasError('pattern')) {
+        return 'La contraseña debe ser alfanumérica.';
+      }
     }
     return null;
   }
@@ -166,6 +192,9 @@ export class SignUpComponent implements OnInit {
       }
       if (confirmPassword.hasError('maxlength')) {
         return 'La confirmación de la contraseña no debe exceder 20 caracteres.';
+      }
+      if (confirmPassword.hasError('pattern')) {
+        return 'La contraseña debe ser alfanumérica.';
       }
     }
     return null;

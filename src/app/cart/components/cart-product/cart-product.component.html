@@ -27,8 +27,8 @@
       <!-- Imagen del producto -->
       <div class="w-32 h-32 flex-shrink-0">
         <img
-          src="https://res.cloudinary.com/dd0ljsgtp/image/upload/v1728516121/cld-sample-4.jpg"
-          alt="producto"
+          [src]="cartItem.imageUrl"
+          alt="Imagen de {{ cartItem.name }}"
           class="w-full h-full object-cover rounded-lg"
         />
       </div>

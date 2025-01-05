@@ -13,6 +13,7 @@ import { CartServiceService } from '../../../cart/services/cart-service.service'
 import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
 import { LogInComponent } from "../../../auth/components/log-in/log-in.component";
 import { SignUpComponent } from "../../../auth/components/sign-up/sign-up.component";
+import { ToastService } from '../../../_shared/services/toast.service';
 
 @Component({
   selector: 'app-home-page',
@@ -28,6 +29,7 @@ export class HomePageComponent {
   private productService: ProductServiceService = inject(ProductServiceService);
   private cartService: CartServiceService = inject(CartServiceService);
   private queryService: QueryServiceService = inject(QueryServiceService);
+  private toastService: ToastService = inject(ToastService);
   private filterSubscription!: Subscription;
 
   public product!: Product;
@@ -72,6 +74,9 @@ export class HomePageComponent {
         console.log(products);
         for (let i = 0; i < products.length; i++) {
           this.productsList.push(products[i]);
+        }
+        if (this.productsList.length === 0){
+          this.toastService.warning('No se encontraron productos', 2000);
         }
       }).catch((error) => {
         console.log(error);

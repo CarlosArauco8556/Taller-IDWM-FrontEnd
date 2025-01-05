@@ -6,20 +6,17 @@ import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule, DatePipe } from '@angular/common';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
-import { AddButtonComponent } from '../../components/add-button/add-button.component';
-import { Router } from '@angular/router';
 import { ToastService } from '../../../_shared/services/toast.service';
 
 @Component({
   selector: 'app-management-products-page',
   standalone: true,
-  imports: [HttpClientModule, CommonModule, PaginationComponent, ProductCardComponent, AddButtonComponent, DatePipe, ],
+  imports: [HttpClientModule, CommonModule, PaginationComponent, ProductCardComponent, DatePipe],
   providers: [ProductManagementService],
   templateUrl: './management-products-page.component.html',
   styleUrl: './management-products-page.component.css'
 })
 export class ManagementProductsPageComponent implements OnInit {
-
   productsList: IProduct[] = [];
   productManagementService: ProductManagementService = inject(ProductManagementService);
   IQueryParams: IQueryParams = { textFilter: '', pageNumber: 1, pageSize: 10 };
@@ -30,7 +27,6 @@ export class ManagementProductsPageComponent implements OnInit {
 
   ngOnInit() {
     this.getProducts('');
-
   }
 
   async getProducts(input: string){
@@ -64,10 +60,4 @@ export class ManagementProductsPageComponent implements OnInit {
     }
 
   }
-  constructor(private router: Router) { }
-
-  addProduct() {
-    this.router.navigate(['/add-products']);
-  }
-
 }
