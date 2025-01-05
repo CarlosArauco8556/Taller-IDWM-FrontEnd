@@ -7,6 +7,9 @@ import { LocalStorageServiceService } from '../../../_shared/services/local-stor
 import { Router } from '@angular/router';
 import { ToastService } from '../../../_shared/services/toast.service';
 
+/**
+ * Componente para el inicio de sesión de un usuario.
+ */
 @Component({
   selector: 'app-log-in',
   standalone: true,
@@ -16,21 +19,48 @@ import { ToastService } from '../../../_shared/services/toast.service';
   styleUrl: './log-in.component.css'
 })
 export class LogInComponent implements OnInit {
-
+  /**
+   * Inyección del servicio de autenticación.
+   */
   private authService: AuthServiceService = inject(AuthServiceService);
+  /**
+   * Inyección del servicio de almacenamiento local.
+   */
   private localStorageService: LocalStorageServiceService = inject(LocalStorageServiceService);
+  /**
+   * Inyección del servicio de notificaciones.
+   */
   private toastService: ToastService = inject(ToastService);
+  /**
+   * Formulario de inicio de sesión.
+   */
   forms!: FormGroup;
+  /**
+   * Mensaje de confirmación.
+   */
   public confirmMessage: string = '';
-  
+  /**
+   * Evento de emisión para cerrar el formulario de inicio de sesión.
+   */
   @Output() logInFormIsOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  /**
+   * Constructor del componente.
+   * @param formBuilder Objeto para la creación de formularios. 
+   * @param router Objeto para la navegación entre rutas.
+   */
   constructor(private formBuilder: FormBuilder, private router: Router) {}
 
+  /**
+   * Método que se ejecuta al iniciar el componente.
+   */
   ngOnInit() {
     this.createForm();
   }
 
+  /**
+   * Método para crear el formulario de inicio de sesión.
+   */
   createForm() {
     this.forms = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
@@ -38,6 +68,10 @@ export class LogInComponent implements OnInit {
     });
   }
 
+  /**
+   *  Método para enviar el formulario de inicio de sesión.
+   * @returns Un mensaje de confirmación si el usuario se loguea correctamente o no.
+   */
   async onSubmit() {
     console.log('Formulario válido:', this.forms.valid);
     if (this.forms.invalid) {
@@ -86,10 +120,16 @@ export class LogInComponent implements OnInit {
     }
   }
 
+  /**
+   * Método para cerrar el formulario de inicio de sesión.
+   */
   closeLogInForm(): void {
     this.logInFormIsOpen.emit(false);
   }
 
+  /**
+   * Método para obtener los errores del campo de correo.
+   */
   get EmailErrors() {
     const email = this.forms.get('email');
     if (email?.invalid && email?.touched) {
@@ -103,6 +143,9 @@ export class LogInComponent implements OnInit {
     return null;
   }
   
+  /**
+   * Método para obtener los errores del campo de contraseña.
+   */
   get PasswordErrors() {
     const password = this.forms.get('password');
     if (password?.invalid && password?.touched) {

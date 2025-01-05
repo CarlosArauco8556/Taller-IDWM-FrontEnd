@@ -28,12 +28,9 @@ export class PurchaseUserServiceService {
   /// Lista de errores
   /// </summary>
   public errors: string[] = [];
-<<<<<<< HEAD
-=======
   /// <summary>
   /// Token de autorización
   /// </summary>
->>>>>>> da30a3e73f1a4360e7ddca0f4ae6d6dd38b4c0a4
   token = this.localStorageServiceService.getVariable('token');
 
   /// <summary>
