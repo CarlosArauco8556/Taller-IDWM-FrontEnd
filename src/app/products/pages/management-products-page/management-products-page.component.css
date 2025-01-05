@@ -1,5 +1,4 @@
 
-/* Estilos para la barra de búsqueda */
 nav {
   position: sticky;
   top: 0;
@@ -27,7 +26,6 @@ a.relative {
   position: relative;
 }
 
-/* Resto de los estilos existentes */
 .main-content {
   flex-grow: 1;
   padding: 20px;
@@ -44,6 +42,6 @@ a.relative {
   padding-bottom: 20px;
 }
 
-/* Mantén el resto de tus estilos de tarjetas y botones igual */
+
 
 
