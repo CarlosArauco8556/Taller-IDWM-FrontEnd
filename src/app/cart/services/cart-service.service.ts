@@ -29,9 +29,34 @@ export class CartServiceService {
     responseType: 'text' as 'text'
   };
 
-  getCart(): Observable<Cart> {
+  private isTokenValid(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const currentTime = Math.floor(Date.now() / 1000);
+      
+      if (payload.exp && currentTime > payload.exp) {
+        this.localStorageService.removeVairbel('token');
+        return false;
+      }
+      
+      return true;
+    } catch {
+      this.localStorageService.removeVairbel('token');
+      return false;
+    }
+  }
 
+  private getValidToken(): string | null {
     const token = this.localStorageService.getVairbel('token');
+    if (token && this.isTokenValid(token)) {
+      return token;
+    }
+    // Si el token no es válido, se elimina automáticamente en isTokenValid
+    return null;
+  }
+
+  getCart(): Observable<Cart> {
+    const token = this.getValidToken();
 
     if (token) {
       console.log('autenticado:', token);
@@ -46,10 +71,20 @@ export class CartServiceService {
         }
       ).pipe(
         tap(cart => this.cartSubject.next(cart)),
-        catchError(this.handleError)
+        catchError(error => {
+          // Si hay un error de autorización, intentamos la versión sin autenticar
+          if (error.status === 401) {
+            return this.getUnauthenticatedCart();
+          }
+          return this.handleError(error);
+        })
       );
     }
 
+    return this.getUnauthenticatedCart();
+  }
+
+  private getUnauthenticatedCart(): Observable<Cart> {
     console.log('no autenticado');
     return this.http.get<Cart>(
       `${this.baseUrl}/ProductsInCart`, 
@@ -61,8 +96,7 @@ export class CartServiceService {
   }
 
   addProductToCart(productId: number, quantity: number): Observable<string> {
-
-    const token = this.localStorageService.getVairbel('token');
+    const token = this.getValidToken();
 
     if (token) {
       console.log('autenticado:', token);
@@ -78,10 +112,19 @@ export class CartServiceService {
         }
       ).pipe(
         tap(() => this.refreshCart()),
-        catchError(this.handleError)
+        catchError(error => {
+          if (error.status === 401) {
+            return this.addProductToCartUnauthenticated(productId, quantity);
+          }
+          return this.handleError(error);
+        })
       );
     }
 
+    return this.addProductToCartUnauthenticated(productId, quantity);
+  }
+
+  private addProductToCartUnauthenticated(productId: number, quantity: number): Observable<string> {
     return this.http.post(
       `${this.baseUrl}/AddTocart/${productId}/${quantity}`,
       null,
@@ -93,8 +136,7 @@ export class CartServiceService {
   }
 
   updateProductQuantity(productId: number, isIncrement: boolean): Observable<string> {
-
-    const token = this.localStorageService.getVairbel('token');
+    const token = this.getValidToken();
 
     if (token) {
       console.log('autenticado:', token);
@@ -110,10 +152,19 @@ export class CartServiceService {
         }
       ).pipe(
         tap(() => this.refreshCart()),
-        catchError(this.handleError)
+        catchError(error => {
+          if (error.status === 401) {
+            return this.updateProductQuantityUnauthenticated(productId, isIncrement);
+          }
+          return this.handleError(error);
+        })
       );
     }
 
+    return this.updateProductQuantityUnauthenticated(productId, isIncrement);
+  }
+
+  private updateProductQuantityUnauthenticated(productId: number, isIncrement: boolean): Observable<string> {
     return this.http.put(
       `${this.baseUrl}/UpdateCart/${productId}/${1}?isIncrement=${isIncrement}`,
       null,
@@ -125,8 +176,7 @@ export class CartServiceService {
   }
 
   removeProductFromCart(productId: number): Observable<string> {
-
-    const token = this.localStorageService.getVairbel('token');
+    const token = this.getValidToken();
 
     if (token) {
       console.log('autenticado:', token);
@@ -141,10 +191,19 @@ export class CartServiceService {
         }
       ).pipe(
         tap(() => this.refreshCart()),
-        catchError(this.handleError)
+        catchError(error => {
+          if (error.status === 401) {
+            return this.removeProductFromCartUnauthenticated(productId);
+          }
+          return this.handleError(error);
+        })
       );
     }
 
+    return this.removeProductFromCartUnauthenticated(productId);
+  }
+
+  private removeProductFromCartUnauthenticated(productId: number): Observable<string> {
     return this.http.delete(
       `${this.baseUrl}/RemoveFromCart/${productId}`,
       this.textHttpOptions

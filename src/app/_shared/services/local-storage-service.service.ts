@@ -17,5 +17,4 @@ export class LocalStorageServiceService {
   removeVairbel(key: string): void {
     localStorage.removeItem(key);
   }
-  
 }

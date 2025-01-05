@@ -42,17 +42,30 @@ export class AuthServiceService {
   async logout(): Promise<string> {
     try {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-      const response = await firstValueFrom(this.httpclient.post<{ message: string }>(`${this.baseUrl}/logout`, {} , { headers: headers }));
+      const response = await firstValueFrom(
+        this.httpclient.post<{ message: string }>(`${this.baseUrl}/logout`, {}, { headers: headers })
+      );
+      
+      this.clearAuthData();
+      
       return Promise.resolve(response.message);
     } catch (error) {
       console.log("Error in logout service", error);
-      if(error instanceof HttpErrorResponse)
-      {
+      
+      this.clearAuthData();
+      
+      if (error instanceof HttpErrorResponse) {
         const errorMessage = 
           typeof error.error === 'string' ? error.error : error.message;
         this.errors.push(errorMessage);
       }
       return Promise.reject(error);
     }
+  }
+
+  private clearAuthData(): void {
+    this.localStorageServiceService.removeVairbel('token');
+    this.token = '';
+    this.errors = [];
   }
 }
