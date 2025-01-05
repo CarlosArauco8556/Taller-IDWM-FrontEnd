@@ -28,10 +28,7 @@ export class PurchaseUserServiceService {
   /// Lista de errores
   /// </summary>
   public errors: string[] = [];
-  /// <summary>
-  /// Se obtiene el token del local storage
-  /// </summary
-  token = this.localStorageServiceService.getVairbel('token');
+  token = this.localStorageServiceService.getVariable('token');
 
   /// <summary>
   /// Método para realizar una compra de un producto

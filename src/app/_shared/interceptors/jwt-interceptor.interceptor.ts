@@ -4,7 +4,7 @@ import { LocalStorageServiceService } from '../services/local-storage-service.se
 
 export const jwtInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
   const localStorageService = inject(LocalStorageServiceService);
-  const token = localStorageService.getVairbel('token');
+  const token = localStorageService.getVariable('token');
 
   if (token) {
     req = req.clone({

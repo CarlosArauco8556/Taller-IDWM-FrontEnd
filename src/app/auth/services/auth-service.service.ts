@@ -11,7 +11,7 @@ import { LocalStorageServiceService } from '../../_shared/services/local-storage
 })
 export class AuthServiceService {
   public localStorageServiceService: LocalStorageServiceService = inject(LocalStorageServiceService);
-  public token: string = this.localStorageServiceService.getVairbel('token') ||'';
+  public token: string = this.localStorageServiceService.getVariable('token') ||'';
   private baseUrl = 'http://localhost:5012/api/Auth';
   private httpclient: HttpClient = inject(HttpClient);
   public errors: string[] = [];
@@ -42,17 +42,30 @@ export class AuthServiceService {
   async logout(): Promise<string> {
     try {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
-      const response = await firstValueFrom(this.httpclient.post<{ message: string }>(`${this.baseUrl}/logout`, {} , { headers: headers }));
+      const response = await firstValueFrom(
+        this.httpclient.post<{ message: string }>(`${this.baseUrl}/logout`, {}, { headers: headers })
+      );
+      
+      this.clearAuthData();
+      
       return Promise.resolve(response.message);
     } catch (error) {
       console.log("Error in logout service", error);
-      if(error instanceof HttpErrorResponse)
-      {
+      
+      this.clearAuthData();
+      
+      if (error instanceof HttpErrorResponse) {
         const errorMessage = 
           typeof error.error === 'string' ? error.error : error.message;
         this.errors.push(errorMessage);
       }
       return Promise.reject(error);
     }
+  }
+
+  private clearAuthData(): void {
+    this.localStorageServiceService.removeVariable('token');
+    this.token = '';
+    this.errors = [];
   }
 }
