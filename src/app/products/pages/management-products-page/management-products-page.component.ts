@@ -11,7 +11,7 @@ import { ToastService } from '../../../_shared/services/toast.service';
 @Component({
   selector: 'app-management-products-page',
   standalone: true,
-  imports: [HttpClientModule, CommonModule, PaginationComponent, ProductCardComponent, DatePipe],
+  imports: [HttpClientModule, CommonModule, PaginationComponent, ProductCardComponent],
   providers: [ProductManagementService],
   templateUrl: './management-products-page.component.html',
   styleUrl: './management-products-page.component.css'

@@ -14,7 +14,7 @@ export class ProductManagementService {
   private baseUrl = 'http://localhost:5012/api';
   public errors: string[] = [];
   private http: HttpClient = inject(HttpClient);
-  token = this.localStorageServiceService.getVairbel('token');
+  token = this.localStorageServiceService.getVariable('token');
 
   
 

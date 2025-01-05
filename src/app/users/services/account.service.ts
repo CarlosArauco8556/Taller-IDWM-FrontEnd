@@ -14,7 +14,7 @@ export class AccountService {
   baseUrl: string = "http://localhost:5012/api/Account";
   private http = inject(HttpClient);
   public errors: string[] = [];
-  token = this.locaStorageServiceService.getVairbel('token');
+  token = this.locaStorageServiceService.getVariable('token');
 
   async editProfile(IEditProfile: IEditProfile): Promise<string> {
     try {
