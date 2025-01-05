@@ -56,9 +56,9 @@ export class LogInComponent implements OnInit {
       if (response) {
         if (response.token) {
           this.authService.errors = [];
-          this.localStorageService.setVairbel('token', response.token);
-          this.localStorageService.setVairbel('user', response.email);
-          console.log('usuario:', this.localStorageService.getVairbel('user'));
+          this.localStorageService.setVariable('token', response.token);
+          this.localStorageService.setVariable('user', response.email);
+          console.log('usuario:', this.localStorageService.getVariable('user'));
           console.log(response);
           this.confirmMessage = 'Usuario logueado correctamente.';
           this.closeLogInForm();

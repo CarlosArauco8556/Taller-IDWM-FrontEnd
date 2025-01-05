@@ -3,7 +3,6 @@ import { Component, inject } from '@angular/core';
 import { ManagementUsersPageComponent } from '../../../users/pages/management-users-page/management-users-page.component';
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { ManagementProductsPageComponent } from '../../../products/pages/management-products-page/management-products-page.component';
-import { EditProductsPageComponent } from '../../../products/pages/edit-products-page/edit-products-page.component';
 import { AddProductsPageComponent } from '../../../products/pages/add-products-page/add-products-page.component';
 import { GetPurchasesPageComponent } from '../../../purchases/pages/get-purchases-page/get-purchases-page.component';
 import { AuthServiceService } from '../../../auth/services/auth-service.service';
@@ -13,7 +12,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-home-admin-page',
   standalone: true,
-  imports: [HttpClientModule, CommonModule, ManagementUsersPageComponent, ManagementProductsPageComponent, EditProductsPageComponent, AddProductsPageComponent, GetPurchasesPageComponent],
+  imports: [HttpClientModule, CommonModule, ManagementUsersPageComponent, ManagementProductsPageComponent, AddProductsPageComponent, GetPurchasesPageComponent],
   providers: [AuthServiceService],
   templateUrl: './home-admin-page.component.html',
   styleUrl: './home-admin-page.component.css'
