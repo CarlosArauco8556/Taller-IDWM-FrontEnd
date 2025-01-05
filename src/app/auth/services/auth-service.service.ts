@@ -26,7 +26,7 @@ export class AuthServiceService {
    */
   private baseUrl = 'http://localhost:5012/api/Auth';
   /**
-   * Cliente HTTP para realizar solicitudes HTTP..
+   * Cliente HTTP para realizar solicitudes HTTP.
    */
   private httpclient: HttpClient = inject(HttpClient);
   /**

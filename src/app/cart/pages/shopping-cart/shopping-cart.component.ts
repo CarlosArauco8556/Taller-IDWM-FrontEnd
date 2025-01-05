@@ -9,6 +9,9 @@ import { UpdateItem } from '../../interfaces/updateItem';
 import { CommonModule } from '@angular/common';
 import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
 
+/**
+ * Componente de la página de carrito de compras
+ */
 @Component({
   selector: 'app-shopping-cart',
   standalone: true,
@@ -18,16 +21,33 @@ import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.com
   styleUrl: './shopping-cart.component.css'
 })
 export class ShoppingCartComponent {
+  /**
+   * Instancia del carrito de compras
+   */
   public cart!: Cart;
+  /**
+   * Lista de productos del carrito
+   */
   public productsList: CartItem[] = [];
+  /**
+   * Servicio de carrito de compras
+   */
   private cartService: CartServiceService = inject(CartServiceService);
-
+  /**
+   * Servicio de actualización de ítems
+   */
   public updateItem!: UpdateItem;
 
+  /**
+   * Servicio de eliminación de ítems
+   */
   ngOnInit(): void {
     this.getCartProducts();
   }
 
+  /**
+   * Método para obtener los productos del carrito
+   */
   getCartProducts(): void {
     this.cartService.getCart().subscribe((cart) => {
       console.log(cart);
