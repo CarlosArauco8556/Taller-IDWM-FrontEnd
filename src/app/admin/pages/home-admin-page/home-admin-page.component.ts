@@ -8,7 +8,9 @@ import { GetPurchasesPageComponent } from '../../../purchases/pages/get-purchase
 import { AuthServiceService } from '../../../auth/services/auth-service.service';
 import { ToastService } from '../../../_shared/services/toast.service';
 import { Router } from '@angular/router';
-
+/**
+ * Componente que representa la página principal del administrador
+ */
 @Component({
   selector: 'app-home-admin-page',
   standalone: true,
@@ -18,15 +20,42 @@ import { Router } from '@angular/router';
   styleUrl: './home-admin-page.component.css'
 })
 export class HomeAdminPageComponent {
+  /**
+   * Servicio de autenticación
+   */
   authService: AuthServiceService = inject(AuthServiceService);
+  /**
+   * Servicio de notificaciones
+   */
   toastService: ToastService = inject(ToastService);
+  /**
+   * Router
+   */
   router: Router = inject(Router);
+  /**
+   * Lista de errores
+   */
   errors: string[] = [];
+  /**
+   * Indica si el menú de productos está abierto
+   */
   isProductOpen: boolean;
+  /**
+   * Indica si el menú de usuarios está abierto
+   */
   isUserOpen: boolean;
+  /**
+   * Indica si el menú de compras está abierto
+   */
   isPurchaseOpen: boolean;
+  /**
+   * Componente actual
+   */
   currentComponent: string = '';
   
+  /**
+   * Constructor del componente
+   */
   constructor() 
   {
     this.isProductOpen = false;
@@ -34,10 +63,17 @@ export class HomeAdminPageComponent {
     this.isPurchaseOpen = false;
   }
 
+  /**
+   * Carga un componente
+   * @param component Nombre del componente
+   */
   loadComponent(component: string) {
     this.currentComponent = component;
   }
 
+  /**
+   * Metodo que abre el menú de productos
+   */
   openProductMenu()
   {
     this.isUserOpen = false;
@@ -45,6 +81,9 @@ export class HomeAdminPageComponent {
     this.isProductOpen = !this.isProductOpen;
   }
 
+  /**
+   * Metodo que abre el menú de usuarios
+   */
   openUserMenu()
   {
     this.isProductOpen = false;
@@ -52,6 +91,9 @@ export class HomeAdminPageComponent {
     this.isUserOpen = !this.isUserOpen;
   }
 
+  /**
+   * Metodo que abre el menú de compras
+   */
   openPurchasesMenu()
   {
     this.isProductOpen = false;
@@ -59,6 +101,9 @@ export class HomeAdminPageComponent {
     this.isPurchaseOpen = !this.isPurchaseOpen;
   }
 
+  /**
+   * Metodo que cierra la sesión del usuario
+   */
   async logout(){
     try {
       const response = await this.authService.logout();

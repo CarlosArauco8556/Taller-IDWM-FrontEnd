@@ -1,12 +1,15 @@
+/**
+ * Interfaz que define la estructura de los datos que se almacenan en el token JWT.
+ */
 export interface JWTPayload {
-    email: string;
-    given_name: string;
-    nameid: string;
-    jti: string;
-    role: string;
-    nbf: number;
-    exp: number;
-    iat: number;
-    iss: string;
-    aud: string;
+    email: string;      // Correo electrónico
+    given_name: string; // Nombre
+    nameid: string;     // Identificador
+    jti: string;        // Identificador único
+    role: string;       // Rol
+    nbf: number;        // Fecha de inicio
+    exp: number;        // Fecha de expiración
+    iat: number;        // Fecha de creación
+    iss: string;        // Emisor    
+    aud: string;        // Audiencia
 }
