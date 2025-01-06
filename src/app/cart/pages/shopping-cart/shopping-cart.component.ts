@@ -10,6 +10,9 @@ import { CommonModule } from '@angular/common';
 import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
 import { LogInComponent } from "../../../auth/components/log-in/log-in.component";
 
+/**
+ * Componente de la página de carrito de compras
+ */
 @Component({
   selector: 'app-shopping-cart',
   standalone: true,
@@ -19,13 +22,25 @@ import { LogInComponent } from "../../../auth/components/log-in/log-in.component
   styleUrl: './shopping-cart.component.css'
 })
 export class ShoppingCartComponent {
+  /**
+   * Instancia del carrito de compras
+   */
   public cart!: Cart;
+  /**
+   * Lista de productos del carrito
+   */
   public productsList: CartItem[] = [];
+  /**
+   * Servicio de carrito de compras
+   */
   private cartService: CartServiceService = inject(CartServiceService);
   public logInFormIsOpen = false;
 
   public updateItem!: UpdateItem;
 
+  /**
+   * Servicio de eliminación de ítems
+   */
   ngOnInit(): void {
     this.getCartProducts();
   }

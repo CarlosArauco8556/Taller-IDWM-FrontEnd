@@ -3,6 +3,9 @@ import { ToastService } from '../../services/toast.service';
 import { CommonModule } from '@angular/common';
 import { Toast } from '../../interfaces/Toast';
 
+/**
+ * Componente que representa el Toast.
+ */
 @Component({
   selector: 'toast',
   standalone: true,
@@ -11,9 +14,19 @@ import { Toast } from '../../interfaces/Toast';
   styleUrl: './toast.component.css'
 })
 export class ToastComponent {
+  /**
+   * Servicio de notificaciones
+   */
   toastService: ToastService = inject(ToastService);
+  /**
+   * Lista de Toasts
+   */
   toasts = this.toastService.getToasts();
 
+  /**
+   * Metodo para agregar una clase de color dependiendo del tipo de Toast.
+   * @param type Tipo de Toast
+   */
   getTextColorClasses(type: string): string {
     switch (type) {
       case 'success':
@@ -29,6 +42,11 @@ export class ToastComponent {
     }
   }
 
+  /**
+   * Metodo para agregar una clase de fondo dependiendo del tipo de Toast.
+   * @param type Tipo de Toast
+   * @returns Clase de fondo
+   */
   getIconBackgroundClass(type: string): string {
     switch (type) {
       case 'success':
@@ -44,6 +62,11 @@ export class ToastComponent {
     }
   }
 
+  /**
+   * Metodo para agregar una clase de icono dependiendo del tipo de Toast.
+   * @param type Tipo de Toast
+   * @returns Clase de icono
+   */
   getIconClass(type: string): string {
     const baseClass = 'w-4 h-4';
     switch (type) {
@@ -59,7 +82,13 @@ export class ToastComponent {
         return baseClass;
     }
   }
-
+ 
+  /**
+   * Metodo trackBy para los Toasts.
+   * @param index Indice
+   * @param toast Toast
+   * @returns ID del Toast
+   */
   trackByToastId(index: number, toast: Toast): string {
     return toast.id;
   }

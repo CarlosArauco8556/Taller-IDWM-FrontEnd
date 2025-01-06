@@ -6,7 +6,9 @@ import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { IQueryParams } from '../../interfaces/IQueryParams';
-
+/**
+ * Componente para obtener las ventas
+ */
 @Component({
   selector: 'get-purchases-page',
   standalone: true,
@@ -16,23 +18,51 @@ import { IQueryParams } from '../../interfaces/IQueryParams';
   styleUrl: './get-purchases-page.component.css'
 })
 export class GetPurchasesPageComponent implements OnInit{
+  /**
+   * Servicio de compras
+   */
   purchaseService: PurchaseService = inject(PurchaseService);
+  /**
+   * Servicio de notificaciones
+   */
   toastService: ToastService = inject(ToastService);
+  /**
+   * Lista de compras
+   */
   purchases: IGetPurchases[] = [];
+  /**
+   * Filtro de nombre de usuario
+   */
   textFilterUserName: string = '';
+  /**
+   * Set de compras visibles
+   */
   visibleSaleItems = new Set<number>();
+  /**
+   * Parámetros de la consulta
+   */
   iQueryParams: IQueryParams = {
     isDescendingDate: null,
     userName: '',
     page: 1,
     pageSize: 10
   };
+  /**
+   * Lista de errores
+   */
   errors: string[] = []
 
+  /**
+   * Método para inicializar el componente
+   */
   ngOnInit(){
     this.getPurchases('');
   }
   
+  /**
+   * Método para obtener las ventas
+   * @param input Filtro de nombre de usuario
+   */
   async getPurchases(input: string){
     this.errors = [];
     try{
@@ -63,6 +93,10 @@ export class GetPurchasesPageComponent implements OnInit{
     }
   }
 
+  /**
+   * Método para cambiar el filtro de orden
+   * @param event Evento de cambio de filtro
+   */
   onFilterChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;
 
@@ -84,6 +118,10 @@ export class GetPurchasesPageComponent implements OnInit{
     }
   }
 
+  /**
+   *  Método para mostrar u ocultar los items de venta
+   * @param purchaseId ID de la compra
+   */
   toggleSaleItems(purchaseId: number): void {
     if (this.visibleSaleItems.has(purchaseId)) {
       this.visibleSaleItems.delete(purchaseId);
@@ -92,10 +130,20 @@ export class GetPurchasesPageComponent implements OnInit{
     }
   }
 
+  /**
+   * Método para verificar si los items de venta son visibles
+   * @param purchaseId ID de la compra
+   * @returns Si los items de venta son visibles
+   */
   isSaleItemsVisible(purchaseId: number): boolean {
     return this.visibleSaleItems.has(purchaseId);
   }
 
+  /**
+   * Método para formatear la moneda
+   * @param value Valor a formatear
+   * @returns Valor formateado
+   */
   formatCurrency(value: number): string {
     return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(value);
   }

@@ -5,15 +5,32 @@ import { firstValueFrom } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { QueryParams } from '../interfaces/queryParams';
 
+/**
+ * Servicio para obtener productos.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class ProductServiceService {
 
+  /**
+   * URL base de la API.
+   */
   private baseUrl = 'http://localhost:5012/api/Product';
+  /**
+   * Lista de errores.
+   */
   private errors: string[] = [];
+  /**
+   * Cliente HTTP para realizar solicitudes HTTP.
+   */
   private http: HttpClient = inject(HttpClient);
 
+  /**
+   * Método para obtener todos los productos disponibles.
+   * @param queryParamsI Objeto con los parámetros de consulta. 
+   * @returns Retorna una promesa con la lista de productos.
+   */
   async getAll(queryParamsI: QueryParams): Promise<Product[]> {
     try {
       // Asegúrate de inicializar correctamente HttpParams

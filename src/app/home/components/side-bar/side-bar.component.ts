@@ -1,6 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { QueryServiceService } from '../../services/query-service.service';
 
+/**
+ * Componente que representa la barra lateral de filtros
+ */
 @Component({
   selector: 'app-side-bar',
   standalone: true,
@@ -10,8 +13,16 @@ import { QueryServiceService } from '../../services/query-service.service';
 })
 export class SideBarComponent {
 
+  /**
+   * Servicio de consulta de productos
+   */
   private queryService: QueryServiceService = inject(QueryServiceService);
 
+  /**
+   * Método que se ejecuta al cambiar un filtro
+   * @param event Evento que se dispara al cambiar un filtro
+   * @param filterType Filtro que se está cambiando
+   */
   onFilterChange(event: Event, filterType: string): void {
     const value = (event.target as HTMLSelectElement).value;
 

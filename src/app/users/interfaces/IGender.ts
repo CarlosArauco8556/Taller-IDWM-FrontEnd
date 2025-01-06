@@ -1,6 +1,9 @@
+/**
+ * Enumerado de género
+ */
 export enum IGender {
-    Masculino = "Masculino",
-    Femenino = "Femenino",
-    PrefieroNoDecirlo = "Prefiero no decirlo",
-    Otro = "Otro",
+    Masculino = "Masculino",                   //Masculino
+    Femenino = "Femenino",                     //Femenino
+    PrefieroNoDecirlo = "Prefiero no decirlo", //Prefiero no decirlo
+    Otro = "Otro",                             //Otro
 }

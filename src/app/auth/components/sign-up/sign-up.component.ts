@@ -7,6 +7,9 @@ import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { SignUp } from '../../interfaces/SignUp';
 
+/**
+ * Componente para el registro de usuarios.
+ */
 @Component({
   selector: 'app-sign-up',
   standalone: true,
@@ -16,22 +19,51 @@ import { SignUp } from '../../interfaces/SignUp';
   styleUrl: './sign-up.component.css'
 })
 export class SignUpComponent implements OnInit {
-
+  /**
+   * Inyección del servicio de autenticación.
+   */
   private authService: AuthServiceService = inject(AuthServiceService);
+  /**
+   * Inyección del servicio de almacenamiento local.
+   */
   private localStorageService: LocalStorageServiceService = inject(LocalStorageServiceService);
+  /**
+   * Inyección del servicio de notificaciones.
+   */
   private toastService: ToastService = inject(ToastService);
+  /**
+   * Objeto para almacenar los datos del formulario de registro.
+   */
   iSignUp: SignUp = { rut: '', name: '', dateOfBirth: null, gender: '', email: '', password: '', confirmPassword: ''};
+  /**
+   * Formulario de registro.
+   */
   forms!: FormGroup;
+  /**
+   * Mensaje de confirmación.
+   */
   public confirmMessage: string = '';
-
+  /**
+   * Evento para cerrar el formulario de registro.
+   */
   @Output() signUpFormIsOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  /**
+   * Constructor del componente.
+   * @param formBuilder Objeto para construir formularios.
+   */
   constructor(private formBuilder: FormBuilder) {}
 
+  /**
+   * Método que se ejecuta al iniciar el componente.
+   */
   ngOnInit() {
     this.createForm();
   }
 
+  /**
+   * Método para crear el formulario de registro.
+   */
   createForm() {
     this.forms = this.formBuilder.group({
       rut: ['', Validators.compose([Validators.required, Validators.pattern('^(?=.*[.])(?=.*[-]).*$')])],
@@ -46,10 +78,16 @@ export class SignUpComponent implements OnInit {
     });
   }
 
+  /**
+   * Método para cerrar el formulario de registro.
+   */
   closeSignUpForm(): void {
     this.signUpFormIsOpen.emit(false);
   }
 
+  /**
+   * Método para enviar el formulario de registro.
+   */
   async onSubmit() {
     console.log('Formulario válido:', this.forms.valid);
     if (this.forms.invalid) {
@@ -103,6 +141,9 @@ export class SignUpComponent implements OnInit {
     }
   }
 
+  /**
+   * Método para obtener los errores del formulario.
+   */
   get RutErrors() {
     const rut = this.forms.get('rut');
     if (rut?.invalid && rut?.touched) {
@@ -116,6 +157,9 @@ export class SignUpComponent implements OnInit {
     return null;
   }
 
+  /**
+   * Método para obtener los errores del formulario.
+   */
   get NameErrors() {
     const name = this.forms.get('name');
     if (name?.invalid && name?.touched) {
@@ -129,6 +173,9 @@ export class SignUpComponent implements OnInit {
     return null;
   }
 
+  /**
+   * Método para obtener los errores del formulario.
+   */
   get BirthdateErrors() {
     const birthdate = this.forms.get('dateOfBirth');
     if (birthdate?.invalid && birthdate?.touched) {
@@ -139,6 +186,9 @@ export class SignUpComponent implements OnInit {
     return null;
   }
 
+  /**
+   * Método para obtener los errores del formulario.
+   */
   get GenderErrors() {
     const gender = this.forms.get('gender');
     if (gender?.invalid && gender?.touched) {
@@ -149,6 +199,9 @@ export class SignUpComponent implements OnInit {
     return null;
   }
   
+  /**
+   * Método para obtener los errores del formulario.
+   */
   get EmailErrors() {
     const email = this.forms.get('email');
     if (email?.invalid && email?.touched) {
@@ -162,6 +215,9 @@ export class SignUpComponent implements OnInit {
     return null;
   }
 
+  /**
+   * Método para obtener los errores del formulario.
+   */
   get PasswordErrors() {
     const password = this.forms.get('password');
     if (password?.invalid && password?.touched) {
@@ -181,6 +237,9 @@ export class SignUpComponent implements OnInit {
     return null;
   }
 
+  /**
+   * Método para obtener los errores del formulario.
+   */
   get ConfirmPasswordErrors() {
     const confirmPassword = this.forms.get('confirmPassword');
     if (confirmPassword?.invalid && confirmPassword?.touched) {
@@ -200,6 +259,9 @@ export class SignUpComponent implements OnInit {
     return null;
   }
 
+  /**
+   * Método para obtener los errores del formulario.
+   */
   get PasswordMatchError() {
     const password = this.forms.get('password');
     const confirmPassword = this.forms.get('confirmPassword');

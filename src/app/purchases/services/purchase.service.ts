@@ -5,16 +5,39 @@ import { firstValueFrom } from 'rxjs';
 import { IGetPurchases } from '../interfaces/IGetPurchases';
 import { LocalStorageServiceService } from '../../_shared/services/local-storage-service.service';
 
+/**
+ * Servicio de compras
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class PurchaseService {
+  /**
+   * Servicio de almacenamiento local
+   */
   localStorageServiceService: LocalStorageServiceService = inject(LocalStorageServiceService);
+  /**
+   * Url base de la API
+   */
   baseUrl =  'http://localhost:5012/api/SaleDisplay/SaleDisplay';
+  /**
+   * Cliente HTTP
+   */
   private http = inject(HttpClient);
+  /**
+   * Lista de errores
+   */
   public errors: string[] = [];
+  /**
+   * Token de autenticación
+   */
   token = this.localStorageServiceService.getVariable('token');
 
+  /**
+   * Método para obtener las compras
+   * @param iQueryParams Parámetros de la consulta
+   * @returns Lista de compras
+   */
   async getPurchases(iQueryParams: IQueryParams): Promise<IGetPurchases[]>{
     try {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);

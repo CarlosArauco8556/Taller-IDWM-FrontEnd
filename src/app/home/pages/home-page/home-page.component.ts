@@ -15,6 +15,9 @@ import { LogInComponent } from "../../../auth/components/log-in/log-in.component
 import { SignUpComponent } from "../../../auth/components/sign-up/sign-up.component";
 import { ToastService } from '../../../_shared/services/toast.service';
 
+/**
+ * Componente de la página principal de la aplicación
+ */
 @Component({
   selector: 'app-home-page',
   standalone: true,
@@ -25,35 +28,79 @@ import { ToastService } from '../../../_shared/services/toast.service';
 })
 export class HomePageComponent {
 
+  /**
+   * Lista de productos a mostrar en la página principal
+   */
   public productsList: Product[] = [];
+  /**
+   * Servicio de productos
+   */
   private productService: ProductServiceService = inject(ProductServiceService);
+  /**
+   * Servicio de carrito
+   */
   private cartService: CartServiceService = inject(CartServiceService);
+  /**
+   * Servicio de filtros
+   */
   private queryService: QueryServiceService = inject(QueryServiceService);
+  /**
+   * Servicio de notificaciones
+   */
   private toastService: ToastService = inject(ToastService);
+  /**
+   * Suscripción a los filtros
+   */
   private filterSubscription!: Subscription;
-
+  /**
+   * Producto seleccionado
+   */
   public product!: Product;
+  /**
+   * Indica si el formulario de inicio de sesión está abierto
+   */
   public logInFormIsOpen = false;
+  /**
+   * Indica si el formulario de registro está abierto
+   */
   public signUpFormIsOpen = false;
 
+  /**
+   * Función que se ejecuta al iniciar el componente
+   */
   ngOnInit(): void {
     this.filterSubscription = this.queryService.currentFilters$.subscribe((filters) => {
       this.getProducts(filters);
     });
   }
 
+  /**
+   * Función que se ejecuta al destruir el componente
+   */
   ngOnDestroy(): void {
     this.filterSubscription?.unsubscribe();
   }
 
+  /**
+   * Método que recibe si el formulario de inicio de sesión está abierto
+   * @param logInFormIsOpen Objeto que indica si el formulario de inicio de sesión está abierto
+   */
   reciveLogInFormIsOpen(logInFormIsOpen: boolean): void {
     this.logInFormIsOpen = logInFormIsOpen;
   }
 
+  /**
+   * Método que recibe si el formulario de registro está abierto
+   * @param signUpFormIsOpen Objeto que indica si el formulario de registro está abierto
+   */
   reciveSignUpFormIsOpen(signUpFormIsOpen: boolean): void {
     this.signUpFormIsOpen = signUpFormIsOpen;
   }
 
+  /**
+   * Método que recibe el producto seleccionado
+   * @param product Objeto que representa el producto seleccionado
+   */
   reciveIdProductForCart(product: Product): void {
     this.product = product;
 
@@ -67,6 +114,10 @@ export class HomePageComponent {
     }
   }
 
+  /**
+   * Método que obtiene los productos
+   * @param filter: QueryParams Objeto que contiene los filtros de búsqueda
+   */
   getProducts(filter: QueryParams): void {
     try {
       this.productsList = [];
@@ -86,6 +137,10 @@ export class HomePageComponent {
     }
   }
 
+  /**
+   * Método que añade un producto al carrito
+   * @param productId Numero que representa el identificador del producto
+   */
   addProductToCart(productId: number): void {
     this.cartService.addProductToCart(productId, 1).subscribe({
       next: (cart) => {
