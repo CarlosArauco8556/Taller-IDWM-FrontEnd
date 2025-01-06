@@ -8,11 +8,12 @@ import { CartItem } from '../../interfaces/cartItem';
 import { UpdateItem } from '../../interfaces/updateItem';
 import { CommonModule } from '@angular/common';
 import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
+import { LogInComponent } from "../../../auth/components/log-in/log-in.component";
 
 @Component({
   selector: 'app-shopping-cart',
   standalone: true,
-  imports: [CartProductComponent, CartInfoComponent, CommonModule, HttpClientModule, NavBarComponent],
+  imports: [CartProductComponent, CartInfoComponent, CommonModule, HttpClientModule, NavBarComponent, LogInComponent],
   providers: [CartServiceService],
   templateUrl: './shopping-cart.component.html',
   styleUrl: './shopping-cart.component.css'
@@ -21,11 +22,16 @@ export class ShoppingCartComponent {
   public cart!: Cart;
   public productsList: CartItem[] = [];
   private cartService: CartServiceService = inject(CartServiceService);
+  public logInFormIsOpen = false;
 
   public updateItem!: UpdateItem;
 
   ngOnInit(): void {
     this.getCartProducts();
+  }
+
+  reciveLogInFormIsOpen(logInFormIsOpen: boolean): void {
+    this.logInFormIsOpen = logInFormIsOpen;
   }
 
   getCartProducts(): void {
