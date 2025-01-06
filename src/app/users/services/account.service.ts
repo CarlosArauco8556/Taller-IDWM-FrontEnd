@@ -5,17 +5,39 @@ import { IGetUsers } from '../interfaces/IGetUsers';
 import { firstValueFrom } from 'rxjs';
 import { IChangePassword } from '../interfaces/IChangePassword';
 import { LocalStorageServiceService } from '../../_shared/services/local-storage-service.service';
-
+/**
+ * Servicio que se encarga de las operaciones de la cuenta de usuario.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
+  /**
+   * Servicio que gestiona el almacenamiento local.
+   */
   locaStorageServiceService: LocalStorageServiceService = inject(LocalStorageServiceService);
+  /**
+   * Url base de la API.
+   */
   baseUrl: string = "http://localhost:5012/api/Account";
+  /**
+   * Cliente HTTP.
+   */
   private http = inject(HttpClient);
+  /**
+   * Lista de errores que se pueden producir al realizar las operaciones de la cuenta de usuario.
+   */
   public errors: string[] = [];
+  /**
+   * Token de autenticación.
+   */
   token = this.locaStorageServiceService.getVariable('token');
 
+  /**
+   * Metodo que se encarga de obtener los usuarios.
+   * @param IEditProfile Interfaz que representa los datos necesarios para realizar la edición de perfil.
+   * @returns Mensaje de éxito o error.
+   */
   async editProfile(IEditProfile: IEditProfile): Promise<string> {
     try {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
@@ -34,6 +56,11 @@ export class AccountService {
     }
   }
 
+  /**
+   *  Metodo que se encarga de cambiar la contraseña de un usuario.
+   * @param IChangePassword Interfaz que representa los datos necesarios para realizar el cambio de contraseña.
+   * @returns Mensaje de éxito o error.
+   */
   async changePassword(IChangePassword: IChangePassword): Promise<string> {
     try {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token}`);

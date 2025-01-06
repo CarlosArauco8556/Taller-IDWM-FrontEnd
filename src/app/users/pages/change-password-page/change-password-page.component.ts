@@ -7,7 +7,9 @@ import { IChangePassword } from '../../interfaces/IChangePassword';
 import { ToastService } from '../../../_shared/services/toast.service';
 import { ToggleButtonComponent } from '../../components/toggle-button/toggle-button.component';
 import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
-
+/**
+ * Componente que se encarga de la página de cambio de contraseña de un usuario.
+ */
 @Component({
   selector: 'app-change-password-page',
   standalone: true,
@@ -17,18 +19,43 @@ import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.com
   styleUrl: './change-password-page.component.css'
 })
 export class ChangePasswordPageComponent {
+  /**
+   * Servicio que gestiona las operaciones de la cuenta de usuario.
+   */
   accountService: AccountService = inject(AccountService);
+  /**
+   * Servicio que gestiona los mensajes emergentes.
+   */
   toastService: ToastService = inject(ToastService);
+  /**
+   * Formulario de cambio de contraseña
+   */
   forms: FormGroup = new FormGroup({});
+  /**
+   * Interfaz que representa los datos necesarios para realizar el cambio de contraseña.
+   */
   iChangePassword: IChangePassword = {currentPassword: '', newPassword: '', confirmPassword: ''};
+  /**
+   * Lista de errores que se pueden producir al realizar el cambio de contraseña.
+   */
   errors: string[] = [];
 
+  /**
+   * Constructor que inyecta el FormBuilder
+   * @param FormBuilder FormBuilder de la aplicación
+   */
   constructor(private FormBuilder: FormBuilder){}
 
+  /**
+   * Metodo que se encarga de inicializar el formulario
+   */
   ngOnInit(){
     this.createForm();
   }
 
+  /**
+   * Metodo que se encarga de crear el formulario
+   */
   createForm(){
     this.forms = this.FormBuilder.group({
       currentPassword: ['', [Validators.required, Validators.minLength(8), 
@@ -40,6 +67,10 @@ export class ChangePasswordPageComponent {
     });
   }
 
+  /**
+   * Metodo que se encarga de validar que la contraseña de confirmación coincida con la nueva contraseña.
+   * @returns Validador de la contraseña de confirmación.
+   */
   private passwordMatchValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const newPassword = this.forms.get('newPassword')?.value;
@@ -49,6 +80,11 @@ export class ChangePasswordPageComponent {
     };
   }
 
+  /**
+   * Metodo que se encarga de obtener el mensaje de error de un campo del formulario.
+   * @param fieldName Nombre del campo del formulario.
+   * @returns Mensaje de error del campo del formulario.
+   */
   protected getFieldError(fieldName: keyof IChangePassword): string {
     const control = this.forms.get(fieldName);
 
@@ -66,6 +102,10 @@ export class ChangePasswordPageComponent {
     return errors[firstError as keyof typeof errors] || 'Campo inválido';
   }
 
+  /**
+   * Metodo que se encarga de realizar el cambio de contraseña.
+   * @returns Promesa con el resultado de la operación.
+   */
   async changePassword(){
     this.errors = [];
     if(this.forms.invalid){

@@ -6,7 +6,9 @@ import { IGetUsers } from '../../interfaces/IGetUsers';
 import { IQueryParams } from '../../interfaces/IQueryParams';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { ToastService } from '../../../_shared/services/toast.service';
-
+/**
+ * Componente que se encarga de la página de gestión de usuarios.
+ */
 @Component({
   selector: 'management-users-page',
   standalone: true,
@@ -16,12 +18,33 @@ import { ToastService } from '../../../_shared/services/toast.service';
   styleUrl: './management-users-page.component.css'
 })
 export class ManagementUsersPageComponent implements OnInit {
+  /**
+   * Servicio que gestiona las operaciones del admin sobre los usuarios.
+   */
   userManagementService: UserManagementService = inject(UserManagementService);
+  /**
+   * Servicio que gestiona los mensajes emergentes.
+   */
   toastService: ToastService = inject(ToastService);
+  /**
+   * Parametros de la consulta.
+   */
   iQueryParams: IQueryParams = { name: '', page: 1, pageSize: 10 };
+  /**
+   * Lista de usuarios obtenidos.
+   */
   users: IGetUsers[] = [];
+  /**
+   * Filtro de nombre de usuario.
+   */
   textFilterName: string = '';
+  /**
+   * Lista de errores que se pueden producir al realizar la gestión de usuarios.
+   */
   errors: string[] = [];
+  /**
+   * Cabeceras de la tabla de usuarios.
+   */
   tableHeaders = [
     { key: 'userName', label: 'Nombre de usuario' },
     { key: 'rut', label: 'RUT' },
@@ -32,10 +55,17 @@ export class ManagementUsersPageComponent implements OnInit {
     { key: 'isActive', label: 'Activo' }
   ];
 
+  /**
+   * Metodo que se encarga de inicializar la página
+   */
   ngOnInit(){
     this.getUsers('');
   }
 
+  /**
+   * Metodo que se encarga de obtener los usuarios
+   * @param input Filtro de nombre de usuario
+   */
   async getUsers(input: string){
     this.errors = [];
     try{
@@ -68,6 +98,10 @@ export class ManagementUsersPageComponent implements OnInit {
 
   }
 
+  /**
+   * Metodo que se encarga de cambiar el estado de un usuario
+   * @param email Correo electrónico del usuario
+   */
   async changeState(email: string){
     this.errors = [];
     try{
@@ -88,6 +122,11 @@ export class ManagementUsersPageComponent implements OnInit {
     }
   }
 
+  /**
+   * Metodo que cambia el formato del estado de un usuario
+   * @param input Estado del usuario
+   * @returns Estado del usuario en formato de mensaje
+   */
   showMessageIsActive(input: number | null): string{
     if(input === 1){
       return 'Sí';

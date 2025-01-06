@@ -7,7 +7,9 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { ToggleButtonComponent } from '../../components/toggle-button/toggle-button.component';
 import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
-
+/**
+ * Componente que se encarga de la página de edición de perfil de un usuario.
+ */
 @Component({
   selector: 'app-edit-profile-page',
   standalone: true,
@@ -17,18 +19,43 @@ import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.com
   styleUrl: './edit-profile-page.component.css'
 })
 export class EditProfilePageComponent {
+  /**
+   * Servicio que gestiona las operaciones de la cuenta de usuario.
+   */
   accountService: AccountService = inject(AccountService);
+  /**
+   * Servicio que gestiona los mensajes emergentes.
+   */
   toastService: ToastService = inject(ToastService);
+  /**
+   * Interfaz que representa los datos necesarios para realizar la edición de perfil.
+   */
   iEditProfile: IEditProfile = {name: '', dateOfBirth: null, gender: null};
+  /**
+   * Lista de errores que se pueden producir al realizar la edición de perfil.
+   */
   errors: string[] = [];
+  /**
+   * Formulario de edición de perfil
+   */
   forms: FormGroup = new FormGroup({});
 
+  /**
+   * Constructor que inyecta el FormBuilder
+   * @param FormBuilder FormBuilder de la aplicación
+   */
   constructor(private FormBuilder: FormBuilder){}
 
+  /**
+   * Metodo que se encarga de inicializar el formulario
+   */
   ngOnInit(){
     this.createForm();
   }
 
+  /**
+   * Metodo que se encarga de crear el formulario
+   */
   createForm(){
     this.forms = this.FormBuilder.group({
       name: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(255), 
@@ -38,6 +65,10 @@ export class EditProfilePageComponent {
     });
   }
 
+  /**
+   * Metodo que se encarga de validar que las contraseñas coincidan
+   * @returns ValidatorFn
+   */
   private ageValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) return null;
@@ -53,6 +84,11 @@ export class EditProfilePageComponent {
     };
   }
 
+  /**
+   * Metodo que se encarga de obtener el error de un campo
+   * @param fieldName Nombre del campo del fomrulario
+   * @returns Mensaje de error del campo del formulario
+   */
   protected getFieldError(fieldName: keyof IEditProfile): string {
     const control = this.forms.get(fieldName);
 
@@ -70,6 +106,10 @@ export class EditProfilePageComponent {
     return errors[firstError as keyof typeof errors] || 'Campo inválido';
   }
 
+  /**
+   * Metodo que se encarga de editar el perfil del usuario
+   * @returns Promesa que indica si se pudo editar el perfil
+   */
   async editProfile(){
     this.errors = [];
     if(this.forms.invalid){
