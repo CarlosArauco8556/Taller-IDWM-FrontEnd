@@ -1,0 +1,32 @@
+/* Estilo para la barra de navegación */
+nav {
+  position: sticky; /* Permite que la barra permanezca fija en la parte superior durante el desplazamiento */
+  top: 0;           /* Posiciona la barra en la parte superior de la ventana */
+  z-index: 50;      /* Asegura que la barra de navegación esté en un nivel superior a otros elementos */
+}
+
+/* Estilo para los placeholders de los campos de entrada de texto */
+input[type="text"]::placeholder {
+  color: #a3a3a3;   /* Cambia el color del texto del placeholder a un gris suave */
+}
+
+/* Estilo para los campos de entrada cuando reciben foco */
+input:focus {
+  border-color: #2563eb; /* Cambia el color del borde al recibir foco (azul) */
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4); /* Agrega un efecto de sombra alrededor del campo */
+}
+
+/* Estilo para íconos SVG dentro de botones al pasar el cursor */
+button svg:hover {
+  color: #2563eb; /* Cambia el color del ícono SVG al pasar el cursor (azul) */
+}
+
+/* Estilo para íconos SVG dentro de enlaces al pasar el cursor */
+a svg:hover {
+  color: #2563eb; /* Cambia el color del ícono SVG en enlaces al pasar el cursor (azul) */
+}
+
+/* Estilo para enlaces con la clase 'relative' */
+a.relative {
+  position: relative; /* Define la posición relativa, permitiendo ajustes en relación con su posición normal */
+}

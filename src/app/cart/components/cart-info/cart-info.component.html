@@ -1,0 +1,25 @@
+<ng-container *ngIf="cart$ | async as cart">
+  <div class="p-6">
+    <!-- Production -->
+    <div class="mb-4">
+      <h5 class="text-gray-900 font-medium">Productos</h5>
+    </div>
+
+    <!-- Total -->
+    <div
+      class="flex justify-between items-center border-t border-gray-200 pt-4 mb-6"
+    >
+      <span class="font-medium">Total:</span>
+      <span class="font-medium">${{ cart.cart_TotalPrice }}</span>
+    </div>
+
+    <!-- Botón de compra -->
+    <button
+    (click)="goToCreatePurchase()" class="w-full bg-[#76A9FA] text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none transition-colors"
+    >
+      Realizar compra
+    </button>
+    
+  </div>
+  
+</ng-container>

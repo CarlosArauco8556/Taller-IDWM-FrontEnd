@@ -1,0 +1,108 @@
+<!-- Componente que muestra la lista de usuarios y permite buscar usuarios por nombre -->
+
+    <!-- Componente de barra de navegación general -->
+    <nav class="bg-white border-b border-gray-200 shadow-sm min-w-full -translate-y-2">
+        <div class="max-w-screen-xl flex items-center justify-center p-4">
+            <div class="relative w-1/2 ">
+
+                <!-- Input para buscar usuarios por nombre -->
+                <input
+                type="text"
+                #input
+                (keyup.enter)="getUsers(input.value)"
+                placeholder="Buscar usuario por nombre"
+                class="w-full p-2.5 rounded-[30px] border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                <!-- Botón para buscar usuarios -->
+                <button
+                type="submit"
+                (click)="getUsers(input.value)"
+                class="absolute top-1/2 transform -translate-y-1/2 right-0 text-gray-500"
+                >
+                <span
+                    class="bg-[#76A9FA] p-3 rounded-full inline-flex items-center justify-center"
+                >
+
+                    <!-- Icono de lupa -->
+                    <svg
+                    class="w-4 h-4 text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    >
+                    <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-width="2"
+                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+                    />
+                    </svg>
+                </span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Paginacion -->
+    <div class = "mt-7 flex justify-center">
+        <users-pagination></users-pagination>
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-9 mx-20 mb-20">
+        <!-- Encabezado de la tabla -->
+        <div class="p-4 bg-white">
+          <h2 class="text-2xl font-semibold text-gray-900">
+            Lista de Usuarios
+          </h2>
+        </div>
+      
+        <!-- Tabla -->
+        <table *ngIf = "users.length > 0" class="w-full text-sm text-left text-gray-500">
+          <!-- Table Head -->
+          <thead
+            class="text-xs text-gray-700 uppercase bg-gray-50"
+          >
+            <tr>
+              <th *ngFor = "let header of tableHeaders" scope="col" class="px-4 py-3">
+                {{ header.label }}
+              </th>
+            </tr>
+          </thead>
+      
+          <!-- Table Body -->
+          <tbody class = "text-xs"> 
+              <tr *ngFor = "let user of users"
+                class="bg-white border-b hover:bg-gray-50"
+              >
+                <td class="px-4 py-4 truncate max-w-[120px]" title="{{ user.userName.toLowerCase() }}">
+                  {{ user.userName.toLowerCase() }}
+                </td>
+                <td class="px-4 py-4 min-w-[95px]">
+                  {{ user.rut }}
+                </td>
+                <td class="px-4 py-4 max-w-[110px]">
+                  {{ user.name }}
+                </td>
+                <td class="px-4 py-4 max-w-[50px]">
+                  <!-- Fecha en el formato "DD-MM-YYYY" -->
+                  {{ user.dateOfBirth | date: 'dd-MM-yyyy' }}
+                </td>
+                <td class="px-4 py-4 max-w-[90px]">
+                  {{ user.gender }}
+                </td>
+                <td class="px-4 py-4 truncate max-w-[120px]" title="{{ user.email.toLowerCase() }}">
+                  {{ user.email.toLowerCase() }}
+                </td>
+                <td class="text-center">
+                  <button (click) = "changeState(user.email)" class = "px-4 py-3 rounded-lg text-black"
+                  [ngClass] = "{ 'bg-green-200': user.isActive === 1, 'bg-red-200': user.isActive === 0 }">{{ showMessageIsActive(user.isActive) }}</button>
+                </td>
+              </tr>
+          </tbody>
+        </table>
+      </div>

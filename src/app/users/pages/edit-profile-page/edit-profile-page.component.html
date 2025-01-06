@@ -1,0 +1,67 @@
+<!-- Componente de barra de navegación general -->
+<app-nav-bar class="navbar"></app-nav-bar>
+
+<!-- Contenedor principal para el formulario y el botón de alternancia -->
+<div class = "px-20">  
+    <!-- Botón de alternancia de usuarios -->
+    <users-toggle-button></users-toggle-button>
+
+    <!-- Formulario para editar perfil -->
+    <form [formGroup] = "forms" (ngSubmit) = "editProfile()"
+    class = "max-w-md mx-auto p-10 mb-14 rounded-lg shadow">
+
+        <!-- Título del formulario -->
+        <p class = "text-2xl text-center text-black font-extrabold">Editar perfil</p>
+
+        <!-- Campo de texto para el nombre -->
+        <div class = "mt-6 mb-4">
+            <label class = "block text-sm font-medium text-gray-900 mb-1">Nombre</label>
+            <input type="text" class = "bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 mb-1"
+            [class.border-red-500] = "forms.get('name')?.invalid && forms.get('name')?.touched"
+            placeholder = "Luis Perez" formControlName = "name" required/>
+
+            <!-- Mensaje de error si el nombre es inválido -->
+            <div *ngIf = "forms.get('name')?.invalid && forms.get('name')?.touched">
+                <p class= "text-red-500 text-sm font-normal">{{getFieldError("name")}}</p>
+            </div>
+        </div>
+
+        <!-- Contenedor de las opciones validas para el genero -->
+        <div class = "mb-4">
+            <label class = "block text-sm font-medium text-gray-900 mb-1">Genero</label>
+            <select type="text" class = "bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 mb-1"
+            [class.border-red-500] = "forms.get('gender')?.invalid && forms.get('gender')?.touched"
+            formControlName = "gender" required>
+                <option value="">Seleccione un género</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+                <option value="Otro">Otro</option>
+            </select>
+            
+            <!-- Mensaje de error si el género es inválido -->
+            <div *ngIf = "forms.get('gender')?.invalid && forms.get('gender')?.touched">
+                <p class= "text-red-500 text-sm font-normal">{{getFieldError("gender")}}</p>
+            </div>
+        </div>
+
+        <!-- Campo de texto para la fecha de nacimiento -->
+        <div class = "mb-4">
+            <label class = "block text-sm font-medium text-gray-900 mb-1">Fecha de nacimiento</label>
+            <input type="date" class = "bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 mb-1"
+            [class.border-red-500] = "forms.get('dateOfBirth')?.invalid && forms.get('dateOfBirth')?.touched"
+            placeholder = "mm/dd/yyyy" formControlName = "dateOfBirth" required/>
+            
+            <!-- Mensaje de error si la fecha de nacimiento es inválida -->
+            <div *ngIf = "forms.get('dateOfBirth')?.invalid && forms.get('dateOfBirth')?.touched">
+                <p class= "text-red-500 text-sm font-normal">{{getFieldError("dateOfBirth")}}</p>
+            </div>
+        </div>
+        
+        <!-- Boton para enviar el formulario -->
+        <button type = "submit" [disabled]="forms.invalid" [ngClass] = "{'cursor-not-allowed opacity-50': forms.invalid}"
+        class = "text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-base w-full sm:w-full py-2.5 text-center mt-4">
+            Editar
+        </button>
+    </form>
+</div>  

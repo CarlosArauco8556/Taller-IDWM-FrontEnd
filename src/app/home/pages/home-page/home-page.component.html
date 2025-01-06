@@ -1,0 +1,25 @@
+<app-nav-bar class="navbar" (logInFormIsOpen)="reciveLogInFormIsOpen($event)" (signUpFormIsOpen)="reciveSignUpFormIsOpen($event)"></app-nav-bar>
+
+<div class="home-layout">
+  <app-side-bar class="sidebar"></app-side-bar>
+  <!-- Sidebar dentro del Home -->
+
+  <div class="main-content">
+    <app-pagination></app-pagination>
+    <!-- Paginación arriba de los productos -->
+    <div class="products-list">
+      <div *ngFor="let product of productsList">
+        <app-product-card [product]="product" (productForCart)="reciveIdProductForCart($event)"></app-product-card>
+        <!-- El Card de producto -->
+      </div>
+    </div>
+
+    <div *ngIf="logInFormIsOpen" class="log-in-form">
+      <app-log-in (logInFormIsOpen)="reciveLogInFormIsOpen($event)"></app-log-in>
+    </div>
+
+    <div *ngIf="signUpFormIsOpen" class="log-in-form">
+      <app-sign-up (signUpFormIsOpen)="reciveSignUpFormIsOpen($event)"></app-sign-up>
+    </div>
+  </div>
+</div>

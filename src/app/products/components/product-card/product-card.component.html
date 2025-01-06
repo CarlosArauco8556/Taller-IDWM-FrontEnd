@@ -1,0 +1,47 @@
+<div class="card max-w-sm rounded overflow-hidden shadow-lg">
+    <img
+    class="rounded-t-lg"
+    [src]="product.imageUrl ? product.imageUrl : 'https://res.cloudinary.com/dd0ljsgtp/image/upload/v1728516121/cld-sample-4.jpg'"
+    [alt]="product.name"
+    />
+  
+    <div class="content p-4 text-center">
+      <!-- Título del nombre del producto -->
+      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+        {{ product.name }}
+      </h5>
+      
+      <!-- Tipo de producto -->
+      <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+        <strong>Tipo de Producto:</strong> {{ product.productType.name }}
+      </p>
+  
+      <!-- Precio del producto -->
+      <p class="text-lg font-semibold text-gray-900 dark:text-white">
+        <strong>Precio:</strong> ${{ product.price }}
+      </p>
+  
+      <!-- Stock disponible -->
+      <p class="text-sm font-normal text-gray-700 dark:text-gray-400">
+        <strong>Stock disponible:</strong> {{ product.stock }}
+      </p>
+  
+      <!-- Botón de editar -->
+      <button
+        (click)="editProduct(product.id)"
+        class="mt-4 text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-base w-full sm:w-auto py-2.5 text-center"
+      >
+        Editar
+      </button>
+  
+      <!-- Botón de eliminar (rojo) -->
+      <button
+        (click)="deleteProduct(product.id)"
+        class="mt-4 text-white bg-red-600 hover:bg-red-700 font-medium rounded-lg text-base w-full sm:w-auto py-2.5 text-center"
+      >
+        Eliminar
+      </button>
+    </div>
+  </div>
+  
+  

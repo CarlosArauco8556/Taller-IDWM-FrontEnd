@@ -1,0 +1,10 @@
+<!-- Elemento de selección que permite al usuario navegar a diferentes páginas -->
+<select type="text" class = "bg-gray-50 border border-gray-300 text-sm rounded-lg block w-52 p-2.5 mb-1" 
+(change)="navigateTo($event)"required>
+    <!-- Opción predeterminada para que el usuario seleccione una página -->
+    <option value="">Seleccione una pagina</option>
+    <!-- Opción para navegar a la página de edición de perfil -->
+    <option value="/edit-profile">Editar perfil</option>
+    <!-- Opción para navegar a la página de cambio de contraseña -->
+    <option value="/change-password">Cambiar contraseña</option>
+</select>
