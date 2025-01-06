@@ -86,6 +86,13 @@ export const authGuardGuard: CanActivateFn = (route, state) => {
         router.navigate(['/home-admin']);
         break;
       case 'USER':
+        if (localStorageService.getVariable('redirectAfterLogin'))
+        {
+          const redirect = localStorageService.getVariable('redirectAfterLogin');
+          localStorageService.removeVariable('redirectAfterLogin');
+          router.navigate([redirect]);
+          break;
+        }
         router.navigate(['/home']);
         break;
       default:

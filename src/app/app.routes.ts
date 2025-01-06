@@ -62,6 +62,8 @@ export const routes: Routes = [
         path: 'add-products',
         pathMatch: 'full',
         loadComponent: () => import('./products/pages/add-products-page/add-products-page.component').then(m => m.AddProductsPageComponent),
+        canActivate: [authGuardGuard],
+        data: { roles: ['ADMIN'] }
     },
     /// <summary>
     /// Ruta para editar productos
@@ -70,6 +72,8 @@ export const routes: Routes = [
         path: 'edit-product/:id',
         pathMatch: 'full',
         loadComponent: () => import('./products/pages/edit-products-page/edit-products-page.component').then(m => m.EditProductsPageComponent),
+        canActivate: [authGuardGuard],
+        data: { roles: ['ADMIN'] }
     },
     /// <summary>
     /// Ruta para la gestión de productos
@@ -78,6 +82,8 @@ export const routes: Routes = [
         path: 'management-products',
         pathMatch: 'full',
         loadComponent: () => import('./products/pages/management-products-page/management-products-page.component').then(m => m.ManagementProductsPageComponent),
+        canActivate: [authGuardGuard],
+        data: { roles: ['ADMIN'] }
     },
     /// <summary>
     /// Ruta para realizar una compra
@@ -86,6 +92,8 @@ export const routes: Routes = [
         path: 'create-purchase',
         pathMatch: 'full',
         loadComponent: () => import('./purchaseUser/pages/create-purchase/create-purchase.component').then(m => m.CreatePurchaseComponent),
+        canActivate: [authGuardGuard],
+        data: { roles: ['USER'] }
     },
     /// <summary>
     /// Si no se encuentra la ruta se redirige al home

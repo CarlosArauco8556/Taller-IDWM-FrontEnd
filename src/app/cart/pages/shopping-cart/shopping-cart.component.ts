@@ -8,6 +8,7 @@ import { CartItem } from '../../interfaces/cartItem';
 import { UpdateItem } from '../../interfaces/updateItem';
 import { CommonModule } from '@angular/common';
 import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.component';
+import { LogInComponent } from "../../../auth/components/log-in/log-in.component";
 
 /**
  * Componente de la página de carrito de compras
@@ -15,7 +16,7 @@ import { NavBarComponent } from '../../../_shared/components/nav-bar/nav-bar.com
 @Component({
   selector: 'app-shopping-cart',
   standalone: true,
-  imports: [CartProductComponent, CartInfoComponent, CommonModule, HttpClientModule, NavBarComponent],
+  imports: [CartProductComponent, CartInfoComponent, CommonModule, HttpClientModule, NavBarComponent, LogInComponent],
   providers: [CartServiceService],
   templateUrl: './shopping-cart.component.html',
   styleUrl: './shopping-cart.component.css'
@@ -33,9 +34,8 @@ export class ShoppingCartComponent {
    * Servicio de carrito de compras
    */
   private cartService: CartServiceService = inject(CartServiceService);
-  /**
-   * Servicio de actualización de ítems
-   */
+  public logInFormIsOpen = false;
+
   public updateItem!: UpdateItem;
 
   /**
@@ -45,9 +45,10 @@ export class ShoppingCartComponent {
     this.getCartProducts();
   }
 
-  /**
-   * Método para obtener los productos del carrito
-   */
+  reciveLogInFormIsOpen(logInFormIsOpen: boolean): void {
+    this.logInFormIsOpen = logInFormIsOpen;
+  }
+
   getCartProducts(): void {
     this.cartService.getCart().subscribe((cart) => {
       console.log(cart);
