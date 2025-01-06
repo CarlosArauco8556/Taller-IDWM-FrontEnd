@@ -7,7 +7,9 @@ El objetivo de este documento es proporcionar una guía clara y precisa para des
 Antes de comenzar, asegúrate de cumplir con los siguientes requisitos:
 
 **1. Git:** Herramienta para clonar repositorios. [Descargar git](https://git-scm.com/downloads "Descargar git")
+
 **2. Node.js y npm:** Node.js (versión mínima 18) y npm deben estar instalados. [Descargar Node.js.](https://nodejs.org/en "Descargar Node.js.")
+
 **3. Angular CLI:** Asegúrate de tener instalada la CLI de Angular (versión mínima 16).
 
 ````
