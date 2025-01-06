@@ -41,21 +41,29 @@ export const routes: Routes = [
         path: 'add-products',
         pathMatch: 'full',
         loadComponent: () => import('./products/pages/add-products-page/add-products-page.component').then(m => m.AddProductsPageComponent),
+        canActivate: [authGuardGuard],
+        data: { roles: ['ADMIN'] }
     },
     {
         path: 'edit-product/:id',
         pathMatch: 'full',
         loadComponent: () => import('./products/pages/edit-products-page/edit-products-page.component').then(m => m.EditProductsPageComponent),
+        canActivate: [authGuardGuard],
+        data: { roles: ['ADMIN'] }
     },
     {
         path: 'management-products',
         pathMatch: 'full',
         loadComponent: () => import('./products/pages/management-products-page/management-products-page.component').then(m => m.ManagementProductsPageComponent),
+        canActivate: [authGuardGuard],
+        data: { roles: ['ADMIN'] }
     },
     {
         path: 'create-purchase',
         pathMatch: 'full',
         loadComponent: () => import('./purchaseUser/pages/create-purchase/create-purchase.component').then(m => m.CreatePurchaseComponent),
+        canActivate: [authGuardGuard],
+        data: { roles: ['USER'] }
     },
     {    
         path: '',
